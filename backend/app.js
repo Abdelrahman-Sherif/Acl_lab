@@ -7,7 +7,7 @@ const MongoURI = 'mongodb+srv://borsigwerke:3ezbetna@cluster0.6t7tb.mongodb.net/
 
 
 const app = express();
-const port = process.env.PORT || "8000";
+const port = process.env.PORT || "3000";
 const User = require('./models/user');
 const flight= require('./models/flight');
 
@@ -17,7 +17,7 @@ mongoose.connect(MongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
 
 
 
-app.get("/addFlight", (req, res) => {
+app.get("/postOneFlight", (req, res) => {
     const NewFlight = new flight({
         FlightNumber: "AXY210",
         DepartureTime: "10:00" ,
@@ -31,9 +31,11 @@ app.get("/addFlight", (req, res) => {
   
   
     });
+
   NewFlight.save();
     res.send(NewFlight);
   })
+  app.get('/viewFlights', flightsController.getFlights)
 
 app.get("/Home", (req, res) => {
     res.status(200).send("You have everything installed !");
