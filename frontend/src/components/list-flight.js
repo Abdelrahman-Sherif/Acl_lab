@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 // This will require to npm install axios
 import axios from 'axios';
+import { Col, Row } from "react-bootstrap";
 //import { Link } from "react-router-dom";
 
 
@@ -26,9 +27,7 @@ const Record = (props) => (
     <td>
     <button onClick={() => {
            if (window.confirm('Are you sure you wish to delete this item?')) deleteFlight(props.record._id);
-        }}>Delete</button>;
-
-    
+        }}>Delete</button>
     </td>
   </tr>
 );
@@ -84,6 +83,147 @@ export default class RecordList extends Component {
     return (
       <div>
         <h3>Flight List</h3>
+          <form onSubmit={this.onSubmit}>
+            <Row>
+              <Col>
+              <input
+                type="text"
+                className="form-control form-control-lg"
+                placeholder="Flight Number"
+                name="FlightNumber"
+                value={this.state.FlightNumber}
+                onChange={this.onChangeFlightNumber}
+              />
+              </Col>
+              <Col>
+              <input
+                type="text"
+                className="form-control form-control-lg"
+                placeholder="Terminal"
+                name="Terminal"
+                value={this.state.Terminal}
+                onChange={this.onChangeTerminal}
+              />
+              </Col>
+            </Row>
+          
+            <Row style={{marginTop: 10}}>
+              <Col>
+              <input
+                type="text"
+                className="form-control form-control-lg"
+                placeholder="Enter Departure Time"
+                name="DepartureTime"
+                value={this.state.DepartureTime}
+                onChange={this.onChangeDepartureTime}
+              />
+              </Col>
+              <Col>
+              <div className="form-group">
+              <input
+                type="text"
+                className="form-control form-control-lg"
+                placeholder="Enter Arrival Time"
+                name="ArrivalTime"
+                value={this.state.ArrivalTime}
+                onChange={this.onChangeArrivalTime}
+              />
+            </div>
+            </Col>
+              </Row>
+            <Row style={{marginTop: 10}}>
+              <Col>
+              <div className="form-group">
+              <input
+                type="date"
+                className="form-control form-control-lg"
+                placeholder="Enter Date of Takeoff"
+                name="DateTakeoff"
+                value={this.state.DateTakeoff}
+                onChange={this.onChangeDateTakeoff}
+              />
+            </div>
+            </Col>
+            <Col>
+            <div className="form-group">
+              <input
+                type="date"
+                className="form-control form-control-lg"
+                placeholder="Enter Date of Arrival"
+                name="DateArrival"
+                value={this.state.DateArrival}
+                onChange={this.onChangeDateArrival}
+              />
+            </div>
+            </Col>
+            </Row>
+            
+            <Row style={{marginTop: 10}}>
+              <Col>
+              <div className="form-group">
+              <input
+                type="number"
+                className="form-control form-control-lg"
+                placeholder="Number of Economy Seats"
+                name="EconomySeats"
+                value={this.state.EconomySeats}
+                onChange={this.onChangeEconomySeats}
+              />
+            </div>
+              </Col>
+              <Col>
+              <div className="form-group">
+              <input
+                type="number"
+                className="form-control form-control-lg"
+                placeholder="Number of Business Seats"
+                name="BusinessSeats"
+                value={this.state.BusinessSeats}
+                onChange={this.onChangeBusinessSeats}
+              />
+            </div>
+              </Col>
+            </Row>
+  
+            <Row style={{marginTop: 10}}>
+              <Col>
+              <div className="form-group">
+              <input
+                type="text"
+                className="form-control form-control-lg"
+                placeholder="Airport of Arrival"
+                name="AirportArrival"
+                value={this.state.AirportArrival}
+                onChange={this.onChangeAirportArrival}
+              />
+            </div>
+              </Col>
+              <Col>
+              <div className="form-group">
+              <input
+                type="text"
+                className="form-control form-control-lg"
+                placeholder="Airport of TakeOff"
+                name="AirportTakeOff"
+                value={this.state.AirportTakeOff}
+                onChange={this.onChangeAirportTakeOff}
+              />
+            </div>
+              </Col>
+            </Row>
+            <div class='col text-center'>
+              <Row>
+                <Col>
+              <button className="btn btn-secondary btn-block" style={{marginTop: 10}}>Clear Filters</button>
+
+              </Col>
+              <Col>
+              <button className="btn btn-primary btn-block" style={{marginTop: 10}}>Search</button>
+
+              </Col>
+              </Row>
+            </div>
+            </form>
         <table className="table table-striped" style={{ marginTop: 20 }}>
           <thead>
             <tr>
