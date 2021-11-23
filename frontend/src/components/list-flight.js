@@ -25,7 +25,7 @@ const Record = (props) => (
 
     <td>
     <button onClick={() => {
-          deleteFlight(props.record._id);
+           if (window.confirm('Are you sure you wish to delete this item?')) deleteFlight(props.record._id);
         }}>Delete</button>;
 
     
