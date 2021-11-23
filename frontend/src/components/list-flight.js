@@ -6,10 +6,9 @@ import axios from 'axios';
 
 
 
-const deleteFlight = (id) => {
-  axios.delete(`http://localhost:5000/flights/delete/${id}`)
-  
-};
+
+
+
 
 const Record = (props) => (
   <tr>
@@ -25,7 +24,7 @@ const Record = (props) => (
 
     <td>
     <button onClick={() => {
-           if (window.confirm('Are you sure you wish to delete this item?')) deleteFlight(props.record._id);
+           if (window.confirm('Are you sure you wish to delete this item?')) props.deleteRecord(props.record._id);
         }}>Delete</button>;
 
     
@@ -34,6 +33,8 @@ const Record = (props) => (
 );
 
 export default class RecordList extends Component {
+
+  
   // This is the constructor that shall store our data retrieved from the database
   constructor(props) {
     super(props);
@@ -41,29 +42,42 @@ export default class RecordList extends Component {
     this.state = { records: [] };
   }
 
+
   // This method will get the data from the database.
   componentDidMount() {
     axios
-      .get("http://localhost:5000/flights/get")
-      .then((response) => {
-        this.setState({ records: response.data });
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+  .get("http://localhost:5000/flights/get")
+  .then((response) => {
+    console.log("Records gotten: "+ response.data);
+    this.setState({ records: response.data });
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
   }
 
+  
+
   // This method will delete a record based on the method
-  deleteRecord(id) {
-    axios.delete("http://localhost:5000/flights/:id" + id).then((response) => {
+  async deleteRecord(id) {
+    console.log("Gonna delete now");
+    await axios.delete("http://localhost:5000/flights/delete/" + id).then((response) => {
       console.log(response.data);
+    }).catch(function (error) {
+      console.log(error);
     });
-    window.location = '/flights';
+    console.log("Delete ended");
 
-
-    this.setState({
-      record: this.state.records.filter((el) => el._id !== id),
-    });
+    await axios
+  .get("http://localhost:5000/flights/get")
+  .then((response) => {
+    console.log("Records gotten after deletion: "+ response.data);
+    this.setState({ records: response.data });
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
+    
   }
 
   // This method will map out the users on the table

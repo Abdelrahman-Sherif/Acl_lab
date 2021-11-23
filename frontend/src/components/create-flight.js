@@ -89,7 +89,7 @@ export default class CreateFlight extends Component {
     })
   }
 
-  onSubmit(e) {
+  async onSubmit(e) {
     e.preventDefault();
 
     const newflight = {
@@ -106,12 +106,12 @@ export default class CreateFlight extends Component {
 
     console.log(newflight);
 
-    axios.post('http://localhost:5000/flights/add', newflight)
+    await axios.post('http://localhost:5000/flights/add', newflight)
       .then(res => console.log(res.data))
       .catch((error) => {
         console.log(error);
     });
-    window.location = '/flights';
+    window.location = '/';
 
       this.setState = {
         FlightNumber: "",
@@ -127,6 +127,7 @@ export default class CreateFlight extends Component {
   }
 
   render() {
+    console.log("Adding flight");
     return (
       <div className="container bg-light">
         <div className="row">  

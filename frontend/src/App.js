@@ -8,9 +8,9 @@ const App = () => {
     return (
       <Router>
           <Routes>
-          <Route exact path="/" element={<h1> You can try "localhost:3000/flights" or "localhost:3000/flights/add" </h1>}/>
-            <Route exact path="/flights/add" element={<CreateFlight/>}/>
-            <Route exact path="/flights" element={<RecordList/>}/>
+          <Route exact path="/" element={<RecordList/>}/>
+           <Route exact path="/flights/add" element={<CreateFlight/>}/>
+           
           </Routes>
       </Router>
     );
