@@ -73,37 +73,51 @@ export default class CreateFlight extends Component {
   })
 
   this.setState({
-    EconomySeatsError: this.state.EconomySeats?"":"error"
+    EconomySeatsError: this.state.EconomySeats <= 0? "error": ""
   })
 
   this.setState({
-    BusinessSeatsError: this.state.BusinessSeats ?"":"error"
+    BusinessSeatsError: this.state.BusinessSeats <= 0? "error": ""
   })
 
   this.setState({
-    FirstSeatsError: this.state.FirstSeats?"":"error"
+    FirstSeatsError: this.state.FirstSeats<= 0? "error": ""
   })
 
   this.setState({
-    AirportArrivalError: this.state.AirportArrival?"":"error"
+    AirportArrivalError: this.state.AirportArrival.length ===3 ?"":"error"
   })
 
   this.setState({
-    AirportTakeOffError: this.state.AirportTakeOff?"":"error"
+    AirportTakeOffError: this.state.AirportTakeOff.length ===3 ?"":"error"
   })
  
-  if(!this.state.FlightNumber && !this.state.DepartureTime && !this.state.ArrivalTime && !this.state.DateTakeoff 
-    && !this.state.DateArrival && !this.state.EconomySeats && !this.state.BusinessSeats && !this.state.FirstSeats
-    && !this.state.AirportArrival && !this.state.AirportTakeOff){
-      console.log("empty")
+  if(!this.state.FlightNumber || !this.state.DepartureTime || !this.state.ArrivalTime || !this.state.DateTakeoff 
+    || !this.state.DateArrival || !this.state.EconomySeats || !this.state.BusinessSeats || !this.state.FirstSeats
+    || !this.state.AirportArrival || !this.state.AirportTakeOff){
+      console.log("emptyFields")
       return false
   }
   if(this.state.EconomySeats<=0 || this.state.BusinessSeats<0 || this.state.FirstSeats<0){
-  console.log("emptyEco")
+  console.log("emptySeats")
 
   return false
   }
 
+  if(this.state.AirportTakeOff.length!== 3 || this.state.AirportArrival.length!==3){
+    console.log("wrongLength")
+    this.setState({
+      AirportArrivalError: this.state.AirportArrival.length===3? "":"error"
+    })
+  
+    this.setState({
+      AirportTakeOffError: this.state.AirportTakeOff.length===3?"":"error"
+    })
+    
+    return false
+    }
+
+    return true
   }
 
   onChangeFlightNumber(e) {
@@ -206,6 +220,7 @@ export default class CreateFlight extends Component {
   }
 
   async onSubmit(e) {
+    console.log(this.validate())
     if (this.validate()){
     e.preventDefault();
     const newflight = {
@@ -229,7 +244,7 @@ export default class CreateFlight extends Component {
       .catch((error) => {
         console.log(error);
     });
-    // window.location = '/';
+    window.location = '/';
 
       this.setState = {
         FlightNumber: "",
@@ -263,7 +278,7 @@ export default class CreateFlight extends Component {
       <div className="container bg-light">
         <div className="row">  
          <div className="col-sm-4 mx-auto  p-5">
-          <h2 className="text-center mb-4">Add A Flight</h2>
+          <h2 className="text-center mb-4">Add Flight</h2>
             <div className="form-group">
              
               <TextField label="Flight Number" value={this.state.FlightNumber} variant="outlined" size="small" type="text" required style={{width:300}} onChange={this.onChangeFlightNumber} margin="normal"  InputLabelProps={{
@@ -327,7 +342,7 @@ export default class CreateFlight extends Component {
           }} error= {this.state.AirportTakeOffError? true : false}/>
             </div>
   
-            <Button color = "primary" onClick = {this.onSubmit.bind(this)}>Add Flight </Button>
+            <Button variant="contained" color = "primary" onClick = {this.onSubmit.bind(this)}>Add Flight </Button>
         </div>
       </div>
     </div>  
