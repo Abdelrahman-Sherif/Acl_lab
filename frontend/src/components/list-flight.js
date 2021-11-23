@@ -13,6 +13,7 @@ const Record = (props) => (
     <td>{props.record.DateArrival}</td>
     <td>{props.record.EconomySeats}</td>
     <td>{props.record.BusinessSeats}</td>
+    <td>{props.record.FirstSeats}</td>
     <td>{props.record.AirportArrival}</td>
     <td>{props.record.AirportTakeOff}</td>
 
@@ -276,6 +277,20 @@ export default class RecordList extends Component {
               />
             </div>
               </Col>
+
+              <Col>
+              <div className="form-group">
+              <input
+                type="number"
+                className="form-control form-control-lg"
+                placeholder="Number of First Seats"
+                name="FirstSeats"
+                value={this.state.FirstSeats}
+                onChange={this.onChangeFirstSeats}
+              />
+            </div>
+              </Col>
+              
             </Row>
   
             <Row style={{marginTop: 10}}>

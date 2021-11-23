@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import "../../node_modules/bootstrap/dist/css/bootstrap.css";
+import {TextField, Button} from '@mui/material';
+
 
 
 
@@ -14,6 +16,7 @@ export default class CreateFlight extends Component {
     this.onChangeDateArrival = this.onChangeDateArrival.bind(this);
     this.onChangeEconomySeats = this.onChangeEconomySeats.bind(this);
     this.onChangeBusinessSeats = this.onChangeBusinessSeats.bind(this);
+    this.onChangeFirstSeats = this.onChangeFirstSeats.bind(this);
     this.onChangeAirportArrival = this.onChangeAirportArrival.bind(this);
     this.onChangeAirportTakeOff = this.onChangeAirportTakeOff.bind(this);
 
@@ -26,23 +29,100 @@ export default class CreateFlight extends Component {
       ArrivalTime: "",
       DateTakeoff: "",
       DateArrival: "",
-      EconomySeats: "",
-      BusinessSeats: "",
+      EconomySeats: 0,
+      BusinessSeats: 0,
+      FirstSeats: 0,
       AirportArrival: "",
       AirportTakeOff: "",
+
+      FlightNumberError: "",
+      DepartureTimeError: "",
+      ArrivalTimeError: "",
+      DateTakeoffError: "",
+      DateArrivalError: "",
+      EconomySeatsError: "",
+      BusinessSeatsError: "",
+      FirstSeatsError: "",
+      AirportArrivalError: "",
+      AirportTakeOffError: "",
     }
   }
 
+  
+  validate(){
+
+  this.setState({
+    FlightNumberError: this.state.FlightNumber?"":"error"
+  })
+
+  this.setState({
+    DepartureTimeError: this.state.DepartureTime?"":"error"
+  })
+
+  this.setState({
+    ArrivalTimeError: this.state.ArrivalTime?"":"error"
+  })
+
+  this.setState({
+    DateTakeoffError: this.state.DateTakeoff?"":"error"
+  })
+
+  this.setState({
+    DateArrivalError: this.state.DateArrival?"":"error"
+  })
+
+  this.setState({
+    EconomySeatsError: this.state.EconomySeats?"":"error"
+  })
+
+  this.setState({
+    BusinessSeatsError: this.state.BusinessSeats ?"":"error"
+  })
+
+  this.setState({
+    FirstSeatsError: this.state.FirstSeats?"":"error"
+  })
+
+  this.setState({
+    AirportArrivalError: this.state.AirportArrival?"":"error"
+  })
+
+  this.setState({
+    AirportTakeOffError: this.state.AirportTakeOff?"":"error"
+  })
+ 
+  if(!this.state.FlightNumber && !this.state.DepartureTime && !this.state.ArrivalTime && !this.state.DateTakeoff 
+    && !this.state.DateArrival && !this.state.EconomySeats && !this.state.BusinessSeats && !this.state.FirstSeats
+    && !this.state.AirportArrival && !this.state.AirportTakeOff){
+      console.log("empty")
+      return false
+  }
+  if(this.state.EconomySeats<=0 || this.state.BusinessSeats<0 || this.state.FirstSeats<0){
+  console.log("emptyEco")
+
+  return false
+  }
+
+  }
 
   onChangeFlightNumber(e) {
     this.setState({
       FlightNumber: e.target.value
     })
+
+    this.setState({
+      FlightNumberError: ""
+    })
+    
   }
 
   onChangeDepartureTime(e) {
     this.setState({
       DepartureTime: e.target.value
+    })
+
+    this.setState({
+      DepartureTimeError: ""
     })
   }
 
@@ -50,11 +130,18 @@ export default class CreateFlight extends Component {
     this.setState({
       ArrivalTime: e.target.value
     })
+    this.setState({
+      ArrivalTimeError: ""
+    })
+    
   }
 
   onChangeDateTakeoff(e) {
     this.setState({
       DateTakeoff: e.target.value
+    })
+    this.setState({
+      DateTakeoffError: ""
     })
   }
 
@@ -62,11 +149,19 @@ export default class CreateFlight extends Component {
     this.setState({
       DateArrival: e.target.value
     })
+    this.setState({
+      DateArrivalError: ""
+    })
+
   }
 
   onChangeEconomySeats(e) {
     this.setState({
       EconomySeats: e.target.value
+    })
+    this.setState({
+      EconomySeatsError: e.target.value <= 0? "error": ""
+
     })
   }
 
@@ -74,11 +169,29 @@ export default class CreateFlight extends Component {
     this.setState({
       BusinessSeats: e.target.value
     })
+    console.log(this.state.BusinessSeats)
+    this.setState({
+      BusinessSeatsError: e.target.value <= 0? "error": ""
+    })
+  }
+
+
+  onChangeFirstSeats(e) {
+    this.setState({
+      FirstSeats: e.target.value
+    })
+
+    this.setState({
+      FirstSeatsError: e.target.value <= 0? "error": ""
+    })
   }
 
   onChangeAirportArrival(e) {
     this.setState({
       AirportArrival: e.target.value
+    })
+    this.setState({
+      AirportArrivalError: ""
     })
   }
 
@@ -86,11 +199,14 @@ export default class CreateFlight extends Component {
     this.setState({
       AirportTakeOff: e.target.value
     })
+    this.setState({
+      AirportTakeOffError: ""
+    })
   }
 
   async onSubmit(e) {
+    if (this.validate()){
     e.preventDefault();
-
     const newflight = {
     FlightNumber: this.state.FlightNumber,
     DepartureTime: this.state.DepartureTime,
@@ -99,10 +215,12 @@ export default class CreateFlight extends Component {
     DateArrival: this.state.DateArrival,
     EconomySeats: this.state.EconomySeats,
     BusinessSeats: this.state.BusinessSeats,
+    FirstSeats: this.state.FirstSeats,
     AirportArrival: this.state.AirportArrival,
     AirportTakeOff: this.state.AirportTakeOff,
     };
-
+    this.validate();
+    
     console.log(newflight);
 
     await axios.post('http://localhost:5000/flights/add', newflight)
@@ -110,19 +228,32 @@ export default class CreateFlight extends Component {
       .catch((error) => {
         console.log(error);
     });
-    window.location = '/';
+    // window.location = '/';
 
       this.setState = {
         FlightNumber: "",
         DepartureTime: "",
         ArrivalTime: "",
-        DateTakeoff: "",
-        DateArrival: "",
-        EconomySeats: "",
-        BusinessSeats: "",
+        DateTakeoff: new Date(),
+        DateArrival: new Date(),
+        EconomySeats: 0,
+        BusinessSeats: 0,
+        FirstSeats: 0,
         AirportArrival: "",
         AirportTakeOff: "",
+
+        FlightNumberError: "",
+        DepartureTimeError: "",
+        ArrivalTimeError: "",
+        DateTakeoffError: "",
+        DateArrivalError: "",
+        EconomySeatsError: "",
+        BusinessSeatsError: "",
+        FirstSeatsError: "",
+        AirportArrivalError: "",
+        AirportTakeOffError: "",
       }
+    }
   }
 
   render() {
@@ -130,110 +261,76 @@ export default class CreateFlight extends Component {
     return (
       <div className="container bg-light">
         <div className="row">  
-         <div className="col-sm-4 mx-auto shadow p-5">
+         <div className="col-sm-4 mx-auto  p-5">
           <h2 className="text-center mb-4">Add A Flight</h2>
-          <form onSubmit={this.onSubmit}>
             <div className="form-group">
-              <input
-                type="text"
-                className="form-control form-control-lg"
-                placeholder="Flight Number"
-                name="FlightNumber"
-                value={this.state.FlightNumber}
-                onChange={this.onChangeFlightNumber}
-              />
+             
+              <TextField label="Flight Number" value={this.state.FlightNumber} variant="outlined" size="small" type="text" required style={{width:300}} onChange={this.onChangeFlightNumber} margin="normal"  InputLabelProps={{
+            shrink: true,
+          }} error= {this.state.FlightNumberError? true : false}/>
             </div>
-            <div className="form-group">
-              <input
-                type="text"
-                className="form-control form-control-lg"
-                placeholder="Enter Departure Time"
-                name="DepartureTime"
-                value={this.state.DepartureTime}
-                onChange={this.onChangeDepartureTime}
-              />
-            </div>
-            <div className="form-group">
-              <input
-                type="text"
-                className="form-control form-control-lg"
-                placeholder="Enter Arrival Time"
-                name="ArrivalTime"
-                value={this.state.ArrivalTime}
-                onChange={this.onChangeArrivalTime}
-              />
+
+            <div>
+              <TextField label="Departure Time" value={this.state.DepartureTime} variant="outlined" size="small" type="time" required style={{width:300}} onChange={this.onChangeDepartureTime} margin="normal"  InputLabelProps={{
+            shrink: true,
+          }} error= {this.state.DepartureTimeError? true : false}/>
             </div>
             
-            <div className="form-group">
-              <input
-                type="date"
-                className="form-control form-control-lg"
-                placeholder="Enter Date of Takeoff"
-                name="DateTakeoff"
-                value={this.state.DateTakeoff}
-                onChange={this.onChangeDateTakeoff}
-              />
+              <div>
+              <TextField label="Arrival Time" value={this.state.ArrivalTime} variant="outlined" size="small" type="time" required style={{width:300}} onChange={this.onChangeArrivalTime} margin="normal"  InputLabelProps={{
+            shrink: true,
+          }} error= {this.state.ArrivalTimeError? true : false} />
+            </div>
+           
+            
+            <div>
+              <TextField label="Takeoff Date" value={this.state.DateTakeoff} variant="outlined" size="small" type="date" required style={{width:300}} onChange={this.onChangeDateTakeoff} margin="normal"  InputLabelProps={{
+            shrink: true,
+          }} error= {this.state.DateTakeoffError? true : false}/>
             </div>
   
-            <div className="form-group">
-              <input
-                type="date"
-                className="form-control form-control-lg"
-                placeholder="Enter Date of Arrival"
-                name="DateArrival"
-                value={this.state.DateArrival}
-                onChange={this.onChangeDateArrival}
-              />
+
+            <div>
+              <TextField label="Arrival Date" value={this.state.DateArrival} variant="outlined" size="small" type="date" required style={{width:300}} onChange={this.onChangeDateArrival} margin="normal"  InputLabelProps={{
+            shrink: true,
+          }} error= {this.state.DateArrivalError? true : false}/>
+            </div>
+
+            <div>
+              <TextField label="Economy Seats" value={this.state.EconomySeats} variant="outlined" size="small" type="number" required style={{width:300}} onChange={this.onChangeEconomySeats} margin="normal"  InputLabelProps={{
+            shrink: true,
+          }} error= {this.state.EconomySeatsError? true : false}/>
             </div>
   
-            <div className="form-group">
-              <input
-                type="number"
-                className="form-control form-control-lg"
-                placeholder="Number of Economy Seats"
-                name="EconomySeats"
-                value={this.state.EconomySeats}
-                onChange={this.onChangeEconomySeats}
-              />
+            <div>
+              <TextField label="Business Seats" value={this.state.BusinessSeats} variant="outlined" size="small" type="number" required style={{width:300}} onChange={this.onChangeBusinessSeats} margin="normal"  InputLabelProps={{
+            shrink: true,
+          }} error= {this.state.BusinessSeatsError? true : false}/>
             </div>
-            <div className="form-group">
-              <input
-                type="number"
-                className="form-control form-control-lg"
-                placeholder="Number of Business Seats"
-                name="BusinessSeats"
-                value={this.state.BusinessSeats}
-                onChange={this.onChangeBusinessSeats}
-              />
+
+            <div>
+              <TextField label="First Seats" value={this.state.FirstSeats} variant="outlined" size="small" type="number" required style={{width:300}} onChange={this.onChangeFirstSeats} margin="normal"  InputLabelProps={{
+            shrink: true,
+          }} error= {this.state.FirstSeatsError? true : false}/>
             </div>
   
-            <div className="form-group">
-              <input
-                type="text"
-                className="form-control form-control-lg"
-                placeholder="Airport of Arrival"
-                name="AirportArrival"
-                value={this.state.AirportArrival}
-                onChange={this.onChangeAirportArrival}
-              />
+            <div>
+              <TextField label="Destination" value={this.state.AirportArrival} variant="outlined" size="small" type="text" required style={{width:300}} onChange={this.onChangeAirportArrival} margin="normal"  InputLabelProps={{
+            shrink: true,
+          }} error= {this.state.AirportArrivalError? true : false}/>
             </div>
   
-            <div className="form-group">
-              <input
-                type="text"
-                className="form-control form-control-lg"
-                placeholder="Airport of TakeOff"
-                name="AirportTakeOff"
-                value={this.state.AirportTakeOff}
-                onChange={this.onChangeAirportTakeOff}
-              />
+            <div>
+              <TextField label="Departure" value={this.state.AirportTakeOff} variant="outlined" size="small" type="text" required style={{width:300}} onChange={this.onChangeAirportTakeOff} margin="normal"  InputLabelProps={{
+            shrink: true,
+          }} error= {this.state.AirportTakeOffError? true : false}/>
             </div>
   
-            <button className="btn btn-primary btn-block">Add Flight</button>
-            </form>
+            <Button color = "primary" onClick = {this.onSubmit.bind(this)}>Add Flight </Button>
         </div>
       </div>
     </div>  
     );
+
   }
 }
