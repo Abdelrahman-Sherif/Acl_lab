@@ -192,7 +192,7 @@ export default class CreateFlight extends Component {
       AirportArrival: e.target.value
     })
     this.setState({
-      AirportArrivalError: ""
+      AirportArrivalError: e.target.value.length===3?"":"error"
     })
   }
 
@@ -201,7 +201,7 @@ export default class CreateFlight extends Component {
       AirportTakeOff: e.target.value
     })
     this.setState({
-      AirportTakeOffError: ""
+      AirportTakeOffError: e.target.value.length===3?"":"error"
     })
   }
 
