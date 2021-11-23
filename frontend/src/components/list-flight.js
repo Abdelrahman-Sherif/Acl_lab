@@ -1,13 +1,15 @@
 import React, { Component } from "react";
 // This will require to npm install axios
 import axios from 'axios';
-import { Link } from "react-router-dom";
+//import { Link } from "react-router-dom";
 
 
-const deleteFlight =(id) => {
-axios.delete('http://localhost:5000/flights/delete/${id}');
+
+
+const deleteFlight = (id) => {
+  axios.delete(`http://localhost:5000/flights/delete/${id}`)
+  
 };
-
 
 const Record = (props) => (
   <tr>
@@ -22,15 +24,11 @@ const Record = (props) => (
     <td>{props.record.AirportTakeOff}</td>
 
     <td>
-      <Link to={"/delete/" + props.record._id}>Delete</Link> |
-      <a
-        href="/flights"
-        onClick={() => {
+    <button onClick={() => {
           deleteFlight(props.record._id);
-        }}
-      >
-        Edit
-      </a>
+        }}>Delete</button>;
+
+    
     </td>
   </tr>
 );
