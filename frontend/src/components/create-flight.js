@@ -21,7 +21,6 @@ export default class CreateFlight extends Component {
     this.onChangeAirportTakeOff = this.onChangeAirportTakeOff.bind(this);
 
 
-
     this.onSubmit = this.onSubmit.bind(this);
 
     this.state = {

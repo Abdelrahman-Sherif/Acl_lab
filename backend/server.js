@@ -17,7 +17,7 @@ mongoose.connect(uri, {useNewUrlParser: true}
 );
 
 mongoose.connection.on('connected', () => console.log('Connected to DB'));
-mongoose.connection.on('error', () => console.log('Connection failed with - ',err));
+mongoose.connection.on('error', (err) => console.log('Connection failed with - ',err));
 
 const flightsRouter = require('./routes/flightsRouter');
 const Flight = require('./models/flight');

@@ -26,27 +26,128 @@ const Record = (props) => (
 );
 
 export default class RecordList extends Component {
-
-  
   // This is the constructor that shall store our data retrieved from the database
   constructor(props) {
     super(props);
     this.deleteRecord = this.deleteRecord.bind(this);
-    this.state = { records: [] };
+    this.getFilteredFlights = this.getFilteredFlights.bind(this);
+    this.onChangeFlightNumber = this.onChangeFlightNumber.bind(this);
+    this.onChangeDepartureTime = this.onChangeDepartureTime.bind(this);
+    this.onChangeArrivalTime = this.onChangeArrivalTime.bind(this);
+    this.onChangeDateTakeoff = this.onChangeDateTakeoff.bind(this);
+    this.onChangeDateArrival = this.onChangeDateArrival.bind(this);
+    this.onChangeEconomySeats = this.onChangeEconomySeats.bind(this);
+    this.onChangeBusinessSeats = this.onChangeBusinessSeats.bind(this);
+    this.onChangeAirportArrival = this.onChangeAirportArrival.bind(this);
+    this.onChangeAirportTakeOff = this.onChangeAirportTakeOff.bind(this);
+
+    this.state = { 
+      records: [],
+      FlightNumber: "",
+      DepartureTime: "",
+      ArrivalTime: "",
+      DateTakeoff: "",
+      DateArrival: "",
+      EconomySeats: "",
+      BusinessSeats: "",
+      AirportArrival: "",
+      AirportTakeOff: "", 
+    };
   }
 
+  onChangeFlightNumber(e) {
+    this.setState({
+      FlightNumber: e.target.value
+    });
+  }
+
+  onChangeDepartureTime(e) {
+    this.setState({
+      DepartureTime: e.target.value
+    })
+  }
+
+  onChangeArrivalTime(e) {
+    this.setState({
+      ArrivalTime: e.target.value
+    })
+  }
+
+  onChangeDateTakeoff(e) {
+    this.setState({
+      DateTakeoff: e.target.value
+    })
+  }
+
+  onChangeDateArrival(e) {
+    this.setState({
+      DateArrival: e.target.value
+    })
+  }
+
+  onChangeEconomySeats(e) {
+    this.setState({
+      EconomySeats: e.target.value
+    })
+  }
+
+  onChangeBusinessSeats(e) {
+    this.setState({
+      BusinessSeats: e.target.value
+    })
+  }
+
+  onChangeAirportArrival(e) {
+    this.setState({
+      AirportArrival: e.target.value
+    })
+  }
+
+  onChangeAirportTakeOff(e) {
+    this.setState({
+      AirportTakeOff: e.target.value
+    })
+  }
 
   ///Get updated flights
   async getFlights(){
     await axios
-  .get("http://localhost:5000/flights/get")
-  .then((response) => {
-    console.log("Records gotten after deletion: "+ response.data);
-    this.setState({ records: response.data });
-  })
-  .catch(function (error) {
-    console.log(error);
-  });
+    .get("http://localhost:5000/flights/get")
+    .then((response) => {
+      console.log("Records gotten after deletion: "+ response.data);
+      this.setState({ records: response.data });
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+  }
+
+  ///Get filtered flights
+  async getFilteredFlights(e){
+    e.preventDefault();
+    const filterParams = {
+      FlightNumber: this.state.FlightNumber,
+      DepartureTime: this.state.DepartureTime,
+      ArrivalTime: this.state.ArrivalTime,
+      DateTakeoff: this.state.DateTakeoff,
+      DateArrival: this.state.DateArrival,
+      EconomySeats: this.state.EconomySeats,
+      BusinessSeats: this.state.BusinessSeats,
+      AirportArrival: this.state.AirportArrival,
+      AirportTakeOff: this.state.AirportTakeOff,
+    };
+
+    let cleanedParams = Object.fromEntries(Object.entries(filterParams).filter(([_, v]) => v !== ""));
+
+    await axios
+    .get("http://localhost:5000/flights/getFiltered", {params: cleanedParams})
+    .then((response) => {
+      console.log("Records gotten after filtering: "+ response.data);
+      this.setState({ records: response.data });
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
   }
 
   // This method will get the data from the database.
@@ -56,7 +157,6 @@ export default class RecordList extends Component {
 
   // This method will delete a record based on the method
   async deleteRecord(id) {
-    
     await axios.delete("http://localhost:5000/flights/delete/" + id).then((response) => {
       console.log(response.data);
     }).catch(function (error) {
@@ -85,7 +185,7 @@ export default class RecordList extends Component {
     return (
       <div>
         <h3>Flight List</h3>
-          <form onSubmit={this.onSubmit}>
+          <form>
             <Row>
               <Col>
               <input
@@ -95,16 +195,6 @@ export default class RecordList extends Component {
                 name="FlightNumber"
                 value={this.state.FlightNumber}
                 onChange={this.onChangeFlightNumber}
-              />
-              </Col>
-              <Col>
-              <input
-                type="text"
-                className="form-control form-control-lg"
-                placeholder="Terminal"
-                name="Terminal"
-                value={this.state.Terminal}
-                onChange={this.onChangeTerminal}
               />
               </Col>
             </Row>
@@ -135,6 +225,7 @@ export default class RecordList extends Component {
               </Row>
             <Row style={{marginTop: 10}}>
               <Col>
+              <h7>Date of takeoff</h7>
               <div className="form-group">
               <input
                 type="date"
@@ -147,6 +238,7 @@ export default class RecordList extends Component {
             </div>
             </Col>
             <Col>
+            <h7>Date of arrival</h7>
             <div className="form-group">
               <input
                 type="date"
@@ -230,11 +322,11 @@ export default class RecordList extends Component {
             <div class='col text-center'>
               <Row>
                 <Col>
-              <button className="btn btn-secondary btn-block" style={{marginTop: 10}}>Clear Filters</button>
+              <button className="btn btn-secondary btn-block" style={{marginTop: 10}} onClick={this.getFlights}>Clear Filters</button>
 
               </Col>
               <Col>
-              <button className="btn btn-primary btn-block" style={{marginTop: 10}}>Search</button>
+              <button className="btn btn-primary btn-block" style={{marginTop: 10}} onClick={this.getFilteredFlights}>Search</button>
 
               </Col>
               </Row>
