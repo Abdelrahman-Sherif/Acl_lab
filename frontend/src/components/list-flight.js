@@ -3,6 +3,12 @@ import React, { Component } from "react";
 import axios from 'axios';
 import { Link } from "react-router-dom";
 
+
+const deleteFlight =(id) => {
+axios.delete('http://localhost:5000/flights/delete/${id}');
+};
+
+
 const Record = (props) => (
   <tr>
     <td>{props.record.FlightNumber}</td>
@@ -16,14 +22,14 @@ const Record = (props) => (
     <td>{props.record.AirportTakeOff}</td>
 
     <td>
-      <Link to={"/edit" + props.record._id}>Edit</Link> |
+      <Link to={"/delete/" + props.record._id}>Delete</Link> |
       <a
         href="/flights"
         onClick={() => {
-          props.deleteRecord(props.record._id);
+          deleteFlight(props.record._id);
         }}
       >
-        Delete
+        Edit
       </a>
     </td>
   </tr>
