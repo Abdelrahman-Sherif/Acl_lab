@@ -3,7 +3,7 @@
 
 To run the server:
  - cd backend
- - node app.js
+ - node server.js
 
 To run the front-end:
  - cd frontend
