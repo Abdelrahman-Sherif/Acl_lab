@@ -7,6 +7,15 @@ router.route('/get').get((req, res) => {
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
+router.route('/getFiltered').get((req, res) => {
+  Flight.find(req.query)
+    .then((flight) => {
+      console.log(flight);
+      res.json(flight);
+    })
+    .catch(err => res.status(400).json('Error: ' + err));
+});
+
 router.route('/add').post((req, res) => {
   const FlightNumber = req.body.FlightNumber;
   const DepartureTime = req.body.DepartureTime;
@@ -19,13 +28,13 @@ router.route('/add').post((req, res) => {
   const AirportTakeOff = req.body.AirportTakeOff;
 
   const newFlight = new Flight({
-    FlightNumber , DepartureTime , ArrivalTime , DateTakeoff , DateArrival , EconomySeats , BusinessSeats , AirportArrival , AirportTakeOff 
+    FlightNumber, DepartureTime, ArrivalTime, DateTakeoff, DateArrival, EconomySeats, BusinessSeats, AirportArrival, AirportTakeOff
   });
 
-  
+
   newFlight.save()
-  .then(() => res.json('Flight added!'))
-  .catch(err => res.status(400).json('Error: ' + err));
+    .then(() => res.json('Flight added!'))
+    .catch(err => res.status(400).json('Error: ' + err));
 });
 
 router.route('/:id').get((req, res) => {
@@ -34,28 +43,25 @@ router.route('/:id').get((req, res) => {
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
-router.route("/delete/:id").delete((req,res)=>{
-  Flight.findByIdAndDelete(req.params.id).then(flight=> res.json('flight deleted Successfully'))
-  .catch(err =>{
-    console.log(err);
-  });
-}); 
-
-
-
+router.route("/delete/:id").delete((req, res) => {
+  Flight.findByIdAndDelete(req.params.id).then(flight => res.json('flight deleted Successfully'))
+    .catch(err => {
+      console.log(err);
+    });
+});
 
 router.route('/update/:id').post((req, res) => {
   Flight.findById(req.params.id)
     .then(flight => {
-    flight.FlightNumber = req.body.FlightNumber;
-    flight.DepartureTime = req.body.DepartureTime;
-    flight.ArrivalTime = req.body.ArrivalTime;
-    flight.DateTakeoff = Date.parse(req.body.DateTakeoff);
-    flight.DateArrival = Date.parse(req.body.DateArrival);
-    flight.EconomySeats = Number(req.body.EconomySeats);
-    flight.BusinessSeats = Number(req.body.BusinessSeats);
-    flight.AirportArrival = req.body.AirportArrival;
-    flight.AirportTakeOff = req.body.AirportTakeOff;
+      flight.FlightNumber = req.body.FlightNumber;
+      flight.DepartureTime = req.body.DepartureTime;
+      flight.ArrivalTime = req.body.ArrivalTime;
+      flight.DateTakeoff = Date.parse(req.body.DateTakeoff);
+      flight.DateArrival = Date.parse(req.body.DateArrival);
+      flight.EconomySeats = Number(req.body.EconomySeats);
+      flight.BusinessSeats = Number(req.body.BusinessSeats);
+      flight.AirportArrival = req.body.AirportArrival;
+      flight.AirportTakeOff = req.body.AirportTakeOff;
 
 
       Flight.save()
