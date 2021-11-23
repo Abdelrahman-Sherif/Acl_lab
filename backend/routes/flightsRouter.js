@@ -15,11 +15,13 @@ router.route('/add').post((req, res) => {
   const DateArrival = Date.parse(req.body.DateArrival);
   const EconomySeats = Number(req.body.EconomySeats);
   const BusinessSeats = Number(req.body.BusinessSeats);
+  const FirstSeats = Number(req.body.FirstSeats);
+
   const AirportArrival = req.body.AirportArrival;
   const AirportTakeOff = req.body.AirportTakeOff;
 
   const newFlight = new Flight({
-    FlightNumber , DepartureTime , ArrivalTime , DateTakeoff , DateArrival , EconomySeats , BusinessSeats , AirportArrival , AirportTakeOff 
+    FlightNumber , DepartureTime , ArrivalTime , DateTakeoff , DateArrival , EconomySeats , BusinessSeats , FirstSeats, AirportArrival , AirportTakeOff 
   });
 
   
@@ -54,6 +56,7 @@ router.route('/update/:id').post((req, res) => {
     flight.DateArrival = Date.parse(req.body.DateArrival);
     flight.EconomySeats = Number(req.body.EconomySeats);
     flight.BusinessSeats = Number(req.body.BusinessSeats);
+    flight.FirstSeats = Number(req.body.FirstSeats);
     flight.AirportArrival = req.body.AirportArrival;
     flight.AirportTakeOff = req.body.AirportTakeOff;
 

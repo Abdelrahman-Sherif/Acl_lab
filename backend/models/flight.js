@@ -5,6 +5,7 @@ const flightSchema = new Schema({
   FlightNumber: {
     type: String,
     required: true,
+    unique : true
   },
   DepartureTime: {
     type: String,
@@ -30,13 +31,22 @@ const flightSchema = new Schema({
     type: Number,
     required: true
   },
+  FirstSeats: {
+    type: Number,
+    required: true
+  },
   AirportArrival: {
     type: String,
-    required: true
+    required: true,
+    minlength: 3,
+    maxlength: 3,
   },
   AirportTakeOff: {
     type: String,
-    required: true
+    required: true,
+    minlength: 3,
+    maxlength: 3,
+
   }
 }, { timestamps: true });
 
