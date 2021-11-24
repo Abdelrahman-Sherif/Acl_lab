@@ -19,7 +19,7 @@ const Record = (props) => (
     <td>{props.record.AirportTakeOff}</td>
 
     <td>
-    <Button  variant="contained" color = "error" onClick={() => {
+    <Button size="small" variant="contained" color = "error" onClick={() => {
            if (window.confirm('Are you sure you wish to delete this item?')) props.deleteRecord(props.record._id);
         }}>Delete</Button>
     </td>
@@ -292,18 +292,19 @@ export default class RecordList extends Component {
               </Row>
             </div>
             </form>
-        <table className="table table-striped" style={{ marginTop: 20 }}>
+        <table className="table table-striped" style={{ marginTop: 20}}>
           <thead>
             <tr>
-              <th>FlightNumber</th>
-              <th>DepartureTime</th>
-              <th>ArrivalTime</th>
-              <th>DateTakeoff</th>
-              <th>DateArrival</th>
-              <th>EconomySeats</th>
-              <th>BusinessSeats</th>
-              <th>AirportArrival</th>
-              <th>AirportTakeOff</th>
+              <th>Flight Number</th>
+              <th>Departure Time</th>
+              <th>Arrival Time</th>
+              <th>Takeoff Date</th>
+              <th>Arrival Date</th>
+              <th>Economy Seats</th>
+              <th>Business Seats</th>
+              <th>First Seats</th>
+              <th>Destination</th>
+              <th>Departure</th>
             </tr>
           </thead>
           <tbody>{this.recordList()}</tbody>

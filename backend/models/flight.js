@@ -25,15 +25,18 @@ const flightSchema = new Schema({
   },
   EconomySeats: {
     type: Number,
-    required: true
+    required: true,
+    minimum: 1,
   },
   BusinessSeats: {
     type: Number,
-    required: true
+    required: true,
+    minimum: 1,
   },
   FirstSeats: {
     type: Number,
-    required: true
+    required: true,
+    minimum: 1,
   },
   AirportArrival: {
     type: String,
