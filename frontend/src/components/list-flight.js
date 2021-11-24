@@ -2,7 +2,8 @@ import React, { Component } from "react";
 // This will require to npm install axios
 import axios from 'axios';
 import { Col, Row } from "react-bootstrap";
-//import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
+import {TextField, Button} from '@mui/material';
 
 const Record = (props) => (
   <tr>
@@ -18,9 +19,9 @@ const Record = (props) => (
     <td>{props.record.AirportTakeOff}</td>
 
     <td>
-    <button onClick={() => {
+    <Button  variant="contained" color = "error" onClick={() => {
            if (window.confirm('Are you sure you wish to delete this item?')) props.deleteRecord(props.record._id);
-        }}>Delete</button>
+        }}>Delete</Button>
     </td>
   </tr>
 );
@@ -184,150 +185,109 @@ export default class RecordList extends Component {
   render() {
     return (
       <div>
-        <h3>Flight List</h3>
+        <h3 style = {{marginBottom: 20, marginTop:10, marginLeft: 30}}>All Flights <Link to='/flights/add'>
+      <Button variant="contained" color='primary'>Add Flight</Button>
+      </Link></h3>
+        
+        <p style = {{marginBottom: 0, marginLeft: 30}}>Search for a Flight</p>
+        
           <form>
             <Row>
-              <Col>
-              <input
-                type="text"
-                className="form-control form-control-lg"
-                placeholder="Flight Number"
-                name="FlightNumber"
-                value={this.state.FlightNumber}
-                onChange={this.onChangeFlightNumber}
-              />
+              <Col style = {{marginLeft: 30}}>
+              <TextField label="Flight Number" value={this.state.FlightNumber} variant="outlined" size="small" type="text" required style={{width:300}} onChange={this.onChangeFlightNumber} margin="normal"  InputLabelProps={{
+            shrink: true,
+          }}/>
               </Col>
             </Row>
           
             <Row style={{marginTop: 10}}>
-              <Col>
-              <input
-                type="text"
-                className="form-control form-control-lg"
-                placeholder="Enter Departure Time"
-                name="DepartureTime"
-                value={this.state.DepartureTime}
-                onChange={this.onChangeDepartureTime}
-              />
+              <Col style = {{marginLeft: 30}}>
+              <TextField label="Departure Time" value={this.state.DepartureTime} variant="outlined" size="small" type="time" required style={{width:300}} onChange={this.onChangeDepartureTime} margin="normal"  InputLabelProps={{
+            shrink: true,
+          }}/>
               </Col>
-              <Col>
+
+              <Col style= {{marginLeft: -430}}>
               <div className="form-group">
-              <input
-                type="text"
-                className="form-control form-control-lg"
-                placeholder="Enter Arrival Time"
-                name="ArrivalTime"
-                value={this.state.ArrivalTime}
-                onChange={this.onChangeArrivalTime}
-              />
+              <TextField label="Arrival Time" value={this.state.ArrivalTime} variant="outlined" size="small" type="time" required style={{width:300}} onChange={this.onChangeArrivalTime} margin="normal"  InputLabelProps={{
+            shrink: true,
+          }} />
             </div>
             </Col>
               </Row>
+
             <Row style={{marginTop: 10}}>
-              <Col>
-              <h7>Date of takeoff</h7>
+              <Col style = {{marginLeft: 30}}>
               <div className="form-group">
-              <input
-                type="date"
-                className="form-control form-control-lg"
-                placeholder="Enter Date of Takeoff"
-                name="DateTakeoff"
-                value={this.state.DateTakeoff}
-                onChange={this.onChangeDateTakeoff}
-              />
+              <TextField label="Takeoff Date" value={this.state.DateTakeoff} variant="outlined" size="small" type="date" required style={{width:300}} onChange={this.onChangeDateTakeoff} margin="normal"  InputLabelProps={{
+            shrink: true,
+          }} />
             </div>
             </Col>
-            <Col>
-            <h7>Date of arrival</h7>
+
+            <Col style= {{marginLeft: -430}}>
             <div className="form-group">
-              <input
-                type="date"
-                className="form-control form-control-lg"
-                placeholder="Enter Date of Arrival"
-                name="DateArrival"
-                value={this.state.DateArrival}
-                onChange={this.onChangeDateArrival}
-              />
+            <TextField label="Arrival Date" value={this.state.DateArrival} variant="outlined" size="small" type="date" required style={{width:300}} onChange={this.onChangeDateArrival} margin="normal"  InputLabelProps={{
+            shrink: true,
+          }}/>
             </div>
             </Col>
             </Row>
             
             <Row style={{marginTop: 10}}>
-              <Col>
+              <Col style = {{marginLeft: 30}}>
               <div className="form-group">
-              <input
-                type="number"
-                className="form-control form-control-lg"
-                placeholder="Number of Economy Seats"
-                name="EconomySeats"
-                value={this.state.EconomySeats}
-                onChange={this.onChangeEconomySeats}
-              />
+              <TextField label="Economy Seats" value={this.state.EconomySeats} variant="outlined" size="small" type="number" required style={{width:300}} onChange={this.onChangeEconomySeats} margin="normal"  InputLabelProps={{
+            shrink: true,
+          }}/>
             </div>
               </Col>
-              <Col>
+
+              <Col style = {{marginLeft: -5}}>
               <div className="form-group">
-              <input
-                type="number"
-                className="form-control form-control-lg"
-                placeholder="Number of Business Seats"
-                name="BusinessSeats"
-                value={this.state.BusinessSeats}
-                onChange={this.onChangeBusinessSeats}
-              />
+              <TextField label="Business Seats" value={this.state.BusinessSeats} variant="outlined" size="small" type="number" required style={{width:300}} onChange={this.onChangeBusinessSeats} margin="normal"  InputLabelProps={{
+            shrink: true,
+          }}/>
             </div>
               </Col>
 
               <Col>
               <div className="form-group">
-              <input
-                type="number"
-                className="form-control form-control-lg"
-                placeholder="Number of First Seats"
-                name="FirstSeats"
-                value={this.state.FirstSeats}
-                onChange={this.onChangeFirstSeats}
-              />
+              <TextField label="First Seats" value={this.state.FirstSeats} variant="outlined" size="small" type="number" required style={{width:300}} onChange={this.onChangeFirstSeats} margin="normal"  InputLabelProps={{
+            shrink: true,
+          }}/>
             </div>
-              </Col>
-              
+              </Col>    
             </Row>
   
             <Row style={{marginTop: 10}}>
-              <Col>
+              <Col style = {{marginLeft: 30}}>
               <div className="form-group">
-              <input
-                type="text"
-                className="form-control form-control-lg"
-                placeholder="Airport of Arrival"
-                name="AirportArrival"
-                value={this.state.AirportArrival}
-                onChange={this.onChangeAirportArrival}
-              />
+              <TextField label="Destination" value={this.state.AirportArrival} variant="outlined" size="small" type="text" required style={{width:300}} onChange={this.onChangeAirportArrival} margin="normal"  InputLabelProps={{
+            shrink: true,
+          }}/>
             </div>
               </Col>
-              <Col>
-              <div className="form-group">
-              <input
-                type="text"
-                className="form-control form-control-lg"
-                placeholder="Airport of TakeOff"
-                name="AirportTakeOff"
-                value={this.state.AirportTakeOff}
-                onChange={this.onChangeAirportTakeOff}
-              />
+              
+
+          <Col style= {{marginLeft: -430}}>
+          <div className="form-group">
+          <TextField label="Departure" value={this.state.AirportTakeOff} variant="outlined" size="small" type="text" required style={{width:300}} onChange={this.onChangeAirportTakeOff} margin="normal"  InputLabelProps={{
+            shrink: true,
+          }} />
             </div>
-              </Col>
+          </Col>
+
             </Row>
+
+
             <div class='col text-center'>
               <Row>
                 <Col>
-              <button className="btn btn-secondary btn-block" style={{marginTop: 10}} onClick={this.getFlights}>Clear Filters</button>
-
+              <Button variant="contained" color = "primary" onClick = {this.getFlights.bind(this)}>Clear Filters </Button>
               </Col>
               <Col>
-              <button className="btn btn-primary btn-block" style={{marginTop: 10}} onClick={this.getFilteredFlights}>Search</button>
-
+              <Button variant="contained" color = "primary" onClick = {this.getFilteredFlights.bind(this)}>Search </Button>
               </Col>
               </Row>
             </div>
