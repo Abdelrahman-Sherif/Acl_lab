@@ -8,7 +8,18 @@ router.route('/get').get((req, res) => {
 });
 
 router.route('/getFiltered').get((req, res) => {
-  Flight.find(req.query)
+  let newParams = {};
+  for (const [key, value] of Object.entries(req.query)) {
+    if(['FlightNumber', 'AirportTakeOff', 'AirportArrival'].includes(key)){
+      // Check if substring matches
+      newParams[key] = {$regex : "^" + value};
+    }
+    else{
+      newParams[key] = value;
+    }
+  }
+
+  Flight.find(newParams)
     .then((flight) => {
       console.log(flight);
       res.json(flight);
