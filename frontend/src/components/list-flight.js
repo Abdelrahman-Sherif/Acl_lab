@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Col, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import {TextField, Button} from '@mui/material';
+import { display, flexbox } from "@mui/system";
 
 const Record = (props) => (
   <tr>
@@ -41,9 +42,11 @@ export default class RecordList extends Component {
     this.onChangeBusinessSeats = this.onChangeBusinessSeats.bind(this);
     this.onChangeAirportArrival = this.onChangeAirportArrival.bind(this);
     this.onChangeAirportTakeOff = this.onChangeAirportTakeOff.bind(this);
+    this.toggleFilter = this.toggleFilter.bind(this);
 
     this.state = { 
       records: [],
+      showFilterMenu: false,
       FlightNumber: "",
       DepartureTime: "",
       ArrivalTime: "",
@@ -108,6 +111,12 @@ export default class RecordList extends Component {
     this.setState({
       AirportTakeOff: e.target.value
     })
+  }
+
+  toggleFilter(e){
+    e.preventDefault();
+    this.setState({showFilterMenu: !this.state.showFilterMenu})
+    console.log(this.state.showFilterMenu);
   }
 
   ///Get updated flights
@@ -183,45 +192,48 @@ export default class RecordList extends Component {
 
   // This following section will display the table with the records of individuals.
   render() {
+
     return (
       <div>
         <h3 style = {{marginBottom: 20, marginTop:10, marginLeft: 30}}>All Flights <Link to='/flights/add'>
       <Button variant="contained" color='primary'>Add Flight</Button>
-      </Link></h3>
+      </Link>
+      <Button variant="contained" color='primary' onClick={this.toggleFilter} style={{marginLeft:10}}>Filter Flights</Button>
+      </h3>
         
-        <p style = {{marginBottom: 0, marginLeft: 30}}>Search for a Flight</p>
-        
+           <div style={this.state.showFilterMenu? {}: {display: 'none'}}>
           <form>
+        <div class="d-flex justify-content-between" style={{marginLeft:30, marginRight:30}}>
 
-              <Col style = {{marginLeft: 30}}>
-              <TextField label="Flight Number" value={this.state.FlightNumber} variant="outlined" size="small" type="text" required style={{width:300}} onChange={this.onChangeFlightNumber} margin="normal"  InputLabelProps={{
+          <Col>
+              <TextField label="Flight Number" style={{display: "flex", marginRight: 10}} value={this.state.FlightNumber} variant="outlined" size="small" type="text" required onChange={this.onChangeFlightNumber} margin="normal"  InputLabelProps={{
             shrink: true,
           }}/>
-              </Col>
+          </Col>
 
-          
-            <div class="d-flex justify-content-between"  style = {{marginLeft: 30, marginRight: 30}}>
+
+            <Col style = {{marginBottom: 30, marginRight: 10}}>
               <Col>
-              <TextField label="Departure Time" value={this.state.DepartureTime} variant="outlined" size="small" type="time" required style={{width:300}} onChange={this.onChangeDepartureTime} margin="normal"  InputLabelProps={{
+              <TextField  style={{display: "flex"}} label="Departure Time" value={this.state.DepartureTime} variant="outlined" size="small" type="time" required onChange={this.onChangeDepartureTime} margin="normal"  InputLabelProps={{
             shrink: true,
           }}/>
               </Col>
 
               <Col>
               <div className="form-group">
-              <TextField label="Arrival Time" value={this.state.ArrivalTime} variant="outlined" size="small" type="time" required style={{width:300}} onChange={this.onChangeArrivalTime} margin="normal"  InputLabelProps={{
+              <TextField label="Arrival Time" style={{display: "flex"}} value={this.state.ArrivalTime} variant="outlined" size="small" type="time" required onChange={this.onChangeArrivalTime} margin="normal"  InputLabelProps={{
             shrink: true,
           }} />
             </div>
             </Col>
             <Col>
             </Col>
-              </div>
+              </Col>
 
-            <div class="d-flex justify-content-between"  style = {{marginLeft: 30, marginRight: 30}}>
+            <Col style = {{marginBottom: 30,}}>
               <Col>
               <div className="form-group">
-              <TextField label="Takeoff Date" value={this.state.DateTakeoff} variant="outlined" size="small" type="date" required style={{width:300}} onChange={this.onChangeDateTakeoff} margin="normal"  InputLabelProps={{
+              <TextField label="Takeoff Date" style={{display: "flex", marginRight: 10}} value={this.state.DateTakeoff} variant="outlined" size="small" type="date" required onChange={this.onChangeDateTakeoff} margin="normal"  InputLabelProps={{
             shrink: true,
           }} />
             </div>
@@ -229,19 +241,19 @@ export default class RecordList extends Component {
 
             <Col>
             <div className="form-group">
-            <TextField label="Arrival Date" value={this.state.DateArrival} variant="outlined" size="small" type="date" required style={{width:300}} onChange={this.onChangeDateArrival} margin="normal"  InputLabelProps={{
+            <TextField label="Arrival Date" style={{display: "flex", marginRight: 10}} value={this.state.DateArrival} variant="outlined" size="small" type="date" required onChange={this.onChangeDateArrival} margin="normal"  InputLabelProps={{
             shrink: true,
           }}/>
             </div>
             </Col>
             <Col></Col>
-            </div>
+            </Col>
 
 
-            <div class="d-flex justify-content-between"  style = {{marginLeft: 30, marginRight: 30}}>
+            <Col style = {{marginBottom: 30,}}>
               <Col>
               <div className="form-group">
-              <TextField label="Economy Seats" value={this.state.EconomySeats} variant="outlined" size="small" type="number" required style={{width:300}} onChange={this.onChangeEconomySeats} margin="normal"  InputLabelProps={{
+              <TextField label="Economy Seats" style={{display: "flex", marginRight: 10}} value={this.state.EconomySeats} variant="outlined" size="small" type="number" required onChange={this.onChangeEconomySeats} margin="normal"  InputLabelProps={{
             shrink: true,
           }}/>
             </div>
@@ -249,7 +261,7 @@ export default class RecordList extends Component {
 
               <Col>
               <div className="form-group">
-              <TextField label="Business Seats" value={this.state.BusinessSeats} variant="outlined" size="small" type="number" required style={{width:300}} onChange={this.onChangeBusinessSeats} margin="normal"  InputLabelProps={{
+              <TextField label="Business Seats" style={{display: "flex", marginRight: 10}} value={this.state.BusinessSeats} variant="outlined" size="small" type="number" required onChange={this.onChangeBusinessSeats} margin="normal"  InputLabelProps={{
             shrink: true,
           }}/>
             </div>
@@ -257,18 +269,18 @@ export default class RecordList extends Component {
 
               <Col>
               <div className="form-group">
-              <TextField label="First Seats" value={this.state.FirstSeats} variant="outlined" size="small" type="number" required style={{width:300}} onChange={this.onChangeFirstSeats} margin="normal"  InputLabelProps={{
+              <TextField label="First Seats" style={{display: "flex", marginRight: 10}} value={this.state.FirstSeats} variant="outlined" size="small" type="number" required onChange={this.onChangeFirstSeats} margin="normal"  InputLabelProps={{
             shrink: true,
           }}/>
             </div>
               </Col>    
 
-            </div>
+            </Col>
   
-            <div class="d-flex justify-content-between"  style = {{marginLeft: 30, marginRight: 30}}>
+            <Col style = {{marginBottom: 30,}}>
               <Col>
               <div className="form-group">
-              <TextField label="Destination" value={this.state.AirportArrival} variant="outlined" size="small" type="text" required style={{width:300}} onChange={this.onChangeAirportArrival} margin="normal"  InputLabelProps={{
+              <TextField label="Destination" style={{display: "flex"}} value={this.state.AirportArrival} variant="outlined" size="small" type="text" required onChange={this.onChangeAirportArrival} margin="normal"  InputLabelProps={{
             shrink: true,
           }}/>
             </div>
@@ -277,16 +289,16 @@ export default class RecordList extends Component {
 
           <Col>
           <div className="form-group">
-          <TextField label="Departure" value={this.state.AirportTakeOff} variant="outlined" size="small" type="text" required style={{width:300}} onChange={this.onChangeAirportTakeOff} margin="normal"  InputLabelProps={{
+          <TextField label="Departure" style={{display: "flex"}} value={this.state.AirportTakeOff} variant="outlined" size="small" type="text" required onChange={this.onChangeAirportTakeOff} margin="normal"  InputLabelProps={{
             shrink: true,
           }} />
             </div>
           </Col>
           <Col></Col>
 
+            </Col>
             </div>
-
-
+            </form>
             <div class='col text-center'>
               <Row>
                 <Col>
@@ -297,7 +309,7 @@ export default class RecordList extends Component {
               </Col>
               </Row>
             </div>
-            </form>
+            </div>
         <table className="table table-striped" style={{ marginTop: 20}}>
           <thead>
             <tr>
