@@ -4,6 +4,14 @@ import "../../node_modules/bootstrap/dist/css/bootstrap.css";
 import {TextField, Button} from '@mui/material';
 
 
+const styles = {
+  color: "red",
+  background: "#FFFFFF",
+  fontSize: "16px"
+};
+
+
+
 
 
 export default class CreateFlight extends Component {
@@ -91,34 +99,50 @@ export default class CreateFlight extends Component {
     AirportTakeOffError: this.state.AirportTakeOff.length ===3 ?"":"error"
   })
  
-  if(!this.state.FlightNumber || !this.state.DepartureTime || !this.state.ArrivalTime || !this.state.DateTakeoff 
+  if (!this.state.FlightNumber || !this.state.DepartureTime || !this.state.ArrivalTime || !this.state.DateTakeoff
     || !this.state.DateArrival || !this.state.EconomySeats || !this.state.BusinessSeats || !this.state.FirstSeats
-    || !this.state.AirportArrival || !this.state.AirportTakeOff){
-      console.log("emptyFields")
-      return false
+    || !this.state.AirportArrival || !this.state.AirportTakeOff) {
+    console.log(!this.state.FlightNumber, !this.state.DepartureTime, !this.state.ArrivalTime, !this.state.DateTakeoff
+      , !this.state.DateArrival, !this.state.EconomySeats, !this.state.BusinessSeats, !this.state.FirstSeats
+      , !this.state.AirportArrival, !this.state.AirportTakeOff)
+    console.log("emptyFields")
+    this.setState({
+      errorMessage: "Please fill all fields",
+    });
+    return false
   }
-  if(this.state.EconomySeats<=0 || this.state.BusinessSeats<0 || this.state.FirstSeats<0){
-  console.log("emptySeats")
+  if (this.state.EconomySeats <= 0 || this.state.BusinessSeats < 0 || this.state.FirstSeats < 0) {
+    console.log("emptySeats")
+    this.setState({
+      errorMessage: "Empty seats",
+    });
 
-  return false
+    return false
   }
 
-  if(this.state.AirportTakeOff.length!== 3 || this.state.AirportArrival.length!==3){
+  if (this.state.DateArrival < this.state.DateTakeoff) {
+    console.log("Take off date has to be before arrival date");
+    this.setState({
+      DateArrivalError: "error",
+      errorMessage: "Take off date has to be before arrival date",
+    })
+    return false
+  }
+
+  if (this.state.AirportTakeOff.length !== 3 || this.state.AirportArrival.length !== 3) {
     console.log("wrongLength")
     this.setState({
-      AirportArrivalError: this.state.AirportArrival.length===3? "":"error"
+      AirportArrivalError: this.state.AirportArrival.length === 3 ? "" : "error",
+   
+      AirportTakeOffError: this.state.AirportTakeOff.length === 3 ? "" : "error",
+      errorMessage: "Wrong airport length (3 characters required)",
     })
-  
-    this.setState({
-      AirportTakeOffError: this.state.AirportTakeOff.length===3?"":"error"
-    })
-    
-    return false
-    }
 
-    return true
+    return false
   }
 
+  return true
+}
   onChangeFlightNumber(e) {
     this.setState({
       FlightNumber: e.target.value
@@ -362,14 +386,16 @@ export default class CreateFlight extends Component {
               <TextField label="Departure" value={this.state.AirportTakeOff} variant="outlined" size="small" type="text" required style={{width:300}} onChange={this.onChangeAirportTakeOff} margin="normal"  InputLabelProps={{
             shrink: true,
           }} error= {this.state.AirportTakeOffError? true : false}/>
+           {this.state.errorMessage &&
+              <h5 style={styles} className="error"> {this.state.errorMessage} </h5>}
+
             </div>
   
             <Button variant="contained" color = "primary" onClick = {this.onSubmit.bind(this)}>Add Flight </Button>
         </div>
-      </div>
-      { this.state.errorMessage &&
-  <h3 className="error"> { this.state.errorMessage } </h3> }
-    </div>  
+        </div>
+        </div>
+      
     );
 
   }
