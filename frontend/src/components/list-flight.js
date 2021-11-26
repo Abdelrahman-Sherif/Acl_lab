@@ -24,6 +24,11 @@ const Record = (props) => (
            if (window.confirm('Are you sure you wish to delete this item?')) props.deleteRecord(props.record._id);
         }}>Delete</Button>
     </td>
+    <td>
+      <Link to={{pathname: `/flights/edit/${props.record._id}`}}>
+    <Button size="small" variant="contained" color = "info" >Update</Button>
+        </Link>
+    </td>
   </tr>
 );
 

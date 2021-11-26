@@ -51,6 +51,7 @@ router.route('/add').post((req, res) => {
 });
 
 router.route('/:id').get((req, res) => {
+  console.log("Getting flight details from db");
   Flight.findById(req.params.id)
     .then(flight => res.json(flight))
     .catch(err => res.status(400).json('Error: ' + err));
@@ -64,25 +65,28 @@ router.route("/delete/:id").delete((req, res) => {
 });
 
 router.route('/update/:id').post((req, res) => {
-  Flight.findById(req.params.id)
-    .then(flight => {
-    flight.FlightNumber = req.body.FlightNumber;
-    flight.DepartureTime = req.body.DepartureTime;
-    flight.ArrivalTime = req.body.ArrivalTime;
-    flight.DateTakeoff = Date.parse(req.body.DateTakeoff);
-    flight.DateArrival = Date.parse(req.body.DateArrival);
-    flight.EconomySeats = Number(req.body.EconomySeats);
-    flight.BusinessSeats = Number(req.body.BusinessSeats);
-    flight.FirstSeats = Number(req.body.FirstSeats);
-    flight.AirportArrival = req.body.AirportArrival;
-    flight.AirportTakeOff = req.body.AirportTakeOff;
-
-
-      Flight.save()
-        .then(() => res.json('Flight updated!'))
-        .catch(err => res.status(400).json('Error: ' + err));
-    })
-    .catch(err => res.status(400).json('Error: ' + err));
+ 
+  Flight.findByIdAndUpdate(
+    { _id: req.params.id },
+    {
+    FlightNumber : req.body.FlightNumber ,
+    DepartureTime  : req.body.DepartureTime ,
+    ArrivalTime  : req.body.ArrivalTime ,
+    DateTakeoff  : new Date(Date.parse(req.body.DateTakeoff)) ,
+    DateArrival  :new Date(Date.parse(req.body.DateArrival)) ,
+     EconomySeats  : Number(req.body.EconomySeats) ,
+     BusinessSeats  : Number(req.body.BusinessSeats) ,
+     FirstSeats  : Number(req.body.FirstSeats) ,
+     AirportArrival  : req.body.AirportArrival ,
+     AirportTakeOff  : req.body.AirportTakeOff ,
+    }
+     
+  )
+    .then(()=> {console.log("Updated flight succesffully");
+  return res.status(200).json('Updated flight successfully');})
+    .catch(err => {
+      console.log("Error finding flight: " + err);
+      return res.status(400).json('Couldnt find flight,Error: ' + err);});
 });
 
 module.exports = router;
