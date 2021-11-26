@@ -24,6 +24,7 @@ export default class CreateFlight extends Component {
     this.onSubmit = this.onSubmit.bind(this);
 
     this.state = {
+      errorMessage: "",
       FlightNumber: "",
       DepartureTime: "",
       ArrivalTime: "",
@@ -50,7 +51,6 @@ export default class CreateFlight extends Component {
 
   
   validate(){
-
   this.setState({
     FlightNumberError: this.state.FlightNumber?"":"error"
   })
@@ -234,18 +234,13 @@ export default class CreateFlight extends Component {
     AirportArrival: this.state.AirportArrival,
     AirportTakeOff: this.state.AirportTakeOff,
     };
-    this.validate();
-    
     console.log(newflight);
 
     await axios.post('http://localhost:5000/flights/add', newflight)
-      .then(res => console.log(res.data))
-      .catch((error) => {
-        console.log(error);
-    });
-    window.location = '/';
-
-      this.setState = {
+      .then(res =>{
+        console.log(res.data);
+        window.location = '/';
+      this.setState({
         FlightNumber: "",
         DepartureTime: "",
         ArrivalTime: "",
@@ -256,7 +251,6 @@ export default class CreateFlight extends Component {
         FirstSeats: 0,
         AirportArrival: "",
         AirportTakeOff: "",
-
         FlightNumberError: "",
         DepartureTimeError: "",
         ArrivalTimeError: "",
@@ -267,7 +261,34 @@ export default class CreateFlight extends Component {
         FirstSeatsError: "",
         AirportArrivalError: "",
         AirportTakeOffError: "",
-      }
+      })
+      })
+      .catch((error) => {
+        console.log('setting error message');
+        this.setState({
+          errorMessage: error.response.data,
+          FlightNumber: this.state.FlightNumber,
+          DepartureTime: this.state.DepartureTime,
+          ArrivalTime: this.state.ArrivalTime,
+          DateTakeoff: this.state.DateTakeoff,
+          DateArrival: this.state.DateArrival,
+          EconomySeats: this.state.EconomySeats,
+          BusinessSeats: this.state.BusinessSeats,
+          FirstSeats: this.state.FirstSeats,
+          AirportArrival: this.state.AirportArrival,
+          AirportTakeOff: this.state.AirportTakeOff,
+          FlightNumberError: this.state.FlightNumberError,
+          DepartureTimeError: this.state.DepartureTimeError,
+          ArrivalTimeError: this.state.ArrivalTimeError,
+          DateTakeoffError: this.state.DateTakeoffError,
+          DateArrivalError: this.state.DateArrivalError,
+          EconomySeatsError: this.state.EconomySeatsError,
+          BusinessSeatsError: this.state.BusinessSeatsError,
+          FirstSeatsError: this.state.FirstSeatsError,
+          AirportArrivalError: this.state.AirportArrivalError,
+          AirportTakeOffError: this.state.AirportTakeOffError,
+        })
+    });
     }
   }
 
@@ -278,6 +299,8 @@ export default class CreateFlight extends Component {
         <div className="row">  
          <div className="col-sm-4 mx-auto  p-5">
           <h2 className="text-center mb-4">Add Flight</h2>
+          
+          
             <div className="form-group">
              
               <TextField label="Flight Number" value={this.state.FlightNumber} variant="outlined" size="small" type="text" required style={{width:300}} onChange={this.onChangeFlightNumber} margin="normal"  InputLabelProps={{
@@ -344,6 +367,8 @@ export default class CreateFlight extends Component {
             <Button variant="contained" color = "primary" onClick = {this.onSubmit.bind(this)}>Add Flight </Button>
         </div>
       </div>
+      { this.state.errorMessage &&
+  <h3 className="error"> { this.state.errorMessage } </h3> }
     </div>  
     );
 

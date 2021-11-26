@@ -44,10 +44,17 @@ router.route('/add').post((req, res) => {
     FlightNumber , DepartureTime , ArrivalTime , DateTakeoff , DateArrival , EconomySeats , BusinessSeats , FirstSeats, AirportArrival , AirportTakeOff 
   });
 
-
-  newFlight.save()
+  if(Flight.where("FlightNumber").equals(FlightNumber).exec(function (err, data){
+    console.log(data);
+    if(data.length>0){
+      res.status(400).json('Error: ' + "An entry with this flight number already exists.");
+    }
+    else{
+      newFlight.save()
     .then(() => res.json('Flight added!'))
-    .catch(err => res.status(400).json('Error: ' + err));
+    .catch(err => res.status(400).json('Error: ' + err))
+    }
+  }));
 });
 
 router.route('/:id').get((req, res) => {
