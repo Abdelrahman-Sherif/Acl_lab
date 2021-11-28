@@ -70,20 +70,19 @@ export default class EditFlight extends Component {
       .get("http://localhost:5000/flights/" + flightId)
       .then((response) => {
         console.log("Flight gotten from id: " + response.data);
-        console.log("Arrival date: " + response.data.DateTakeoff);
         this.setState({
           FlightNumber: response.data.FlightNumber,
           DepartureTime: response.data.DepartureTime,
           ArrivalTime: response.data.ArrivalTime,
-          DateTakeoff: response.data.DateTakeoff,
-          DateArrival: response.data.DateArrival,
+          DateTakeoff: response.data.DateTakeoff.substring(0,10),
+          DateArrival: response.data.DateArrival.substring(0,10),
           EconomySeats: response.data.EconomySeats,
           BusinessSeats: response.data.BusinessSeats,
           FirstSeats: response.data.FirstSeats,
           AirportArrival: response.data.AirportArrival,
           AirportTakeOff: response.data.AirportTakeOff,
         });
-
+        // console.log("Arrival date: " + this.state.DateArrival.);
       })
       .catch(function (error) {
         console.log(error);
