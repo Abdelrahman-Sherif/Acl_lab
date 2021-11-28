@@ -21,8 +21,22 @@ mongoose.connection.on('error', (err) => console.log('Connection failed with - '
 
 const flightsRouter = require('./routes/flightsRouter');
 const Flight = require('./models/flight');
-
+const User = require('./models/user');
 app.use('/flights', flightsRouter);
+
+app.get("/users", (req, res) => {
+      const Admin = new User({
+        Admin : true,
+        Email: "Admin@admin.com",
+        Password: "Password",
+        Age: 21,
+        BornIn: "Cairo",
+        Name: "Admin",
+        PhoneNumber: "01000",
+      });
+    Admin.save();
+      res.send(Admin);
+    })
 
 
 app.listen(port, () => {
