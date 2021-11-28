@@ -1,0 +1,4 @@
+Jana Elraggal: Create Flight and UI and Validations
+Kariman Eldeswky: Flight and Admin Schema and Delete Flight and Readme
+Yassin Sameh: Update Flight
+Abdelrahman Sherif: Search and Server setup
