@@ -207,7 +207,6 @@ export default class CreateFlight extends Component {
     this.setState({
       BusinessSeats: e.target.value
     })
-    console.log(this.state.BusinessSeats)
     this.setState({
       BusinessSeatsError: e.target.value <= 0? "error": ""
     })

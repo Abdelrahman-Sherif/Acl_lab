@@ -36,12 +36,13 @@ router.route('/add').post((req, res) => {
   const EconomySeats = Number(req.body.EconomySeats);
   const BusinessSeats = Number(req.body.BusinessSeats);
   const FirstSeats = Number(req.body.FirstSeats);
-
+  const BaggageAllowed= Boolean(true);
   const AirportArrival = req.body.AirportArrival;
   const AirportTakeOff = req.body.AirportTakeOff;
 
   const newFlight = new Flight({
-    FlightNumber , DepartureTime , ArrivalTime , DateTakeoff , DateArrival , EconomySeats , BusinessSeats , FirstSeats, AirportArrival , AirportTakeOff 
+    FlightNumber , DepartureTime , ArrivalTime , DateTakeoff , DateArrival , EconomySeats , BusinessSeats , FirstSeats, AirportArrival , AirportTakeOff, BaggageAllowed
+
   });
 
   if(Flight.where("FlightNumber").equals(FlightNumber).exec(function (err, data){
