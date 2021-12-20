@@ -25,7 +25,11 @@ router.route('/getFiltered').get((req, res) => {
       res.json(flight);
     })
     .catch(err => res.status(400).json('Error: ' + err));
+   
+    
 });
+
+
 
 router.route('/add').post((req, res) => {
   const FlightNumber = req.body.FlightNumber;

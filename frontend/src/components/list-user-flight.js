@@ -18,12 +18,16 @@ const Record = (props) => (
     <td>{props.record.FirstSeats}</td>
     <td>{props.record.AirportArrival}</td>
     <td>{props.record.AirportTakeOff}</td>
-    <td>{props.record.BaggageAllowed}</td>
 
     <td>
     <Button size="small" variant="contained" color = "error" onClick={() => {
            if (window.confirm('Are you sure you want to book this flight?')) window.location.replace("http://localhost:3000/flights/users/pick-seat") ;
         }}>Confirm Flight</Button>
+    </td>
+    <td>
+    <Button size="small" variant="contained" color = "error" onClick={() => {
+            window.location.replace("http://localhost:3000/flights/users/pick-seat") ;
+        }}>View Return Flight</Button>
     </td>
   </tr>
 );
@@ -42,7 +46,6 @@ export default class ListUserFlights extends Component {
     this.onChangeBusinessSeats = this.onChangeBusinessSeats.bind(this);
     this.onChangeAirportArrival = this.onChangeAirportArrival.bind(this);
     this.onChangeAirportTakeOff = this.onChangeAirportTakeOff.bind(this);
-    this.onChangeBaggageAllowed = this.onChangeBaggageAllowed.bind(this);
 
     this.toggleFilter = this.toggleFilter.bind(this);
 
@@ -58,7 +61,6 @@ export default class ListUserFlights extends Component {
       BusinessSeats: "",
       AirportArrival: "",
       AirportTakeOff: "", 
-      BaggageAllowed: Boolean(true),
     };
   }
 
@@ -85,11 +87,7 @@ export default class ListUserFlights extends Component {
       DateTakeoff: e.target.value
     })
   }
-  onChangeBaggageAllowed(e) {
-    this.setState({
-      BaggageAllowed: e.target.value
-    })
-  }
+ 
 
   onChangeDateArrival(e) {
     this.setState({
@@ -161,7 +159,6 @@ export default class ListUserFlights extends Component {
       BusinessSeats: this.state.BusinessSeats,
       AirportArrival: this.state.AirportArrival,
       AirportTakeOff: this.state.AirportTakeOff,
-      BaggageAllowed: this.state.BaggageAllowed,
     };
 
     let cleanedParams = Object.fromEntries(Object.entries(filterParams).filter(([_, v]) => v !== ""));
@@ -214,20 +211,60 @@ export default class ListUserFlights extends Component {
 
     return (
       <div>
-
-
-        <h3 style = {{marginBottom: 20, marginTop:10, marginLeft: 30}}>All Flights <Link to='/flights/users/my-flight'>
-      <Button variant="contained" color='primary'>View my Flights</Button>
+        <h3 style = {{marginBottom: 20, marginTop:10, marginLeft: 30}}>All Flights <Link to='/flights/add'>
+      <Button variant="contained" color='primary'>Add Flight</Button>
       </Link>
-      
-      <Button variant="contained" color='primary' onClick={this.toggleFilter} style={{marginLeft:10}}>Find Flights</Button>
+      <Button variant="contained" color='primary' onClick={this.toggleFilter} style={{marginLeft:10}}>Filter Flights</Button>
       </h3>
         
            <div style={this.state.showFilterMenu? {}: {display: 'none'}}>
           <form>
         <div class="d-flex justify-content-between" style={{marginLeft:30, marginRight:30}}>
 
-  
+          <Col>
+              <TextField label="Flight Number" style={{display: "flex", marginRight: 10}} value={this.state.FlightNumber} variant="outlined" size="small" type="text" required onChange={this.onChangeFlightNumber} margin="normal"  InputLabelProps={{
+            shrink: true,
+          }}/>
+          </Col>
+
+
+            <Col style = {{marginBottom: 30, marginRight: 10}}>
+              <Col>
+              <TextField  style={{display: "flex"}} label="Departure Time" value={this.state.DepartureTime} variant="outlined" size="small" type="time" required onChange={this.onChangeDepartureTime} margin="normal"  InputLabelProps={{
+            shrink: true,
+          }}/>
+              </Col>
+
+              <Col>
+              <div className="form-group">
+              <TextField label="Arrival Time" style={{display: "flex"}} value={this.state.ArrivalTime} variant="outlined" size="small" type="time" required onChange={this.onChangeArrivalTime} margin="normal"  InputLabelProps={{
+            shrink: true,
+          }} />
+            </div>
+            </Col>
+            <Col>
+            </Col>
+              </Col>
+
+            <Col style = {{marginBottom: 30,}}>
+              <Col>
+              <div className="form-group">
+              <TextField label="Takeoff Date" style={{display: "flex", marginRight: 10}} value={this.state.DateTakeoff} variant="outlined" size="small" type="date" required onChange={this.onChangeDateTakeoff} margin="normal"  InputLabelProps={{
+            shrink: true,
+          }} />
+            </div>
+            </Col>
+
+            <Col>
+            <div className="form-group">
+            <TextField label="Arrival Date" style={{display: "flex", marginRight: 10}} value={this.state.DateArrival} variant="outlined" size="small" type="date" required onChange={this.onChangeDateArrival} margin="normal"  InputLabelProps={{
+            shrink: true,
+          }}/>
+            </div>
+            </Col>
+            <Col></Col>
+            </Col>
+
 
             <Col style = {{marginBottom: 30,}}>
               <Col>
@@ -253,25 +290,8 @@ export default class ListUserFlights extends Component {
           }}/>
             </div>
               </Col>    
-              <Col>
-              
-              <FormControl fullWidth>
-  <InputLabel id="demo-simple-select-label">Baggage Allowed</InputLabel>
-  <Select
-    labelId="demo-simple-select-label"
-    id="demo-simple-select"
-    value={this.state.BaggageAllowed}
-    onChange={this.onChangeBaggageAllowed}
-    label="Age"
-  >    
 
-    <MenuItem value={true}>YES</MenuItem>
-    <MenuItem value={false}>NO</MenuItem>
-  </Select>
-</FormControl>
-              </Col>
             </Col>
-  
   
             <Col style = {{marginBottom: 30,}}>
               <Col>
@@ -301,7 +321,8 @@ export default class ListUserFlights extends Component {
               <Button variant="contained" color = "primary" onClick = {this.getFlights.bind(this)}>Clear Filters </Button>
               </Col>
               <Col>
-              <Button variant="contained" color = "primary" onClick = {this.getFilteredFlights.bind(this)}>Search </Button>
+              <Button variant="contained" color = "primary" onClick = {this.getFilteredFlights.bind(this)
+              }>Search </Button>
               </Col>
               </Row>
             </div>
@@ -319,8 +340,6 @@ export default class ListUserFlights extends Component {
               <th>First Seats</th>
               <th>Destination</th>
               <th>Departure</th>
-              <th>Baggage Allowed</th>
-
             </tr>
           </thead>
           <tbody>{this.recordList()}</tbody>
