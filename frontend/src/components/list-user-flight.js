@@ -18,6 +18,7 @@ const Record = (props) => (
     <td>{props.record.FirstSeats}</td>
     <td>{props.record.AirportArrival}</td>
     <td>{props.record.AirportTakeOff}</td>
+    <td>{props.record.BaggageAllowed}</td>
 
     <td>
     <Button size="small" variant="contained" color = "error" onClick={() => {
@@ -160,6 +161,7 @@ export default class ListUserFlights extends Component {
       BusinessSeats: this.state.BusinessSeats,
       AirportArrival: this.state.AirportArrival,
       AirportTakeOff: this.state.AirportTakeOff,
+      BaggageAllowed: this.state.BaggageAllowed,
     };
 
     let cleanedParams = Object.fromEntries(Object.entries(filterParams).filter(([_, v]) => v !== ""));
@@ -254,13 +256,14 @@ export default class ListUserFlights extends Component {
               <Col>
               
               <FormControl fullWidth>
-  <InputLabel id="demo-simple-select-label">BaggageAllowed</InputLabel>
+  <InputLabel id="demo-simple-select-label">Baggage Allowed</InputLabel>
   <Select
     labelId="demo-simple-select-label"
     id="demo-simple-select"
     value={this.state.BaggageAllowed}
+    onChange={this.onChangeBaggageAllowed}
     label="Age"
-  >    onChange={this.onChangeBaggageAllowed}
+  >    
 
     <MenuItem value={true}>YES</MenuItem>
     <MenuItem value={false}>NO</MenuItem>
@@ -316,6 +319,8 @@ export default class ListUserFlights extends Component {
               <th>First Seats</th>
               <th>Destination</th>
               <th>Departure</th>
+              <th>Baggage Allowed</th>
+
             </tr>
           </thead>
           <tbody>{this.recordList()}</tbody>

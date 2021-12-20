@@ -36,7 +36,7 @@ router.route('/add').post((req, res) => {
   const EconomySeats = Number(req.body.EconomySeats);
   const BusinessSeats = Number(req.body.BusinessSeats);
   const FirstSeats = Number(req.body.FirstSeats);
-  const BaggageAllowed= Boolean(true);
+  const BaggageAllowed= Boolean (req.body.BaggageAllowed);
   const AirportArrival = req.body.AirportArrival;
   const AirportTakeOff = req.body.AirportTakeOff;
 
@@ -87,6 +87,8 @@ router.route('/update/:id').post((req, res) => {
      FirstSeats  : Number(req.body.FirstSeats) ,
      AirportArrival  : req.body.AirportArrival ,
      AirportTakeOff  : req.body.AirportTakeOff ,
+     BaggageAllowed  : req.body.BaggageAllowed ,
+
     }
      
   )

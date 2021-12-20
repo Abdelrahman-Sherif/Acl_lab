@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import "../../node_modules/bootstrap/dist/css/bootstrap.css";
-import {TextField, Button} from '@mui/material';
+import {TextField, Button, FormControl, InputLabel, MenuItem, Select} from '@mui/material';
 
 
 const styles = {
@@ -27,6 +27,7 @@ export default class CreateFlight extends Component {
     this.onChangeFirstSeats = this.onChangeFirstSeats.bind(this);
     this.onChangeAirportArrival = this.onChangeAirportArrival.bind(this);
     this.onChangeAirportTakeOff = this.onChangeAirportTakeOff.bind(this);
+    this.onChangeBaggageAllowed = this.onChangeBaggageAllowed.bind(this);
 
 
     this.onSubmit = this.onSubmit.bind(this);
@@ -43,6 +44,7 @@ export default class CreateFlight extends Component {
       FirstSeats: 0,
       AirportArrival: "",
       AirportTakeOff: "",
+      BaggageAllowed: Boolean(true),
 
       FlightNumberError: "",
       DepartureTimeError: "",
@@ -151,6 +153,14 @@ export default class CreateFlight extends Component {
     this.setState({
       FlightNumberError: ""
     })
+    
+  }
+  onChangeBaggageAllowed(e) {
+    this.setState({
+      BaggageAllowed: e.target.value
+    })
+
+    
     
   }
 
@@ -274,6 +284,7 @@ export default class CreateFlight extends Component {
         FirstSeats: 0,
         AirportArrival: "",
         AirportTakeOff: "",
+        BaggageAllowed: Boolean(true),
         FlightNumberError: "",
         DepartureTimeError: "",
         ArrivalTimeError: "",
@@ -297,6 +308,8 @@ export default class CreateFlight extends Component {
           DateArrival: this.state.DateArrival,
           EconomySeats: this.state.EconomySeats,
           BusinessSeats: this.state.BusinessSeats,
+          BaggageAllowed: this.state.BaggageAllowed,
+
           FirstSeats: this.state.FirstSeats,
           AirportArrival: this.state.AirportArrival,
           AirportTakeOff: this.state.AirportTakeOff,
@@ -380,7 +393,25 @@ export default class CreateFlight extends Component {
             shrink: true,
           }} error= {this.state.AirportArrivalError? true : false}/>
             </div>
-  
+            
+              
+              <FormControl fullWidth>
+  <InputLabel id="demo-simple-select-label">Baggage Allowed</InputLabel>
+  <Select
+    labelId="demo-simple-select-label"
+    id="demo-simple-select"
+    value={this.state.BaggageAllowed}
+    onChange={this.onChangeBaggageAllowed}
+
+    label="Age"
+  >    
+
+    <MenuItem value={true}>YES</MenuItem>
+    <MenuItem value={false}>NO</MenuItem>
+  </Select>
+</FormControl>
+              
+            
             <div>
               <TextField label="Departure" value={this.state.AirportTakeOff} variant="outlined" size="small" type="text" required style={{width:300}} onChange={this.onChangeAirportTakeOff} margin="normal"  InputLabelProps={{
             shrink: true,
