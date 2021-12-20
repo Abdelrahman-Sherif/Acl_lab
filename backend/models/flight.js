@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { ListGroup } = require('react-bootstrap');
 const Schema = mongoose.Schema;
 
 const flightSchema = new Schema({
@@ -55,7 +56,16 @@ const flightSchema = new Schema({
     type: Boolean,
     required: true,
     default: true,
-  }
+  },
+  EconomySeatsMap: {
+    default: {},
+  },
+  BusinessSeatsMap: {
+    default: {},
+  },
+  FirstSeatsMap: {
+    default: {},
+  },
 }, { timestamps: true });
 
 const Flight = mongoose.model('Flight', flightSchema);

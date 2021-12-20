@@ -39,9 +39,24 @@ router.route('/add').post((req, res) => {
   const BaggageAllowed= Boolean (req.body.BaggageAllowed);
   const AirportArrival = req.body.AirportArrival;
   const AirportTakeOff = req.body.AirportTakeOff;
+  const EconomySeatsMap = createSeats(EconomySeats, 0);
+  const BusinessSeatsMap = createSeats(BusinessSeats, EconomySeats);
+  const FirstSeatsMap = createSeats(FirstSeats, BusinessSeats);
+
+  const createSeats = (count, startIndex) => {
+    let i = 0;
+    const section = {};
+    while(i < count) {
+      section.i = {
+        booked: false,
+      };
+    }
+    
+    return section;
+}
 
   const newFlight = new Flight({
-    FlightNumber , DepartureTime , ArrivalTime , DateTakeoff , DateArrival , EconomySeats , BusinessSeats , FirstSeats, AirportArrival , AirportTakeOff, BaggageAllowed
+    FlightNumber , DepartureTime , ArrivalTime , DateTakeoff , DateArrival , EconomySeats , BusinessSeats , FirstSeats, AirportArrival , AirportTakeOff, BaggageAllowed, EconomySeatsMap, BusinessSeatsMap, FirstSeatsMap,
 
   });
 

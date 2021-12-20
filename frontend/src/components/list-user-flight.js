@@ -2,11 +2,12 @@ import React, { Component } from "react";
 // This will require to npm install axios
 import axios from 'axios';
 import { Col, Row } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {TextField, Button, InputLabel, MenuItem, Select, FormControl} from '@mui/material';
 
-
-const Record = (props) => (
+const Record = (props) =>{ 
+const navigate = useNavigate();
+return (
   <tr>
     <td>{props.record.FlightNumber}</td>
     <td>{props.record.DepartureTime}</td>
@@ -19,14 +20,16 @@ const Record = (props) => (
     <td>{props.record.AirportArrival}</td>
     <td>{props.record.AirportTakeOff}</td>
     <td>{props.record.BaggageAllowed}</td>
-
     <td>
     <Button size="small" variant="contained" color = "error" onClick={() => {
-           if (window.confirm('Are you sure you want to book this flight?')) window.location.replace("http://localhost:3000/flights/users/pick-seat") ;
+           if (window.confirm('Are you sure you want to book this flight?')){
+            navigate('/flights/users/pick-seat', { state: { FlightID: props.record._id,} });
+           }
         }}>Confirm Flight</Button>
     </td>
   </tr>
 );
+      }
 
 export default class ListUserFlights extends Component {
   // This is the constructor that shall store our data retrieved from the database
@@ -193,7 +196,6 @@ export default class ListUserFlights extends Component {
     this.getFlights();
     
   }
-
 
 
   // This method will map out the users on the table
