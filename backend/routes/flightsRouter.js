@@ -43,9 +43,10 @@ router.route('/add').post((req, res) => {
   const BaggageAllowed= Boolean (req.body.BaggageAllowed);
   const AirportArrival = req.body.AirportArrival;
   const AirportTakeOff = req.body.AirportTakeOff;
+  const Price= Number(req.body.Price);
 
   const newFlight = new Flight({
-    FlightNumber , DepartureTime , ArrivalTime , DateTakeoff , DateArrival , EconomySeats , BusinessSeats , FirstSeats, AirportArrival , AirportTakeOff, BaggageAllowed
+    FlightNumber , DepartureTime , ArrivalTime , DateTakeoff , DateArrival , EconomySeats , BusinessSeats , FirstSeats, AirportArrival , AirportTakeOff, BaggageAllowed, Price
 
   });
 
@@ -92,6 +93,8 @@ router.route('/update/:id').post((req, res) => {
      AirportArrival  : req.body.AirportArrival ,
      AirportTakeOff  : req.body.AirportTakeOff ,
      BaggageAllowed  : req.body.BaggageAllowed ,
+     Price  : Number(req.body.Price) ,
+
 
     }
      

@@ -31,7 +31,7 @@ const createSeats = (rows, startIndex) => {
 
 
 
-const BookMySeats = () => {
+const BookMyReturnSeats = () => {
   //  const BusinessClassSeats = createSeats(2, '1');
 
   const firstClassSeats = createSeats(2, '1');
@@ -61,7 +61,7 @@ const BookMySeats = () => {
 
   const confirmBooking = () => {
       setBookedStatus('You have successfully booked the following seats:');
-      window.location.replace("http://localhost:3000/flights/users/return")
+      window.location.replace("http://localhost:3000/flights/users/itinerary")
       bookedSeats.forEach(seat => {
            setBookedStatus(prevState => {
                return prevState + seat + ' ';
@@ -111,4 +111,4 @@ const BookMySeats = () => {
     );
 }
 
-export default BookMySeats;
+export default BookMyReturnSeats;

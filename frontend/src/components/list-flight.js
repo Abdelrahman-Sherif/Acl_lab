@@ -18,6 +18,8 @@ const Record = (props) => (
     <td>{props.record.FirstSeats}</td>
     <td>{props.record.AirportArrival}</td>
     <td>{props.record.AirportTakeOff}</td>
+    <td>{props.record.Price}</td>
+
 
     <td>
     <Button size="small" variant="contained" color = "error" onClick={() => {
@@ -328,6 +330,8 @@ export default class RecordList extends Component {
               <th>First Seats</th>
               <th>Destination</th>
               <th>Departure</th>
+              <th>Price</th>
+
             </tr>
           </thead>
           <tbody>{this.recordList()}</tbody>

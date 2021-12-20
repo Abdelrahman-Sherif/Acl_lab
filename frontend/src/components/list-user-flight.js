@@ -8,14 +8,25 @@ import {TextField, Button, InputLabel, MenuItem, Select, FormControl} from '@mui
 const Record = (props) => (
   <tr>
 
+<td>{props.record.FlightNumber}</td>
+    <td>{props.record.DepartureTime}</td>
+    <td>{props.record.ArrivalTime}</td>
     <td>{props.record.DateTakeoff}</td>
     <td>{props.record.DateArrival}</td>
-    <td>{props.record.AirportTakeOff}</td>
+    <td>{props.record.EconomySeats}</td>
+    <td>{props.record.BusinessSeats}</td>
+    <td>{props.record.FirstSeats}</td>
     <td>{props.record.AirportArrival}</td>
+    <td>{props.record.AirportTakeOff}</td> 
+    <td>{props.record.Price}</td> 
+
 
     <td>
     <Button size="small" variant="contained" color = "error" onClick={() => {
            if (window.confirm('Are you sure you want to choose this flight?')) 
+           sessionStorage.setItem("airportTakeoff", props.record.AirportTakeOff);
+           sessionStorage.setItem("airportArrival", props.record.AirportArrival);
+
            window.location.replace("http://localhost:3000/flights/users/pick-seat");
            
         }}>Confirm Departure</Button>
@@ -172,8 +183,9 @@ export default class ListUserFlights extends Component {
 
     return (
       <div>
-        <h3 style = {{marginBottom: 20, marginTop:10, marginLeft: 30}}>All Flights <Link to='/flights/myFlights'>
+        <h3 style = {{marginBottom: 20, marginTop:10, marginLeft: 30}}>All Flights <Link to='/flights/user/itinerary'>
       <Button variant="contained" color='primary'>View My Flights</Button>
+      
       </Link>
       <Button variant="contained" color='primary' onClick={this.toggleFilter} style={{marginLeft:10}}>Filter Flights</Button>
       </h3>
@@ -189,6 +201,7 @@ export default class ListUserFlights extends Component {
           }}/>
             </div>
           </Col>
+          
 
             <Col style = {{marginBottom: 30,}}>
               <Col>
@@ -263,10 +276,18 @@ export default class ListUserFlights extends Component {
         <table className="table table-striped" style={{ marginTop: 20}}>
           <thead>
             <tr>
-              <th>Departure Date</th>
+            <th>Flight Number</th>
+              <th>Departure Time</th>
+              <th>Arrival Time</th>
+              <th>Takeoff Date</th>
               <th>Arrival Date</th>
-              <th>Departure</th>
+              <th>Economy Seats</th>
+              <th>Business Seats</th>
+              <th>First Seats</th>
               <th>Destination</th>
+              <th>Departure</th>
+              <th>Price</th>
+
             </tr>
           </thead>
           <tbody>{this.recordList()}</tbody>
