@@ -5,82 +5,57 @@ import { Col, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import {TextField, Button, InputLabel, MenuItem, Select, FormControl} from '@mui/material';
 
-
 const Record = (props) => (
   <tr>
-    <td>{props.record.FlightNumber}</td>
-    <td>{props.record.DepartureTime}</td>
-    <td>{props.record.ArrivalTime}</td>
+
     <td>{props.record.DateTakeoff}</td>
     <td>{props.record.DateArrival}</td>
-    <td>{props.record.EconomySeats}</td>
-    <td>{props.record.BusinessSeats}</td>
-    <td>{props.record.FirstSeats}</td>
-    <td>{props.record.AirportArrival}</td>
     <td>{props.record.AirportTakeOff}</td>
+    <td>{props.record.AirportArrival}</td>
 
     <td>
     <Button size="small" variant="contained" color = "error" onClick={() => {
-           if (window.confirm('Are you sure you want to book this flight?')) window.location.replace("http://localhost:3000/flights/users/pick-seat") ;
-        }}>Confirm Flight</Button>
-    </td>
-    <td>
-    <Button size="small" variant="contained" color = "error" onClick={() => {
-            window.location.replace("http://localhost:3000/flights/users/pick-seat") ;
-        }}>View Return Flight</Button>
+           if (window.confirm('Are you sure you want to choose this flight?')) 
+           window.location.replace("http://localhost:3000/flights/users/pick-seat");
+           
+        }}>Confirm Departure</Button>
     </td>
   </tr>
 );
+
 
 export default class ListUserFlights extends Component {
   // This is the constructor that shall store our data retrieved from the database
   constructor(props) {
     super(props);
     this.getFilteredFlights = this.getFilteredFlights.bind(this);
-    this.onChangeFlightNumber = this.onChangeFlightNumber.bind(this);
-    this.onChangeDepartureTime = this.onChangeDepartureTime.bind(this);
-    this.onChangeArrivalTime = this.onChangeArrivalTime.bind(this);
+    this.onChangePassangers = this.onChangePassangers.bind(this);
     this.onChangeDateTakeoff = this.onChangeDateTakeoff.bind(this);
     this.onChangeDateArrival = this.onChangeDateArrival.bind(this);
-    this.onChangeEconomySeats = this.onChangeEconomySeats.bind(this);
-    this.onChangeBusinessSeats = this.onChangeBusinessSeats.bind(this);
     this.onChangeAirportArrival = this.onChangeAirportArrival.bind(this);
     this.onChangeAirportTakeOff = this.onChangeAirportTakeOff.bind(this);
+    this.onChangeCabin = this.onChangeCabin.bind(this);
 
     this.toggleFilter = this.toggleFilter.bind(this);
 
     this.state = { 
       records: [],
       showFilterMenu: false,
-      FlightNumber: "",
-      DepartureTime: "",
-      ArrivalTime: "",
+      Passangers: "",
       DateTakeoff: "",
       DateArrival: "",
-      EconomySeats: "",
-      BusinessSeats: "",
       AirportArrival: "",
       AirportTakeOff: "", 
+      Cabin: ""
     };
   }
 
-  onChangeFlightNumber(e) {
+  onChangePassangers(e) {
     this.setState({
-      FlightNumber: e.target.value
+      Passangers: e.target.value
     });
   }
 
-  onChangeDepartureTime(e) {
-    this.setState({
-      DepartureTime: e.target.value
-    })
-  }
-
-  onChangeArrivalTime(e) {
-    this.setState({
-      ArrivalTime: e.target.value
-    })
-  }
 
   onChangeDateTakeoff(e) {
     this.setState({
@@ -95,17 +70,6 @@ export default class ListUserFlights extends Component {
     })
   }
 
-  onChangeEconomySeats(e) {
-    this.setState({
-      EconomySeats: e.target.value
-    })
-  }
-
-  onChangeBusinessSeats(e) {
-    this.setState({
-      BusinessSeats: e.target.value
-    })
-  }
 
   onChangeAirportArrival(e) {
     this.setState({
@@ -119,10 +83,10 @@ export default class ListUserFlights extends Component {
     })
   }
 
-  toggleFilter(e){
-    e.preventDefault();
-    this.setState({showFilterMenu: !this.state.showFilterMenu})
-    console.log(this.state.showFilterMenu);
+  onChangeCabin(e) {
+    this.setState({
+      Cabin: e.target.value
+    })
   }
 
 
@@ -150,15 +114,12 @@ export default class ListUserFlights extends Component {
   async getFilteredFlights(e){
     e.preventDefault();
     const filterParams = {
-      FlightNumber: this.state.FlightNumber,
-      DepartureTime: this.state.DepartureTime,
-      ArrivalTime: this.state.ArrivalTime,
+      Passangers: this.state.Passangers,
       DateTakeoff: this.state.DateTakeoff,
       DateArrival: this.state.DateArrival,
-      EconomySeats: this.state.EconomySeats,
-      BusinessSeats: this.state.BusinessSeats,
-      AirportArrival: this.state.AirportArrival,
+      AirportArrival: this.state.AirportArrival, 
       AirportTakeOff: this.state.AirportTakeOff,
+      Cabin: this.state.Cabin
     };
 
     let cleanedParams = Object.fromEntries(Object.entries(filterParams).filter(([_, v]) => v !== ""));
@@ -211,8 +172,8 @@ export default class ListUserFlights extends Component {
 
     return (
       <div>
-        <h3 style = {{marginBottom: 20, marginTop:10, marginLeft: 30}}>All Flights <Link to='/flights/add'>
-      <Button variant="contained" color='primary'>Add Flight</Button>
+        <h3 style = {{marginBottom: 20, marginTop:10, marginLeft: 30}}>All Flights <Link to='/flights/myFlights'>
+      <Button variant="contained" color='primary'>View My Flights</Button>
       </Link>
       <Button variant="contained" color='primary' onClick={this.toggleFilter} style={{marginLeft:10}}>Filter Flights</Button>
       </h3>
@@ -222,34 +183,17 @@ export default class ListUserFlights extends Component {
         <div class="d-flex justify-content-between" style={{marginLeft:30, marginRight:30}}>
 
           <Col>
-              <TextField label="Flight Number" style={{display: "flex", marginRight: 10}} value={this.state.FlightNumber} variant="outlined" size="small" type="text" required onChange={this.onChangeFlightNumber} margin="normal"  InputLabelProps={{
+          <div className="form-group">
+              <TextField label="Number of Passangers" style={{display: "flex", marginRight: 10}} value={this.state.Passangers} variant="outlined" size="small" type="number" required onChange={this.onChangePassangers} margin="normal"  InputLabelProps={{
             shrink: true,
           }}/>
-          </Col>
-
-
-            <Col style = {{marginBottom: 30, marginRight: 10}}>
-              <Col>
-              <TextField  style={{display: "flex"}} label="Departure Time" value={this.state.DepartureTime} variant="outlined" size="small" type="time" required onChange={this.onChangeDepartureTime} margin="normal"  InputLabelProps={{
-            shrink: true,
-          }}/>
-              </Col>
-
-              <Col>
-              <div className="form-group">
-              <TextField label="Arrival Time" style={{display: "flex"}} value={this.state.ArrivalTime} variant="outlined" size="small" type="time" required onChange={this.onChangeArrivalTime} margin="normal"  InputLabelProps={{
-            shrink: true,
-          }} />
             </div>
-            </Col>
-            <Col>
-            </Col>
-              </Col>
+          </Col>
 
             <Col style = {{marginBottom: 30,}}>
               <Col>
               <div className="form-group">
-              <TextField label="Takeoff Date" style={{display: "flex", marginRight: 10}} value={this.state.DateTakeoff} variant="outlined" size="small" type="date" required onChange={this.onChangeDateTakeoff} margin="normal"  InputLabelProps={{
+              <TextField label="Departure Date" style={{display: "flex", marginRight: 10}} value={this.state.DateTakeoff} variant="outlined" size="small" type="date" required onChange={this.onChangeDateTakeoff} margin="normal"  InputLabelProps={{
             shrink: true,
           }} />
             </div>
@@ -265,35 +209,15 @@ export default class ListUserFlights extends Component {
             <Col></Col>
             </Col>
 
-
-            <Col style = {{marginBottom: 30,}}>
-              <Col>
-              <div className="form-group">
-              <TextField label="Economy Seats" style={{display: "flex", marginRight: 10}} value={this.state.EconomySeats} variant="outlined" size="small" type="number" required onChange={this.onChangeEconomySeats} margin="normal"  InputLabelProps={{
-            shrink: true,
-          }}/>
-            </div>
-              </Col>
-
-              <Col>
-              <div className="form-group">
-              <TextField label="Business Seats" style={{display: "flex", marginRight: 10}} value={this.state.BusinessSeats} variant="outlined" size="small" type="number" required onChange={this.onChangeBusinessSeats} margin="normal"  InputLabelProps={{
-            shrink: true,
-          }}/>
-            </div>
-              </Col>
-
-              <Col>
-              <div className="form-group">
-              <TextField label="First Seats" style={{display: "flex", marginRight: 10}} value={this.state.FirstSeats} variant="outlined" size="small" type="number" required onChange={this.onChangeFirstSeats} margin="normal"  InputLabelProps={{
-            shrink: true,
-          }}/>
-            </div>
-              </Col>    
-
-            </Col>
   
             <Col style = {{marginBottom: 30,}}>
+            <Col>
+          <div className="form-group">
+          <TextField label="Departure" style={{display: "flex"}} value={this.state.AirportTakeOff} variant="outlined" size="small" type="text" required onChange={this.onChangeAirportTakeOff} margin="normal"  InputLabelProps={{
+            shrink: true,
+          }} />
+            </div>
+          </Col>
               <Col>
               <div className="form-group">
               <TextField label="Destination" style={{display: "flex"}} value={this.state.AirportArrival} variant="outlined" size="small" type="text" required onChange={this.onChangeAirportArrival} margin="normal"  InputLabelProps={{
@@ -301,16 +225,25 @@ export default class ListUserFlights extends Component {
           }}/>
             </div>
               </Col>
-              
-
-          <Col>
-          <div className="form-group">
-          <TextField label="Departure" style={{display: "flex"}} value={this.state.AirportTakeOff} variant="outlined" size="small" type="text" required onChange={this.onChangeAirportTakeOff} margin="normal"  InputLabelProps={{
-            shrink: true,
-          }} />
-            </div>
-          </Col>
           <Col></Col>
+
+          <FormControl fullWidth>
+  <InputLabel id="demo-simple-select-label">Cabin</InputLabel>
+  <Select
+  defaultValue={"Economy"}
+    labelId="demo-simple-select-label"
+    id="demo-simple-select"
+   
+    label="Cabin"
+    onChange={this.onChangeCabin}
+    
+    
+  >
+    <MenuItem value={10}>First</MenuItem>
+    <MenuItem value={20}>Business</MenuItem>
+    <MenuItem value={30}>Economy</MenuItem>
+  </Select>
+</FormControl>
 
             </Col>
             </div>
@@ -330,16 +263,10 @@ export default class ListUserFlights extends Component {
         <table className="table table-striped" style={{ marginTop: 20}}>
           <thead>
             <tr>
-              <th>Flight Number</th>
-              <th>Departure Time</th>
-              <th>Arrival Time</th>
-              <th>Takeoff Date</th>
+              <th>Departure Date</th>
               <th>Arrival Date</th>
-              <th>Economy Seats</th>
-              <th>Business Seats</th>
-              <th>First Seats</th>
-              <th>Destination</th>
               <th>Departure</th>
+              <th>Destination</th>
             </tr>
           </thead>
           <tbody>{this.recordList()}</tbody>

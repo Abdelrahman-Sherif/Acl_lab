@@ -1,6 +1,8 @@
 
 import React, {useState} from 'react';
 import Seats from './Seats';
+
+
 const createSeats = (rows, startIndex) => {
     let i = 0; //the rows counter
     let j = startIndex; 
@@ -20,6 +22,7 @@ const createSeats = (rows, startIndex) => {
     return section;
 
 }
+
 
 
 
@@ -53,6 +56,7 @@ const BookMySeats = () => {
 
   const confirmBooking = () => {
       setBookedStatus('You have successfully booked the following seats:');
+      window.location.replace("http://localhost:3000/flights/users/return")
       bookedSeats.forEach(seat => {
            setBookedStatus(prevState => {
                return prevState + seat + ' ';
