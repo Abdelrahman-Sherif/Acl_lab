@@ -57,9 +57,9 @@ const flightSchema = new Schema({
 
   },
   BaggageAllowed:{
-    type: Boolean,
+    type: String,
     required: true,
-    default: true,
+    default:"Yes"
   }
 }, { timestamps: true });
 
