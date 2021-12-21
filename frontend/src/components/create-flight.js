@@ -10,10 +10,6 @@ const styles = {
   fontSize: "16px"
 };
 
-
-
-
-
 export default class CreateFlight extends Component {
   constructor(props) {
     super(props);
@@ -28,6 +24,7 @@ export default class CreateFlight extends Component {
     this.onChangeAirportArrival = this.onChangeAirportArrival.bind(this);
     this.onChangeAirportTakeOff = this.onChangeAirportTakeOff.bind(this);
     this.onChangeBaggageAllowed = this.onChangeBaggageAllowed.bind(this);
+    this.onChangePrice = this.onChangePrice.bind(this);
 
 
     this.onSubmit = this.onSubmit.bind(this);
@@ -44,7 +41,7 @@ export default class CreateFlight extends Component {
       FirstSeats: 0,
       AirportArrival: "",
       AirportTakeOff: "",
-      BaggageAllowed: Boolean(true),
+      BaggageAllowed: "Yes",
 
       FlightNumberError: "",
       DepartureTimeError: "",
@@ -55,6 +52,8 @@ export default class CreateFlight extends Component {
       BusinessSeatsError: "",
       FirstSeatsError: "",
       AirportArrivalError: "",
+      Price: 0,
+
       AirportTakeOffError: "",
     }
   }
@@ -88,6 +87,9 @@ export default class CreateFlight extends Component {
   this.setState({
     BusinessSeatsError: this.state.BusinessSeats <= 0? "error": ""
   })
+  this.setState({
+    PriceError: this.state.Price <= 0? "error": ""
+  })
 
   this.setState({
     FirstSeatsError: this.state.FirstSeats<= 0? "error": ""
@@ -103,7 +105,7 @@ export default class CreateFlight extends Component {
  
   if (!this.state.FlightNumber || !this.state.DepartureTime || !this.state.ArrivalTime || !this.state.DateTakeoff
     || !this.state.DateArrival || !this.state.EconomySeats || !this.state.BusinessSeats || !this.state.FirstSeats
-    || !this.state.AirportArrival || !this.state.AirportTakeOff) {
+    || !this.state.AirportArrival || !this.state.AirportTakeOff || !this.state.Price) {
     console.log(!this.state.FlightNumber, !this.state.DepartureTime, !this.state.ArrivalTime, !this.state.DateTakeoff
       , !this.state.DateArrival, !this.state.EconomySeats, !this.state.BusinessSeats, !this.state.FirstSeats
       , !this.state.AirportArrival, !this.state.AirportTakeOff)
@@ -117,6 +119,14 @@ export default class CreateFlight extends Component {
     console.log("emptySeats")
     this.setState({
       errorMessage: "Empty seats",
+    });
+
+    return false
+  }
+  if (this.state.Price <= 0 ) {
+    console.log("Price cannot be a negative value or a zero")
+    this.setState({
+      errorMessage: "Price cannot be a negative value or a zero ",
     });
 
     return false
@@ -174,6 +184,7 @@ export default class CreateFlight extends Component {
     })
   }
 
+  
   onChangeArrivalTime(e) {
     this.setState({
       ArrivalTime: e.target.value
@@ -222,6 +233,14 @@ export default class CreateFlight extends Component {
     })
   }
 
+  onChangePrice(e) {
+    this.setState({
+      Price: e.target.value
+    })
+    this.setState({
+      PriceError: e.target.value <= 0? "error": ""
+    })
+  }
 
   onChangeFirstSeats(e) {
     this.setState({
@@ -266,6 +285,8 @@ export default class CreateFlight extends Component {
     FirstSeats: this.state.FirstSeats,
     AirportArrival: this.state.AirportArrival,
     AirportTakeOff: this.state.AirportTakeOff,
+    Price: this.state.Price,
+
     };
     console.log(newflight);
 
@@ -282,9 +303,11 @@ export default class CreateFlight extends Component {
         EconomySeats: 0,
         BusinessSeats: 0,
         FirstSeats: 0,
+        Price: 0,
+
         AirportArrival: "",
         AirportTakeOff: "",
-        BaggageAllowed: Boolean(true),
+        BaggageAllowed: "Yes",
         FlightNumberError: "",
         DepartureTimeError: "",
         ArrivalTimeError: "",
@@ -295,6 +318,7 @@ export default class CreateFlight extends Component {
         FirstSeatsError: "",
         AirportArrivalError: "",
         AirportTakeOffError: "",
+        PriceError:"",
       })
       })
       .catch((error) => {
@@ -310,6 +334,8 @@ export default class CreateFlight extends Component {
           BusinessSeats: this.state.BusinessSeats,
           BaggageAllowed: this.state.BaggageAllowed,
 
+          Price: this.state.Price,
+
           FirstSeats: this.state.FirstSeats,
           AirportArrival: this.state.AirportArrival,
           AirportTakeOff: this.state.AirportTakeOff,
@@ -323,6 +349,8 @@ export default class CreateFlight extends Component {
           FirstSeatsError: this.state.FirstSeatsError,
           AirportArrivalError: this.state.AirportArrivalError,
           AirportTakeOffError: this.state.AirportTakeOffError,
+          PriceError: this.state.PriceError,
+
         })
     });
     }
@@ -377,6 +405,12 @@ export default class CreateFlight extends Component {
             </div>
   
             <div>
+              <TextField label=" Price" value={this.state.Price} variant="outlined" size="small" type="number" required style={{width:300}} onChange={this.onChangePrice} margin="normal"  InputLabelProps={{
+            shrink: true,
+          }} error= {this.state.PriceError? true : false}/>
+            </div>
+
+            <div>
               <TextField label="Business Seats" value={this.state.BusinessSeats} variant="outlined" size="small" type="number" required style={{width:300}} onChange={this.onChangeBusinessSeats} margin="normal"  InputLabelProps={{
             shrink: true,
           }} error= {this.state.BusinessSeatsError? true : false}/>
@@ -387,6 +421,12 @@ export default class CreateFlight extends Component {
             shrink: true,
           }} error= {this.state.FirstSeatsError? true : false}/>
             </div>
+
+            <div>
+              <TextField label="Departure" value={this.state.AirportTakeOff} variant="outlined" size="small" type="text" required style={{width:300}} onChange={this.onChangeAirportTakeOff} margin="normal"  InputLabelProps={{
+            shrink: true,
+          }} error= {this.state.AirportTakeOffError? true : false}/>
+            </div>
   
             <div>
               <TextField label="Destination" value={this.state.AirportArrival} variant="outlined" size="small" type="text" required style={{width:300}} onChange={this.onChangeAirportArrival} margin="normal"  InputLabelProps={{
@@ -394,35 +434,28 @@ export default class CreateFlight extends Component {
           }} error= {this.state.AirportArrivalError? true : false}/>
             </div>
             
-              
-              <FormControl fullWidth>
+            <FormControl style={{minWidth: 300}}>
   <InputLabel id="demo-simple-select-label">Baggage Allowed</InputLabel>
+  
   <Select
     labelId="demo-simple-select-label"
     id="demo-simple-select"
     value={this.state.BaggageAllowed}
     onChange={this.onChangeBaggageAllowed}
 
-    label="Age"
+    label="Baggage Allowed"
   >    
 
-    <MenuItem value={true}>YES</MenuItem>
-    <MenuItem value={false}>NO</MenuItem>
+    <MenuItem value="Yes">Yes</MenuItem>
+    <MenuItem value="No">No</MenuItem>
   </Select>
 </FormControl>
-              
-            
-            <div>
-              <TextField label="Departure" value={this.state.AirportTakeOff} variant="outlined" size="small" type="text" required style={{width:300}} onChange={this.onChangeAirportTakeOff} margin="normal"  InputLabelProps={{
-            shrink: true,
-          }} error= {this.state.AirportTakeOffError? true : false}/>
-           {this.state.errorMessage &&
+{this.state.errorMessage &&
               <h5 style={styles} className="error"> {this.state.errorMessage} </h5>}
-
-            </div>
   
             <Button variant="contained" color = "primary" onClick = {this.onSubmit.bind(this)}>Add Flight </Button>
         </div>
+        
         </div>
         </div>
       

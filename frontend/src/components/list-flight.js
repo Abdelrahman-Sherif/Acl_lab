@@ -16,8 +16,11 @@ const Record = (props) => (
     <td>{props.record.EconomySeats}</td>
     <td>{props.record.BusinessSeats}</td>
     <td>{props.record.FirstSeats}</td>
-    <td>{props.record.AirportArrival}</td>
     <td>{props.record.AirportTakeOff}</td>
+    <td>{props.record.AirportArrival}</td>
+    <td>{props.record.Price}</td>
+    <td>{props.record.BaggageAllowed}</td>
+
 
     <td>
     <Button size="small" variant="contained" color = "error" onClick={() => {
@@ -61,6 +64,7 @@ export default class RecordList extends Component {
       BusinessSeats: "",
       AirportArrival: "",
       AirportTakeOff: "", 
+      BaggageAllowed: "Yes",
     };
   }
 
@@ -118,6 +122,7 @@ export default class RecordList extends Component {
     })
   }
 
+
   toggleFilter(e){
     e.preventDefault();
     this.setState({showFilterMenu: !this.state.showFilterMenu})
@@ -150,6 +155,7 @@ export default class RecordList extends Component {
       BusinessSeats: this.state.BusinessSeats,
       AirportArrival: this.state.AirportArrival,
       AirportTakeOff: this.state.AirportTakeOff,
+      BaggageAllowed: this.state.BaggageAllowed,
     };
 
     let cleanedParams = Object.fromEntries(Object.entries(filterParams).filter(([_, v]) => v !== ""));
@@ -238,7 +244,7 @@ export default class RecordList extends Component {
             <Col style = {{marginBottom: 30,}}>
               <Col>
               <div className="form-group">
-              <TextField label="Takeoff Date" style={{display: "flex", marginRight: 10}} value={this.state.DateTakeoff} variant="outlined" size="small" type="date" required onChange={this.onChangeDateTakeoff} margin="normal"  InputLabelProps={{
+              <TextField label="Departure Date" style={{display: "flex", marginRight: 10}} value={this.state.DateTakeoff} variant="outlined" size="small" type="date" required onChange={this.onChangeDateTakeoff} margin="normal"  InputLabelProps={{
             shrink: true,
           }} />
             </div>
@@ -283,6 +289,15 @@ export default class RecordList extends Component {
             </Col>
   
             <Col style = {{marginBottom: 30,}}>
+
+            <Col>
+          <div className="form-group">
+          <TextField label="Departure" style={{display: "flex"}} value={this.state.AirportTakeOff} variant="outlined" size="small" type="text" required onChange={this.onChangeAirportTakeOff} margin="normal"  InputLabelProps={{
+            shrink: true,
+          }} />
+            </div>
+          </Col>
+
               <Col>
               <div className="form-group">
               <TextField label="Destination" style={{display: "flex"}} value={this.state.AirportArrival} variant="outlined" size="small" type="text" required onChange={this.onChangeAirportArrival} margin="normal"  InputLabelProps={{
@@ -291,14 +306,6 @@ export default class RecordList extends Component {
             </div>
               </Col>
               
-
-          <Col>
-          <div className="form-group">
-          <TextField label="Departure" style={{display: "flex"}} value={this.state.AirportTakeOff} variant="outlined" size="small" type="text" required onChange={this.onChangeAirportTakeOff} margin="normal"  InputLabelProps={{
-            shrink: true,
-          }} />
-            </div>
-          </Col>
           <Col></Col>
 
             </Col>
@@ -326,8 +333,11 @@ export default class RecordList extends Component {
               <th>Economy Seats</th>
               <th>Business Seats</th>
               <th>First Seats</th>
-              <th>Destination</th>
               <th>Departure</th>
+              <th>Destination</th>
+              <th>Price</th>
+              <th>Baggage Allowed</th>
+
             </tr>
           </thead>
           <tbody>{this.recordList()}</tbody>

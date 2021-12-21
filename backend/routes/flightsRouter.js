@@ -25,7 +25,11 @@ router.route('/getFiltered').get((req, res) => {
       res.json(flight);
     })
     .catch(err => res.status(400).json('Error: ' + err));
+   
+    
 });
+
+
 
 router.route('/add').post((req, res) => {
   const FlightNumber = req.body.FlightNumber;
@@ -36,9 +40,10 @@ router.route('/add').post((req, res) => {
   const EconomySeats = Number(req.body.EconomySeats);
   const BusinessSeats = Number(req.body.BusinessSeats);
   const FirstSeats = Number(req.body.FirstSeats);
-  const BaggageAllowed= Boolean (req.body.BaggageAllowed);
+  const BaggageAllowed= req.body.BaggageAllowed;
   const AirportArrival = req.body.AirportArrival;
   const AirportTakeOff = req.body.AirportTakeOff;
+
   const EconomySeatsMap = createSeats(EconomySeats, 0);
   const BusinessSeatsMap = createSeats(BusinessSeats, EconomySeats);
   const FirstSeatsMap = createSeats(FirstSeats, BusinessSeats);
@@ -54,10 +59,10 @@ router.route('/add').post((req, res) => {
     
     return section;
 }
+  const Price= Number(req.body.Price);
 
   const newFlight = new Flight({
-    FlightNumber , DepartureTime , ArrivalTime , DateTakeoff , DateArrival , EconomySeats , BusinessSeats , FirstSeats, AirportArrival , AirportTakeOff, BaggageAllowed, EconomySeatsMap, BusinessSeatsMap, FirstSeatsMap,
-
+    FlightNumber , DepartureTime , ArrivalTime , DateTakeoff , DateArrival , EconomySeats , BusinessSeats , FirstSeats, AirportArrival , AirportTakeOff, BaggageAllowed, EconomySeatsMap, BusinessSeatsMap, FirstSeatsMap,Price
   });
 
   if(Flight.where("FlightNumber").equals(FlightNumber).exec(function (err, data){
@@ -103,6 +108,8 @@ router.route('/update/:id').post((req, res) => {
      AirportArrival  : req.body.AirportArrival ,
      AirportTakeOff  : req.body.AirportTakeOff ,
      BaggageAllowed  : req.body.BaggageAllowed ,
+     Price  : Number(req.body.Price) ,
+
 
     }
      
