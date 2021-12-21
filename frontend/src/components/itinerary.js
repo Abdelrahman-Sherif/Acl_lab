@@ -4,6 +4,10 @@ import {Divider, Chip} from '@mui/material';
 var ReturnFlightNumber= sessionStorage.getItem("ReturnFlightNumber");
 var DepartureFlightNumber= sessionStorage.getItem("DepartureFlightNumber");
 
+console.log(ReturnFlightNumber);
+console.log(DepartureFlightNumber);
+
+
 
 const Record = (props) => (
     <tr>
@@ -23,62 +27,112 @@ const Record = (props) => (
     </tr>
   );
   
-
+  function isReturn(flight) {
+    return flight.FlightNumber==ReturnFlightNumber;
+  }
+  
 export default class MyItinerary extends Component {
     // This is the constructor that shall store our data retrieved from the database
     constructor(props) {
-        super(props);
+      super(props);
+   
+      this.onChangePassangers = this.onChangePassangers.bind(this);
+      this.onChangeDateTakeoff = this.onChangeDateTakeoff.bind(this);
+      this.onChangeDateArrival = this.onChangeDateArrival.bind(this);
+      this.onChangeAirportArrival = this.onChangeAirportArrival.bind(this);
+      this.onChangeAirportTakeOff = this.onChangeAirportTakeOff.bind(this);
+      this.onChangeCabin = this.onChangeCabin.bind(this);
+  
+      this.state = { 
+        records: [],
+        Passangers: "",
+        DateTakeoff: "",
+        DateArrival: "",
+        AirportArrival: "",
+        AirportTakeOff: "", 
+        Cabin: ""
+      };
+    }
+  
+    onChangePassangers(e) {
+      this.setState({
+        Passangers: e.target.value
+      });
+    }
+  
+  
+    onChangeDateTakeoff(e) {
+      this.setState({
+        DateTakeoff: e.target.value
+      })
+    }
+   
+  
+    onChangeDateArrival(e) {
+      this.setState({
+        DateArrival: e.target.value
+      })
+    }
+  
+  
+    onChangeAirportArrival(e) {
+      this.setState({
+        AirportArrival: e.target.value
+      })
+    }
+  
+    onChangeAirportTakeOff(e) {
+      this.setState({
+        AirportTakeOff: e.target.value
+      })
+    }
+  
+    onChangeCabin(e) {
+      this.setState({
+        Cabin: e.target.value
+      })
+    }
+  
+    async getFilteredFlights(e){
+      const filterParams = {
+       
+        FlightNumber: DepartureFlightNumber
+      };
+  
+  
+      await axios
+      .get("http://localhost:5000/flights/getFilteredFlight", {params: filterParams})
+      .then((response) => {
+        console.log("Records gotten after filtering: "+ response.data);
+        this.setState({ records: response.data });
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+    }
+    ///Get updated flights
     
-        this.state = { 
-          records: [],
-          FlightNumber: "",
-          DepartureTime: "",
-          ArrivalTime: "",
-          DateTakeoff: "",
-          DateArrival: "",
-          EconomySeats: "",
-          BusinessSeats: "",
-          AirportArrival: "",
-          AirportTakeOff: "", 
-          BaggageAllowed: "Yes",
-        };
-      }
-
-      
-
-        // This method will map out the users on the table
-  recordList() {
-    return this.state.records.map((currentrecord) => {
-      return (
-        <Record
-          record={currentrecord}
-          key={currentrecord._id}
-        />
-      );
-    });
-  }
-
-      componentDidMount() {
-        this.getFilteredFlights();
-      }
-    
-      ///Get filtered flights
-  async getFilteredFlights(e){
-  //  e.preventDefault();
-    const filterParams = {
-      FlightNumber: DepartureFlightNumber,
-    };
-
-    await axios
-    .get("http://localhost:5000/flights/getFiltered", {params: filterParams})
-    .then((response) => {
-      console.log("Records gotten after filtering: "+ response.data);
-      this.setState({ records: response.data });
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
-  }
+   
+  
+   
+  
+    // This method will get the data from the database.
+    componentDidMount() {
+      this.getFilteredFlights();
+    }
+  
+    // This method will map out the users on the table
+    recordList() {
+      return this.state.records.map((currentrecord) => {
+        return (
+          <Record
+            record={currentrecord}
+            deleteRecord={this.deleteRecord}
+            key={currentrecord._id}
+          />
+        );
+      });
+    }
    
     render() {
 
@@ -109,8 +163,26 @@ export default class MyItinerary extends Component {
         </Divider>
     
         <Divider ><Chip label="Return Flight" />
-        {}
-        </Divider>
+        <table className="table table-striped" style={{ marginTop: 20}}>
+          <thead>
+            <tr>
+            <th>Flight Number</th>
+              <th>Departure Time</th>
+              <th>Arrival Time</th>
+              <th>Takeoff Date</th>
+              <th>Arrival Date</th>
+              <th>Economy Seats</th>
+              <th>Business Seats</th>
+              <th>First Seats</th>
+              <th>Departure</th>
+              <th>Destination</th>
+              <th>Price</th>
+              <th>Baggage Allowed</th>
+
+            </tr>
+          </thead>
+          <tbody>{this.recordList()}</tbody>
+        </table>        </Divider>
   
  
       </div>

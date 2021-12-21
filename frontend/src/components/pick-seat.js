@@ -3,9 +3,11 @@ import React, {useState} from 'react';
 import Seats from './Seats';
 var airportTakeoff= sessionStorage.getItem("airportTakeoff");
 var airportArrival= sessionStorage.getItem("airportArrival");
+var DepartureFlightNumber= sessionStorage.getItem("DepartureFlightNumber");
 
 console.log(airportTakeoff);
 console.log(airportArrival);
+console.log(DepartureFlightNumber);
 
 
 const createSeats = (rows, startIndex) => {
