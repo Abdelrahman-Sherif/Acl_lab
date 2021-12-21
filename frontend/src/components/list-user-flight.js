@@ -2,12 +2,10 @@ import React, { Component } from "react";
 // This will require to npm install axios
 import axios from 'axios';
 import { Col, Row } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {TextField, Button, InputLabel, MenuItem, Select, FormControl} from '@mui/material';
 
-const Record = (props) =>{ 
-const navigate = useNavigate();
-return (
+const Record = (props) => (
   <tr>
 
 <td>{props.record.FlightNumber}</td>
@@ -20,18 +18,23 @@ return (
     <td>{props.record.FirstSeats}</td>
     <td>{props.record.AirportTakeOff}</td> 
     <td>{props.record.AirportArrival}</td>
-    <td>{props.record.Price}</td>
-    <td>{props.record.BaggageAllowed}</td>
+    <td>{props.record.Price}</td> 
+    <td>{props.record.BaggageAllowed}</td> 
+
+
     <td>
     <Button size="small" variant="contained" color = "error" onClick={() => {
-           if (window.confirm('Are you sure you want to book this flight?')){
-            navigate('/flights/users/pick-seat', { state: { EconomySeatsMap: props.record.EconomySeatsMap? props.record.EconomySeatsMap: {}, BusinessSeatsMap: props.record.BusinessSeatsMap? props.record.BusinessSeatsMap : {}, FirstSeatsMap: props.record.FirstSeatsMap?props.record.FirstSeatsMap: {}} });
-           }
-        }}>Confirm Flight</Button>
+           if (window.confirm('Are you sure you want to choose this flight?')) 
+           sessionStorage.setItem("DepartureFlightNumber", props.record.FlightNumber);
+           sessionStorage.setItem("airportTakeoff", props.record.AirportTakeOff);
+           sessionStorage.setItem("airportArrival", props.record.AirportArrival);
+
+           window.location.replace("http://localhost:3000/flights/users/pick-seat");
+           
+        }}>Confirm Departure</Button>
     </td>
   </tr>
 );
-      }
 
 
 export default class ListUserFlights extends Component {
@@ -164,6 +167,7 @@ export default class ListUserFlights extends Component {
     this.getFlights();
     
   }
+
 
 
   // This method will map out the users on the table

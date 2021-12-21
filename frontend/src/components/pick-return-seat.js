@@ -3,7 +3,9 @@ import React, {useState} from 'react';
 import Seats from './Seats';
 var airportTakeoff= sessionStorage.getItem("airportTakeoff");
 var airportArrival= sessionStorage.getItem("airportArrival");
+var ReturnFlightNumber= sessionStorage.getItem("ReturnFlightNumber");
 
+console.log(ReturnFlightNumber);
 console.log(airportTakeoff);
 console.log(airportArrival);
 

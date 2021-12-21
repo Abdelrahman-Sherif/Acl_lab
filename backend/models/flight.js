@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const { ListGroup } = require('react-bootstrap');
 const Schema = mongoose.Schema;
 
 const flightSchema = new Schema({
