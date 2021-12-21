@@ -29,6 +29,27 @@ router.route('/getFiltered').get((req, res) => {
     
 });
 
+router.route('/getFilteredReturn').get((req, res) => {
+  let newParams = {};
+  for (const [key, value] of Object.entries(req.query)) {
+    if(['FlightNumber', 'AirportTakeOff', 'AirportArrival'].includes(key)){
+      // Check if substring matches
+      newParams[key] = {$regex : "^" + value};
+    }
+    else{
+      newParams[key] = value;
+    }
+  }
+
+  Flight.find(newParams)
+    .then((flight) => {
+      console.log(flight);
+      res.json(flight);
+    })
+    .catch(err => res.status(400).json('Error: ' + err));
+   
+    
+});
 
 
 router.route('/add').post((req, res) => {
