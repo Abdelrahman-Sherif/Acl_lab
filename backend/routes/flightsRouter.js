@@ -29,16 +29,12 @@ router.route('/getFiltered').get((req, res) => {
     
 });
 
-router.route('/getFilteredReturn').get((req, res) => {
+router.route('/getFilteredFlight').get((req, res) => {
   let newParams = {};
   for (const [key, value] of Object.entries(req.query)) {
-    if(['FlightNumber', 'AirportTakeOff', 'AirportArrival'].includes(key)){
-      // Check if substring matches
-      newParams[key] = {$regex : "^" + value};
-    }
-    else{
+    
       newParams[key] = value;
-    }
+    
   }
 
   Flight.find(newParams)
