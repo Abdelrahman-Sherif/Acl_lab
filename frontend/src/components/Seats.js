@@ -6,8 +6,8 @@ const Seats = (props) => {
 
     return (
       <div class="section">
-          {props.values.map(seat => {
-              const isAvailable = props.availableSeats.includes(seat);
+          {Array.from(props.values.entries()).map(seat => {
+              const isAvailable = !seat.booked;
               const isBooked = props.bookedSeats.includes(seat);
               let seatClass;
               if(!isAvailable) {

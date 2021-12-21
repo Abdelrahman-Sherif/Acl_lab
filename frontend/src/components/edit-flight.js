@@ -93,12 +93,9 @@ export default class EditFlight extends Component {
     var fetchedFlightId = /[^/]*$/.exec(url)[0];
     this.state.flightId = fetchedFlightId;
     this.getFlight(this.state.flightId);
-
   }
 
-
   validate() {
-
     this.setState({
       FlightNumberError: this.state.FlightNumber ? "" : "error"
     })

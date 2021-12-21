@@ -1,13 +1,9 @@
 
 import React, {useState} from 'react';
+import { useLocation } from 'react-router-dom';
 import Seats from './Seats';
-var airportTakeoff= sessionStorage.getItem("airportTakeoff");
-var airportArrival= sessionStorage.getItem("airportArrival");
-var DepartureFlightNumber= sessionStorage.getItem("DepartureFlightNumber");
+import axios from 'axios';
 
-console.log(airportTakeoff);
-console.log(airportArrival);
-console.log(DepartureFlightNumber);
 
 const BookMySeats = () => {
   const {state} = useLocation();
@@ -45,11 +41,18 @@ const BookMySeats = () => {
                return prevState + seat + ' ';
            })
       });
-      const newAvailableSeats = availableSeats.filter(seat => !bookedSeats.includes(seat));
-      setAvailableSeats(newAvailableSeats);
+      const newAvailableEcoSeats = ecoSeats.filter(seat => !bookedSeats.includes(seat));
+      const newAvailableBusSeats = busSeats.filter(seat => !bookedSeats.includes(seat));
+      const newAvailableFirSeats = firSeats.filter(seat => !bookedSeats.includes(seat));
+      setEcoSeats(newAvailableEcoSeats);
+      setBusSeats(newAvailableBusSeats);
+      setFirSeats(newAvailableFirSeats);
+
       setBookedSeats([]);
       setNumberOfSeats(0);
   };
+
+  
   const [numberOfSeats, setNumberOfSeats] = useState(0);
 
   return (
@@ -60,28 +63,23 @@ const BookMySeats = () => {
               <br />
             <h5> Available First Class Seats </h5>
                 </body>        
-                    <Seats values={firstClassSeats}
-                   availableSeats={availableSeats}
+                    <Seats values={firSeats}
                    bookedSeats={bookedSeats}
                    addSeat={addSeat}/>
           <body>
               <br />
             <h5> Available Business Class Seats </h5>
                 </body>  
-            <Seats values={BusinessClassSeats}
-                   availableSeats={availableSeats}
+            <Seats values={busSeats}
                    bookedSeats={bookedSeats}
                    addSeat={addSeat}/>           
             <body>
               <br />
             <h5> Available Economy Class Seats </h5>
                 </body>  
-            <Seats values={economySeats}
-                   availableSeats={availableSeats}
+            <Seats values={ecoSeats}
                    bookedSeats={bookedSeats}
                    addSeat={addSeat}/>
-
-           
                    <button onClick={confirmBooking}>Book seats</button>
             <p>{bookedStatus}</p>
         </React.Fragment>
