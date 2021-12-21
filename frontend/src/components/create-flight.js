@@ -10,10 +10,6 @@ const styles = {
   fontSize: "16px"
 };
 
-
-
-
-
 export default class CreateFlight extends Component {
   constructor(props) {
     super(props);
@@ -45,7 +41,7 @@ export default class CreateFlight extends Component {
       FirstSeats: 0,
       AirportArrival: "",
       AirportTakeOff: "",
-      BaggageAllowed: Boolean(true),
+      BaggageAllowed: "Yes",
 
       FlightNumberError: "",
       DepartureTimeError: "",
@@ -311,7 +307,7 @@ export default class CreateFlight extends Component {
 
         AirportArrival: "",
         AirportTakeOff: "",
-        BaggageAllowed: Boolean(true),
+        BaggageAllowed: "Yes",
         FlightNumberError: "",
         DepartureTimeError: "",
         ArrivalTimeError: "",
@@ -425,6 +421,12 @@ export default class CreateFlight extends Component {
             shrink: true,
           }} error= {this.state.FirstSeatsError? true : false}/>
             </div>
+
+            <div>
+              <TextField label="Departure" value={this.state.AirportTakeOff} variant="outlined" size="small" type="text" required style={{width:300}} onChange={this.onChangeAirportTakeOff} margin="normal"  InputLabelProps={{
+            shrink: true,
+          }} error= {this.state.AirportTakeOffError? true : false}/>
+            </div>
   
             <div>
               <TextField label="Destination" value={this.state.AirportArrival} variant="outlined" size="small" type="text" required style={{width:300}} onChange={this.onChangeAirportArrival} margin="normal"  InputLabelProps={{
@@ -432,18 +434,6 @@ export default class CreateFlight extends Component {
           }} error= {this.state.AirportArrivalError? true : false}/>
             </div>
             
-              
-              
-              
-            
-            <div>
-              <TextField label="Departure" value={this.state.AirportTakeOff} variant="outlined" size="small" type="text" required style={{width:300}} onChange={this.onChangeAirportTakeOff} margin="normal"  InputLabelProps={{
-            shrink: true,
-          }} error= {this.state.AirportTakeOffError? true : false}/>
-           {this.state.errorMessage &&
-              <h5 style={styles} className="error"> {this.state.errorMessage} </h5>}
-
-            </div>
             <FormControl style={{minWidth: 300}}>
   <InputLabel id="demo-simple-select-label">Baggage Allowed</InputLabel>
   
@@ -453,13 +443,15 @@ export default class CreateFlight extends Component {
     value={this.state.BaggageAllowed}
     onChange={this.onChangeBaggageAllowed}
 
-    label="Age"
+    label="Baggage Allowed"
   >    
 
-    <MenuItem value={true}>YES</MenuItem>
-    <MenuItem value={false}>NO</MenuItem>
+    <MenuItem value="Yes">Yes</MenuItem>
+    <MenuItem value="No">No</MenuItem>
   </Select>
 </FormControl>
+{this.state.errorMessage &&
+              <h5 style={styles} className="error"> {this.state.errorMessage} </h5>}
   
             <Button variant="contained" color = "primary" onClick = {this.onSubmit.bind(this)}>Add Flight </Button>
         </div>

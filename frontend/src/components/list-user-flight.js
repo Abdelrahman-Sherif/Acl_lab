@@ -16,9 +16,10 @@ const Record = (props) => (
     <td>{props.record.EconomySeats}</td>
     <td>{props.record.BusinessSeats}</td>
     <td>{props.record.FirstSeats}</td>
-    <td>{props.record.AirportArrival}</td>
     <td>{props.record.AirportTakeOff}</td> 
+    <td>{props.record.AirportArrival}</td>
     <td>{props.record.Price}</td> 
+    <td>{props.record.BaggageAllowed}</td> 
 
 
     <td>
@@ -57,7 +58,8 @@ export default class ListUserFlights extends Component {
       DateArrival: "",
       AirportArrival: "",
       AirportTakeOff: "", 
-      Cabin: ""
+      Cabin: "",
+      BaggageAllowed: true,
     };
   }
 
@@ -99,6 +101,8 @@ export default class ListUserFlights extends Component {
       Cabin: e.target.value
     })
   }
+
+
 
 
 
@@ -284,9 +288,10 @@ export default class ListUserFlights extends Component {
               <th>Economy Seats</th>
               <th>Business Seats</th>
               <th>First Seats</th>
-              <th>Destination</th>
               <th>Departure</th>
+              <th>Destination</th>
               <th>Price</th>
+              <th>Baggage Allowed</th>
 
             </tr>
           </thead>

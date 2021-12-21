@@ -12,16 +12,18 @@ var airportArrival= sessionStorage.getItem("airportArrival");
 const Record = (props) => (
   <tr>
 
-<td>{props.record.DepartureTime}</td>
+<td>{props.record.FlightNumber}</td>
+    <td>{props.record.DepartureTime}</td>
     <td>{props.record.ArrivalTime}</td>
     <td>{props.record.DateTakeoff}</td>
     <td>{props.record.DateArrival}</td>
     <td>{props.record.EconomySeats}</td>
     <td>{props.record.BusinessSeats}</td>
     <td>{props.record.FirstSeats}</td>
-    <td>{props.record.AirportArrival}</td>
     <td>{props.record.AirportTakeOff}</td> 
+    <td>{props.record.AirportArrival}</td>
     <td>{props.record.Price}</td> 
+    <td>{props.record.BaggageAllowed}</td>
 
 
     <td>
@@ -158,9 +160,10 @@ export default class ReturnFlights extends Component {
               <th>Economy Seats</th>
               <th>Business Seats</th>
               <th>First Seats</th>
-              <th>Destination</th>
               <th>Departure</th>
+              <th>Destination</th>
               <th>Price</th>
+              <th>Baggage Allowed</th>
 
             </tr>
           </thead>
