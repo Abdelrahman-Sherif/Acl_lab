@@ -29,7 +29,19 @@ router.route('/getFiltered').get((req, res) => {
     
 });
 
-
+const createSeats = (count, startIndex) => {
+  let i = 0;
+  const section = {};
+  while(i < count) {
+    let index = i+startIndex;
+    section.index = {
+      booked: false,
+    };
+    i++;
+  }
+  
+  return section;
+}
 
 router.route('/add').post((req, res) => {
   const FlightNumber = req.body.FlightNumber;
@@ -44,29 +56,28 @@ router.route('/add').post((req, res) => {
   const AirportArrival = req.body.AirportArrival;
   const AirportTakeOff = req.body.AirportTakeOff;
 
-  const EconomySeatsMap = createSeats(EconomySeats, 0);
-  const BusinessSeatsMap = createSeats(BusinessSeats, EconomySeats);
-  const FirstSeatsMap = createSeats(FirstSeats, BusinessSeats);
-
-  const createSeats = (count, startIndex) => {
-    let i = 0;
-    const section = {};
-    while(i < count) {
-      section.i = {
-        booked: false,
-      };
+  const EconomySeatsMap = {
+    0: {
+      booked: false,
     }
-    
-    return section;
-}
+  };
+
+  const BusinessSeatsMap = {};
+  const FirstSeatsMap = {};
+  
   const Price= Number(req.body.Price);
 
   const newFlight = new Flight({
-    FlightNumber , DepartureTime , ArrivalTime , DateTakeoff , DateArrival , EconomySeats , BusinessSeats , FirstSeats, AirportArrival , AirportTakeOff, BaggageAllowed, EconomySeatsMap, BusinessSeatsMap, FirstSeatsMap,Price
+    FlightNumber , DepartureTime , ArrivalTime , DateTakeoff , 
+    DateArrival , EconomySeats , BusinessSeats , FirstSeats, 
+    AirportArrival , AirportTakeOff, BaggageAllowed, 
+    EconomySeatsMap, BusinessSeatsMap, FirstSeatsMap,
+    Price
   });
 
+  console.log('print flight: ' + newFlight);
+
   if(Flight.where("FlightNumber").equals(FlightNumber).exec(function (err, data){
-    console.log(data);
     if(data.length>0){
       res.status(400).json('Error: ' + "An entry with this flight number already exists.");
     }

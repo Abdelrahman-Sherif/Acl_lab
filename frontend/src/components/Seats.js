@@ -2,10 +2,11 @@ import React from 'react';
 import  '../css/Seats.css';
 
 const Seats = (props) => {
+    console.log('aloo ' + props.values.keys());
 
     return (
       <div class="section">
-          {props.values.map(seat => {
+          {Array.from(props.values.entries()).map(seat => {
               const isAvailable = !seat.booked;
               const isBooked = props.bookedSeats.includes(seat);
               let seatClass;

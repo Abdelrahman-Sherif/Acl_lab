@@ -6,31 +6,14 @@ import axios from 'axios';
 
 
 const BookMySeats = () => {
-    const {state} = useLocation();
-  const {FlightID} = state;
+  const {state} = useLocation();
+  const {EconomySeatsMap, BusinessSeatsMap, FirstSeatsMap} = state;
   
   const [ecoSeats, setEcoSeats] = useState({});
   const [busSeats, setBusSeats] = useState({});
   const [firSeats, setFirSeats] = useState({});
   const [bookedSeats, setBookedSeats] = useState([]);
   const [bookedStatus, setBookedStatus] = useState('');
-
-  const getFlight = async ()=> {
-    await axios
-    .get("http://localhost:5000/flights/"+ FlightID)
-    .then((response) => {
-    const data = response.data;
-
-    if(data.EconomySeatsMap == undefined){
-        data.EconomySeatsMap = {};
-    }
-    setEcoSeats(data.EconomySeatsMap);
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
-  };
-  getFlight();
 
   const addSeat = (ev) => {
       if(numberOfSeats && !ev.target.className.includes('disabled')) {
