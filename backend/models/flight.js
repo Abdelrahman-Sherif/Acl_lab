@@ -29,6 +29,11 @@ const flightSchema = new Schema({
     required: true,
     minimum: 1,
   },
+  Price: {
+    type: Number,
+    required: true,
+    minimum: 1,
+  },
   BusinessSeats: {
     type: Number,
     required: true,
@@ -65,11 +70,6 @@ const flightSchema = new Schema({
   },
   FirstSeatsMap: {
     default: {},
-  },
-  Price: {
-    type: Number,
-    required: true,
-    minimum: 1,
   },
 }, { timestamps: true });
 

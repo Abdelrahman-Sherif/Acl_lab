@@ -25,7 +25,7 @@ return (
     <td>
     <Button size="small" variant="contained" color = "error" onClick={() => {
            if (window.confirm('Are you sure you want to book this flight?')){
-            navigate('/flights/users/pick-seat', { state: { EconomySeatsMap: props.record.EconomySeatsMap? props.record.EconomySeatsMap: {}, BusinessSeatsMap: props.record.BusinessSeatsMap? props.record.BusinessSeatsMap : {}, FirstSeatsMap: props.record.FirstSeatsMap?props.record.FirstSeatsMap: {}} });
+            navigate('/flights/users/pick-seat', { state: { FlightID: props.record._id,} });
            }
         }}>Confirm Flight</Button>
     </td>

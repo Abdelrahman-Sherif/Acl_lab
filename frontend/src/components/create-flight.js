@@ -286,7 +286,9 @@ export default class CreateFlight extends Component {
     AirportArrival: this.state.AirportArrival,
     AirportTakeOff: this.state.AirportTakeOff,
     Price: this.state.Price,
+
     };
+    console.log(newflight);
 
     await axios.post('http://localhost:5000/flights/add', newflight)
       .then(res =>{
