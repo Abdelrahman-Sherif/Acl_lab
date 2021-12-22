@@ -25,10 +25,11 @@ const Record = (props) => (
     <td>
     <Button size="small" variant="contained" color = "error" onClick={() => {
            if (window.confirm('Are you sure you want to choose this flight?')) 
+
            sessionStorage.setItem("DepartureFlightNumber", props.record.FlightNumber);
            sessionStorage.setItem("airportTakeoff", props.record.AirportTakeOff);
            sessionStorage.setItem("airportArrival", props.record.AirportArrival);
-
+            
            window.location.replace("http://localhost:3000/flights/users/pick-seat");
            
         }}>Confirm Departure</Button>

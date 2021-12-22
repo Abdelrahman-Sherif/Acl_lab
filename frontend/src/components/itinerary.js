@@ -27,9 +27,7 @@ const Record = (props) => (
     </tr>
   );
   
-  function isReturn(flight) {
-    return flight.FlightNumber==ReturnFlightNumber;
-  }
+  
   
 export default class MyItinerary extends Component {
     // This is the constructor that shall store our data retrieved from the database
@@ -92,6 +90,28 @@ export default class MyItinerary extends Component {
         Cabin: e.target.value
       })
     }
+
+
+    async addBooking(e) {
+      const newBooking = {
+        userID: "Aly",
+        DepflightNumber: DepartureFlightNumber,
+        ArrflightNumber: ReturnFlightNumber,
+        bookingID: "Aly"+DepartureFlightNumber+ReturnFlightNumber,
+  
+      };
+      //console.log(newBooking);
+  
+      await axios.post('http://localhost:5000/bookings/addBooking', newBooking)
+        .then(res =>{
+          console.log(res.data);
+          window.location = '/';
+        
+        })
+        
+      
+    }
+
   
     async getFilteredFlights(e){
       const filterParams = {
@@ -120,7 +140,7 @@ export default class MyItinerary extends Component {
       await axios
       .get("http://localhost:5000/flights/getFilteredFlightReturn", {params: filterParams})
       .then((response) => {
-        console.log("Getting Return flight: "+ response.data);
+        console.log("Getting Return: "+ response.data);
         this.setState({ records: response.data });
       })
       .catch(function (error) {
@@ -182,6 +202,13 @@ export default class MyItinerary extends Component {
         <Divider >
               <Button variant="contained" color = "primary" onClick = {this.getFilteredFlightsReturn.bind(this)
               }>Show Return Flight </Button>
+              
+                </Divider>
+                <Divider >
+                  
+              <Button variant="contained" color = "primary" onClick = {this.addBooking}
+              
+              >Confirm </Button>
               
                 </Divider>
   
