@@ -182,3 +182,22 @@ console.log("METHOD ACTIVE");
     }
   }
 };
+
+router.route('/update/:id').post((req, res) => {
+ 
+  User.findByIdAndUpdate(
+    { _id: req.params.id },
+    {
+    email : req.body.email ,
+    firstName  : req.body.firstName ,
+    lastName  : req.body.lastName ,
+    passportNumber  : req.body.passportNumber,
+    }
+     
+  )
+    .then(()=> {console.log("Updated User succesffully");
+  return res.status(200).json('Updated User successfully');})
+    .catch(err => {
+      console.log("Error finding User: " + err);
+      return res.status(400).json('Couldnt find User,Error: ' + err);});
+});

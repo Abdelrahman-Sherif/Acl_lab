@@ -2,11 +2,12 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
-  Admin:{
+  isAdmin:{
   type:Boolean,
   required: false,
   default: false,
   },
+
   email: {
     type: String,
     required: true,

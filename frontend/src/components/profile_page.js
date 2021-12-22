@@ -30,28 +30,16 @@ export default class ProfilePage extends Component {
     this.onSubmit = this.onSubmit.bind(this);
 
     this.state = {
-      FlightNumber: "",
-      DepartureTime: "",
-      ArrivalTime: "",
-      DateTakeoff: "",
-      DateArrival: "",
-      EconomySeats: 0,
-      BusinessSeats: 0,
-      FirstSeats: 0,
-      AirportArrival: "",
-      AirportTakeOff: "",
-      flightId: "",
+      userId: "",
+      email:"",
+      firstName:"",
+      lastName:"",
+      passportNumber:"",
 
-      FlightNumberError: "",
-      DepartureTimeError: "",
-      ArrivalTimeError: "",
-      DateTakeoffError: "",
-      DateArrivalError: "",
-      EconomySeatsError: "",
-      BusinessSeatsError: "",
-      FirstSeatsError: "",
-      AirportArrivalError: "",
-      AirportTakeOffError: "",
+      firstNameError: "",
+      lastNameError: "",
+      emailError: "",
+      passportNumberError: "",
       errorMessage: ""
     }
   }
@@ -61,20 +49,14 @@ export default class ProfilePage extends Component {
   ///Get user data, currently hardcoding to 1 until authentication is done next
   async getUser( userId) {
     await axios
-      .get("http://localhost:5000/users/" + "1")
+      .get("http://localhost:5000/users/" )
       .then((response) => {
-        console.log("User gotten from id: " + response.data);
+        console.log("User gotten: " + response.data.firstName);
         this.setState({
-          FlightNumber: response.data.FlightNumber,
-          DepartureTime: response.data.DepartureTime,
-          ArrivalTime: response.data.ArrivalTime,
-          DateTakeoff: response.data.DateTakeoff.substring(0,10),
-          DateArrival: response.data.DateArrival.substring(0,10),
-          EconomySeats: response.data.EconomySeats,
-          BusinessSeats: response.data.BusinessSeats,
-          FirstSeats: response.data.FirstSeats,
-          AirportArrival: response.data.AirportArrival,
-          AirportTakeOff: response.data.AirportTakeOff,
+          email: response.data.email,
+          firstName: response.data.firstName,
+          lastName: response.data.lastName,
+          passportNumber: response.data.passportNumber,
         });
         // console.log("Arrival date: " + this.state.DateArrival.);
       })
@@ -82,11 +64,37 @@ export default class ProfilePage extends Component {
         console.log(error);
       });
   }
+
+  // async getAllUsers(){
+
+  //   await axios
+  //   .get("http://localhost:5000/users/")
+  //   .then((response) => {
+  //     console.log("Users gotten: " + response.data._id);
+  //     this.setState({
+  //       email: response.data.email,
+  //       firstName: response.data.firstName,
+  //       lastName: response.data.lastName,
+  //       passportNumber: response.data.passportNumber,
+  //     });
+  //   })
+  //   .catch(function (error) {
+  //     console.log(error);
+  //   });
+
+  // }
   componentDidMount() {
-    var url = window.location.href;
-    var fetchedFlightId = /[^/]*$/.exec(url)[0];
-    this.state.flightId = fetchedFlightId;
-    this.getFlight(this.state.flightId);
+    ///Hardcoding user id for now to 1 till auth is setup
+    
+    // var url = window.location.href;
+    // var fetchedUserId = /[^/]*$/.exec(url)[0];
+    // this.state.userId = fetchedUserId;
+
+    // this.getAllUsers();
+  
+    //Current hardcoded user id
+    this.state.userId = "61c323a43bf21687300ddb0f";
+    this.getUser(this.state.userId);
 
   }
 
@@ -94,189 +102,111 @@ export default class ProfilePage extends Component {
   validate() {
 
     this.setState({
-      FlightNumberError: this.state.FlightNumber ? "" : "error"
+      emailError: this.state.email ? "" : "error"
     })
 
     this.setState({
-      DepartureTimeError: this.state.DepartureTime ? "" : "error"
+      firstNameError: this.state.firstName ? "" : "error"
     })
 
     this.setState({
-      ArrivalTimeError: this.state.ArrivalTime ? "" : "error"
+      lastNameError: this.state.lastName ? "" : "error"
     })
 
     this.setState({
-      DateTakeoffError: this.state.DateTakeoff ? "" : "error"
+      passportNumberError: this.state.passportNumber ? "" : "error"
     })
 
-    this.setState({
-      DateArrivalError: this.state.DateArrival ? "" : "error"
-    })
 
-    this.setState({
-      EconomySeatsError: this.state.EconomySeats <= 0 ? "error" : ""
-    })
-
-    this.setState({
-      BusinessSeatsError: this.state.BusinessSeats <= 0 ? "error" : ""
-    })
-
-    this.setState({
-      FirstSeatsError: this.state.FirstSeats <= 0 ? "error" : ""
-    })
-
-    this.setState({
-      AirportArrivalError: this.state.AirportArrival.length === 3 ? "" : "error"
-    })
-
-    this.setState({
-      AirportTakeOffError: this.state.AirportTakeOff.length === 3 ? "" : "error"
-    })
-
-    if (!this.state.FlightNumber || !this.state.DepartureTime || !this.state.ArrivalTime || !this.state.DateTakeoff
-      || !this.state.DateArrival || !this.state.EconomySeats || !this.state.BusinessSeats || !this.state.FirstSeats
-      || !this.state.AirportArrival || !this.state.AirportTakeOff) {
-      console.log(!this.state.FlightNumber, !this.state.DepartureTime, !this.state.ArrivalTime, !this.state.DateTakeoff
-        , !this.state.DateArrival, !this.state.EconomySeats, !this.state.BusinessSeats, !this.state.FirstSeats
-        , !this.state.AirportArrival, !this.state.AirportTakeOff)
+    if (!this.state.email || !this.state.firstName || !this.state.lastName || !this.state.passportNumber) {
+      
       console.log("emptyFields")
       this.setState({
         errorMessage: "Please fill all fields",
       });
       return false
     }
-    if (this.state.EconomySeats <= 0 || this.state.BusinessSeats < 0 || this.state.FirstSeats < 0) {
-      console.log("emptySeats")
+    if (this.state.email == "" ) {
+      console.log("Empty email")
       this.setState({
-        errorMessage: "Empty seats",
+        errorMessage: "Email must be given",
       });
 
       return false
     }
 
-    if (this.state.DateArrival < this.state.DateTakeoff) {
-      console.log("Take off date has to be before arrival date");
+    if (this.state.firstName == "" ) {
+      console.log("Empty firstName")
       this.setState({
-        DateArrivalError: "error",
-        errorMessage: "Take off date has to be before arrival date",
-      })
-      return false
-    }
-
-    if (this.state.AirportTakeOff.length !== 3 || this.state.AirportArrival.length !== 3) {
-      console.log("wrongLength")
-      this.setState({
-        AirportArrivalError: this.state.AirportArrival.length === 3 ? "" : "error",
-     
-        AirportTakeOffError: this.state.AirportTakeOff.length === 3 ? "" : "error",
-        errorMessage: "Wrong airport length (3 characters required)",
-      })
+        errorMessage: "First Name must be given",
+      });
 
       return false
     }
+    if (this.state.lastName == "" ) {
+      console.log("Empty lastName")
+      this.setState({
+        errorMessage: "Last Name must be given",
+      });
+
+      return false
+    }
+    if (this.state.passportNumber == "" ) {
+      console.log("Empty passport number")
+      this.setState({
+        errorMessage: "Passport Number must be given",
+      });
+
+      return false
+    }
+
 
     return true
   }
 
-  onChangeFlightNumber(e) {
+  onChangeEmail(e) {
     this.setState({
-      FlightNumber: e.target.value
+      email: e.target.value
     })
 
     this.setState({
-      FlightNumberError: ""
-    })
-
-  }
-
-  onChangeDepartureTime(e) {
-    this.setState({
-      DepartureTime: e.target.value
-    })
-
-    this.setState({
-      DepartureTimeError: ""
-    })
-  }
-
-  onChangeArrivalTime(e) {
-    this.setState({
-      ArrivalTime: e.target.value
-    })
-    this.setState({
-      ArrivalTimeError: ""
+      emailError: ""
     })
 
   }
 
-  onChangeDateTakeoff(e) {
-    console.log('Date changed to: ' + e.target.value);
+  onChangeFirstName(e) {
     this.setState({
-      DateTakeoff: e.target.value
+      firstName: e.target.value
     })
-    this.setState({
-      DateTakeoffError: ""
-    })
-  }
 
-  onChangeDateArrival(e) {
     this.setState({
-      DateArrival: e.target.value
-    })
-    this.setState({
-      DateArrivalError: ""
+      firstNameError: ""
     })
 
   }
-
-  onChangeEconomySeats(e) {
+  onChangeLastName(e) {
     this.setState({
-      EconomySeats: e.target.value
+      lastName: e.target.value
     })
-    this.setState({
-      EconomySeatsError: e.target.value <= 0 ? "error" : ""
 
+    this.setState({
+      lastNameError: ""
     })
+
+  }
+  onChangePassportNumber(e) {
+    this.setState({
+      passportNumber: e.target.value
+    })
+
+    this.setState({
+      passportNumberError: ""
+    })
+
   }
 
-  onChangeBusinessSeats(e) {
-    this.setState({
-      BusinessSeats: e.target.value
-    })
-    console.log(this.state.BusinessSeats)
-    this.setState({
-      BusinessSeatsError: e.target.value <= 0 ? "error" : ""
-    })
-  }
-
-
-  onChangeFirstSeats(e) {
-    this.setState({
-      FirstSeats: e.target.value
-    })
-
-    this.setState({
-      FirstSeatsError: e.target.value <= 0 ? "error" : ""
-    })
-  }
-
-  onChangeAirportArrival(e) {
-    this.setState({
-      AirportArrival: e.target.value
-    })
-    this.setState({
-      AirportArrivalError: e.target.value.length === 3 ? "" : "error"
-    })
-  }
-
-  onChangeAirportTakeOff(e) {
-    this.setState({
-      AirportTakeOff: e.target.value
-    })
-    this.setState({
-      AirportTakeOffError: e.target.value.length === 3 ? "" : "error"
-    })
-  }
+ 
 
   async onSubmit(e) {
     console.log(this.validate())
@@ -290,26 +220,24 @@ export default class ProfilePage extends Component {
       };
 
 
-      await axios.post('http://localhost:5000/users/update/' + this.state.userId, newflight)
+      await axios.post('http://localhost:5000/users/update/' + this.state.userId, updatedUser)
         .then(res => {
 
           console.log(res.data);
 
           window.location = '/flights/users/list';
 
-          this.setState = {
-            email: "",
-            firstName: "",
-            lastName: "",
-            passportNumber: "",
-            
-
-            emailError: "",
-            firstNameError: "",
-            lastNameError: "",
-            passportNumberError: "",
+          // this.setState = {
+          //   email: "",
+          //   firstName: "",
+          //   lastName: "",
+          //   passportNumber: "",
+          //   emailError: "",
+          //   firstNameError: "",
+          //   lastNameError: "",
+          //   passportNumberError: "",
     
-          }
+          // }
         })
         .catch((error) => {
           console.log(error);
@@ -333,26 +261,26 @@ export default class ProfilePage extends Component {
 
               <TextField label="Email" value={this.state.email} variant="outlined" size="small" type="text" required style={{ width: 300 }} onChange={this.onChangeEmail} margin="normal" InputLabelProps={{
                 shrink: true,
-              }} error={this.state.FlightNumberError ? true : false} />
+              }} error={this.state.emailError ? true : false} />
             </div>
 
             <div>
-              <TextField label="First Name" value={this.state.firstName} variant="outlined" size="small" type="time" required style={{ width: 300 }} onChange={this.onChangeFirstName} margin="normal" InputLabelProps={{
+              <TextField label="First Name" value={this.state.firstName} variant="outlined" size="small" type="text" required style={{ width: 300 }} onChange={this.onChangeFirstName} margin="normal" InputLabelProps={{
                 shrink: true,
-              }} error={this.state.DepartureTimeError ? true : false} />
+              }} error={this.state.firstNameError ? true : false} />
             </div>
 
             <div>
-              <TextField label="Last Name" value={this.state.lastName} variant="outlined" size="small" type="time" required style={{ width: 300 }} onChange={this.onChangeLastName} margin="normal" InputLabelProps={{
+              <TextField label="Last Name" value={this.state.lastName} variant="outlined" size="small" type="text" required style={{ width: 300 }} onChange={this.onChangeLastName} margin="normal" InputLabelProps={{
                 shrink: true,
-              }} error={this.state.ArrivalTimeError ? true : false} />
+              }} error={this.state.lastNameError ? true : false} />
             </div>
 
 
             <div>
-              <TextField label="Passport Number" value={this.state.passportNumber} variant="outlined" size="small" type="date" required style={{ width: 300 }} onChange={this.onChangePassportNumber} margin="normal" InputLabelProps={{
+              <TextField label="Passport Number" value={this.state.passportNumber} variant="outlined" size="small" type="text" required style={{ width: 300 }} onChange={this.onChangePassportNumber} margin="normal" InputLabelProps={{
                 shrink: true,
-              }} error={this.state.DateTakeoffError ? true : false} />
+              }} error={this.state.passportNumberError ? true : false} />
             </div>
 
             {this.state.errorMessage &&

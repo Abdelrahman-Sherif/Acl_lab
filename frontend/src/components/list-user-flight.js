@@ -194,6 +194,11 @@ export default class ListUserFlights extends Component {
       
       </Link>
       <Button variant="contained" color='primary' onClick={this.toggleFilter} style={{marginLeft:10}}>Filter Flights</Button>
+      <Link to='/flights/users/profile'>
+      <Button variant="contained" color='primary' style={{marginLeft:10}}> My Profile</Button>
+      
+      </Link>
+      
       
         
            <div style={this.state.showFilterMenu? {}: {display: 'none'}}>
@@ -299,11 +304,7 @@ export default class ListUserFlights extends Component {
           </thead>
           <tbody>{this.recordList()}</tbody>
         </table>
-        <Link to='/flights/user/profile'>
-      <Button variant="contained" color='primary'> My Profile</Button>
-      
-      </Link>
-      
+        
       </div>
     );
   }
