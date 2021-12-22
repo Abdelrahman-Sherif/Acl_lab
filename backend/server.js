@@ -26,13 +26,12 @@ app.use('/flights', flightsRouter);
 
 app.get("/users", (req, res) => {
       const Admin = new User({
-        Admin : true,
-        Email: "Admin@admin.com",
-        Password: "Password",
-        Age: 21,
-        BornIn: "Cairo",
-        Name: "Admin",
-        PhoneNumber: "01000",
+        isAdmin : true,
+    email: "Admin@admin.com",
+        password: "Password",
+    firstName: "Ahmed",
+    lastName: "Mohamed",
+    passportNumber: "1000",
       });
     Admin.save();
       res.send(Admin);

@@ -184,12 +184,13 @@ export default class ListUserFlights extends Component {
 
     return (
       <div>
-        <h3 style = {{marginBottom: 20, marginTop:10, marginLeft: 30}}>All Flights <Link to='/flights/user/itinerary'>
+        <h3 style = {{marginBottom: 20, marginTop:10, marginLeft: 30}}>All Flights </h3>
+        <Link to='/flights/user/itinerary'>
       <Button variant="contained" color='primary'>View My Flights</Button>
       
       </Link>
       <Button variant="contained" color='primary' onClick={this.toggleFilter} style={{marginLeft:10}}>Filter Flights</Button>
-      </h3>
+      
         
            <div style={this.state.showFilterMenu? {}: {display: 'none'}}>
           <form>
@@ -294,6 +295,11 @@ export default class ListUserFlights extends Component {
           </thead>
           <tbody>{this.recordList()}</tbody>
         </table>
+        <Link to='/flights/user/profile'>
+      <Button variant="contained" color='primary'> My Profile</Button>
+      
+      </Link>
+      
       </div>
     );
   }

@@ -4,35 +4,43 @@ const Schema = mongoose.Schema;
 const userSchema = new Schema({
   Admin:{
   type:Boolean,
-  required: true,
+  required: false,
   default: false,
   },
-
-  Email: {
+  email: {
     type: String,
     required: true,
   },
-  Password: {
-    type: String,
-    required: true
-  },
-  Age: {
-    type: Number,
-    required: true,
-  },
-  BornIn: {
-    type: String,
-    required: true
-  },
-  Name: {
-    type: String,
-    required: true
-  },
-  
-  PhoneNumber: {
+  password: {
     type: String,
     required: true
   }
+  ,
+  firstName: {
+    type: String,
+    required: true
+  },
+  lastName: {
+    type: String,
+    required: true
+  },
+  passportNumber: {
+    type: String,
+    required: true
+  },
+  address: {
+    type: String,
+    required: false
+  },
+  countryCode: {
+    type: String,
+    required: false
+  },
+  phoneNumber: {
+    type: String,
+    required: false
+  },
+  
 }, { timestamps: true });
 
 const user = mongoose.model('user', userSchema);
