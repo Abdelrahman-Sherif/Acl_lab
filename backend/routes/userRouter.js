@@ -1,5 +1,6 @@
 
 const router = require('express').Router();
+const Flight = require('../models/flight');
 let User = require('../models/user');
 
 
@@ -191,6 +192,9 @@ router.route('/get').get((req, res) => {
     .then(user => res.json(user))
     .catch(err => res.status(400).json('Error: ' + err));
 });
+
+
+
 
 // router.route('/delete').deleteMany((req, res) => {
 //   User.deleteMany({})
