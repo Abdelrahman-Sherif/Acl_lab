@@ -20,22 +20,24 @@ mongoose.connection.on('connected', () => console.log('Connected to DB'));
 mongoose.connection.on('error', (err) => console.log('Connection failed with - ',err));
 
 const flightsRouter = require('./routes/flightsRouter');
+const userRouter = require('./routes/userRouter');
 const Flight = require('./models/flight');
 const User = require('./models/user');
 app.use('/flights', flightsRouter);
+app.use('/users', userRouter);
 
-app.get("/users", (req, res) => {
-      const Admin = new User({
-        isAdmin : true,
-    email: "Admin@admin.com",
-        password: "Password",
-    firstName: "Ahmed",
-    lastName: "Mohamed",
-    passportNumber: "1000",
-      });
-    Admin.save();
-      res.send(Admin);
-    })
+// app.get("/users", (req, res) => {
+//       const Admin = new User({
+//         isAdmin : true,
+//     email: "Admin@admin.com",
+//         password: "Password",
+//     firstName: "Ahmed",
+//     lastName: "Mohamed",
+//     passportNumber: "1000",
+//       });
+//     Admin.save();
+//       res.send(Admin);
+//     })
 
 
 app.listen(port, () => {

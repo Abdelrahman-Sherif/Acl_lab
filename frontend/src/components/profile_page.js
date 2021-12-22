@@ -49,7 +49,34 @@ export default class ProfilePage extends Component {
   ///Get user data, currently hardcoding to 1 until authentication is done next
   async getUser( userId) {
     await axios
-      .get("http://localhost:5000/users/" )
+      .get("http://localhost:5000/users/"+ this.state.userId )
+      .then((response) => {
+        console.log("User gotten: " + JSON.stringify(response.data));
+        this.setState({
+          email: response.data.email,
+          firstName: response.data.firstName,
+          lastName: response.data.lastName,
+          passportNumber: response.data.passportNumber,
+        });
+        // console.log("Arrival date: " + this.state.DateArrival.);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
+
+  async addUser() {
+    const newUser = {
+      isAdmin : true,
+      email: "Admin@admin.com",
+          password: "Password",
+      firstName: "Ahmed",
+      lastName: "Mohamed",
+      passportNumber: "1000",
+    }
+    console.log("Adding user");
+    await axios
+      .post("http://localhost:5000/users/add",newUser)
       .then((response) => {
         console.log("User gotten: " + response.data.firstName);
         this.setState({
@@ -65,24 +92,26 @@ export default class ProfilePage extends Component {
       });
   }
 
-  // async getAllUsers(){
+ 
 
-  //   await axios
-  //   .get("http://localhost:5000/users/")
-  //   .then((response) => {
-  //     console.log("Users gotten: " + response.data._id);
-  //     this.setState({
-  //       email: response.data.email,
-  //       firstName: response.data.firstName,
-  //       lastName: response.data.lastName,
-  //       passportNumber: response.data.passportNumber,
-  //     });
-  //   })
-  //   .catch(function (error) {
-  //     console.log(error);
-  //   });
+  async getAllUsers(){
 
-  // }
+    await axios
+    .get("http://localhost:5000/users/get")
+    .then((response) => {
+      console.log("Users gotten: " + JSON.stringify(response.data));
+      this.setState({
+        email: response.data.email,
+        firstName: response.data.firstName,
+        lastName: response.data.lastName,
+        passportNumber: response.data.passportNumber,
+      });
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+
+  }
   componentDidMount() {
     ///Hardcoding user id for now to 1 till auth is setup
     
@@ -91,9 +120,12 @@ export default class ProfilePage extends Component {
     // this.state.userId = fetchedUserId;
 
     // this.getAllUsers();
+    //this.addUser();
+
   
     //Current hardcoded user id
-    this.state.userId = "61c323a43bf21687300ddb0f";
+    this.state.userId = "61c347f18128719139d8a8c7";
+  
     this.getUser(this.state.userId);
 
   }
