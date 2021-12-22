@@ -210,6 +210,9 @@ export default class RecordList extends Component {
       <Button variant="contained" color='primary'>Add Flight</Button>
       </Link>
       <Button variant="contained" color='primary' onClick={this.toggleFilter} style={{marginLeft:10}}>Filter Flights</Button>
+      <Link to='/flights/users/list'>
+      <Button variant="contained" color='primary'style={{marginLeft:10}} >User Portal</Button>
+      </Link>
       </h3>
         
            <div style={this.state.showFilterMenu? {}: {display: 'none'}}>

@@ -4,8 +4,11 @@ import {Divider, Chip, Button} from '@mui/material';
 var ReturnFlightNumber= sessionStorage.getItem("ReturnFlightNumber");
 var DepartureFlightNumber= sessionStorage.getItem("DepartureFlightNumber");
 
+   
+
 console.log(ReturnFlightNumber);
 console.log(DepartureFlightNumber);
+
 
 
 
@@ -34,13 +37,7 @@ export default class MyItinerary extends Component {
     constructor(props) {
       super(props);
    
-      this.onChangePassangers = this.onChangePassangers.bind(this);
-      this.onChangeDateTakeoff = this.onChangeDateTakeoff.bind(this);
-      this.onChangeDateArrival = this.onChangeDateArrival.bind(this);
-      this.onChangeAirportArrival = this.onChangeAirportArrival.bind(this);
-      this.onChangeAirportTakeOff = this.onChangeAirportTakeOff.bind(this);
-      this.onChangeCabin = this.onChangeCabin.bind(this);
-  
+    
       this.state = { 
         records: [],
         Passangers: "",
@@ -52,52 +49,16 @@ export default class MyItinerary extends Component {
       };
     }
   
-    onChangePassangers(e) {
-      this.setState({
-        Passangers: e.target.value
-      });
-    }
-  
-  
-    onChangeDateTakeoff(e) {
-      this.setState({
-        DateTakeoff: e.target.value
-      })
-    }
    
-  
-    onChangeDateArrival(e) {
-      this.setState({
-        DateArrival: e.target.value
-      })
-    }
-  
-  
-    onChangeAirportArrival(e) {
-      this.setState({
-        AirportArrival: e.target.value
-      })
-    }
-  
-    onChangeAirportTakeOff(e) {
-      this.setState({
-        AirportTakeOff: e.target.value
-      })
-    }
-  
-    onChangeCabin(e) {
-      this.setState({
-        Cabin: e.target.value
-      })
-    }
 
 
     async addBooking(e) {
+      console.log("Adding booking")
       const newBooking = {
-        userID: "Aly",
-        DepflightNumber: DepartureFlightNumber,
-        ArrflightNumber: ReturnFlightNumber,
-        bookingID: "Aly"+DepartureFlightNumber+ReturnFlightNumber,
+        userId: "61c347f18128719139d8a8c7",
+        depFlightNumber: DepartureFlightNumber,
+        arrFlightNumber: ReturnFlightNumber,
+        bookingId: "61c347f18128719139d8a8c7"+DepartureFlightNumber+ReturnFlightNumber,
   
       };
   
@@ -107,6 +68,8 @@ export default class MyItinerary extends Component {
           window.alert("Booking Added!");
           window.location = '/flights/users/list';
         
+        }).catch(err=> {
+          console.log("Booking confirmation error: "+ err);
         })
         
       
@@ -131,6 +94,7 @@ export default class MyItinerary extends Component {
       });
     }
     async getFilteredFlightsReturn(e){
+      console.log("Getting return flight, number: "+ ReturnFlightNumber);
       const filterParams = {
        
         FlightNumber: ReturnFlightNumber
@@ -147,17 +111,13 @@ export default class MyItinerary extends Component {
         console.log(error);
       });
     }
-    ///Get updated flights
-    
-   
-  
-   
-  
+
     // This method will get the data from the database.
     componentDidMount() {
       this.getFilteredFlights();
     }
-  
+
+   
     // This method will map out the users on the table
     recordList() {
       return this.state.records.map((currentrecord) => {
@@ -206,7 +166,7 @@ export default class MyItinerary extends Component {
                 </Divider>
                 <Divider >
                   
-              <Button variant="contained" color = "primary" onClick = {this.addBooking}
+              <Button variant="contained" color = "primary" onClick = {this.addBooking.bind(this)}
               
               >Confirm </Button>
               

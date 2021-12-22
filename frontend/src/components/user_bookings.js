@@ -24,14 +24,13 @@ const Record = (props) => (
 
     <td>
     <Button size="small" variant="contained" color = "error" onClick={() => {
-           if (window.confirm('Are you sure you want to choose this flight?')) 
-           sessionStorage.setItem("DepartureFlightNumber", props.record.FlightNumber);
-           sessionStorage.setItem("airportTakeoff", props.record.AirportTakeOff);
-           sessionStorage.setItem("airportArrival", props.record.AirportArrival);
+           if (window.confirm('Are you sure you want to delete this booking?')) {
+               this.deleteBooking();
+           }
 
-           window.location.replace("http://localhost:3000/flights/users/pick-seat");
            
-        }}>Confirm Departure</Button>
+           
+        }}>Delete Booking</Button>
     </td>
   </tr>
 );
@@ -70,6 +69,7 @@ export default class UserBookings extends Component {
 
   ///Get updated flights
   async getUserBookings(){
+      console.log("Getting users bookings");
     await axios
     .get("http://localhost:5000/bookings/getUserBookings")
     .then((response) => {
@@ -85,6 +85,7 @@ export default class UserBookings extends Component {
 
   // This method will get the data from the database.
   componentDidMount() {
+    console.log("Getting users bookings");
     this.getUserBookings();
   }
 
@@ -120,12 +121,7 @@ export default class UserBookings extends Component {
 
     return (
       <div>
-        <h3 style = {{marginBottom: 20, marginTop:10, marginLeft: 30}}>All Flights </h3>
-        <Link to='/flights/user/itinerary'>
-      <Button variant="contained" color='primary'>View My Flights</Button>
-      
-      </Link>
-      <Button variant="contained" color='primary' onClick={this.toggleFilter} style={{marginLeft:10}}>Filter Flights</Button>
+        <h3 style = {{marginBottom: 20, marginTop:10, marginLeft: 30}}>My Bookings </h3>
       <Link to='/flights/users/profile'>
       <Button variant="contained" color='primary' style={{marginLeft:10}}> My Profile</Button>
       
@@ -139,7 +135,7 @@ export default class UserBookings extends Component {
 
           <Col>
           <div className="form-group">
-              <TextField label="Number of Passangers" style={{display: "flex", marginRight: 10}} value={this.state.Passangers} variant="outlined" size="small" type="number" required onChange={this.onChangePassangers} margin="normal"  InputLabelProps={{
+              <TextField label="Arrival Flight number" style={{display: "flex", marginRight: 10}} value={this.state.Passangers} variant="outlined" size="small" type="number" required onChange={this.onChangePassangers} margin="normal"  InputLabelProps={{
             shrink: true,
           }}/>
             </div>
@@ -149,7 +145,7 @@ export default class UserBookings extends Component {
             <Col style = {{marginBottom: 30,}}>
               <Col>
               <div className="form-group">
-              <TextField label="Departure Date" style={{display: "flex", marginRight: 10}} value={this.state.DateTakeoff} variant="outlined" size="small" type="date" required onChange={this.onChangeDateTakeoff} margin="normal"  InputLabelProps={{
+              <TextField label="Departure Flight number" style={{display: "flex", marginRight: 10}} value={this.state.DateTakeoff} variant="outlined" size="small" type="date" required onChange={this.onChangeDateTakeoff} margin="normal"  InputLabelProps={{
             shrink: true,
           }} />
             </div>
@@ -162,18 +158,12 @@ export default class UserBookings extends Component {
           }}/>
             </div>
             </Col>
-            <Col></Col>
+            
             </Col>
 
   
             <Col style = {{marginBottom: 30,}}>
-            <Col>
-          <div className="form-group">
-          <TextField label="Departure" style={{display: "flex"}} value={this.state.AirportTakeOff} variant="outlined" size="small" type="text" required onChange={this.onChangeAirportTakeOff} margin="normal"  InputLabelProps={{
-            shrink: true,
-          }} />
-            </div>
-          </Col>
+            
               <Col>
               <div className="form-group">
               <TextField label="Destination" style={{display: "flex"}} value={this.state.AirportArrival} variant="outlined" size="small" type="text" required onChange={this.onChangeAirportArrival} margin="normal"  InputLabelProps={{
@@ -206,31 +196,16 @@ export default class UserBookings extends Component {
             </form>
             <div class='col text-center'>
               <Row>
-                <Col>
-              <Button variant="contained" color = "primary" onClick = {this.getFlights.bind(this)}>Clear Filters </Button>
-              </Col>
-              <Col>
-              <Button variant="contained" color = "primary" onClick = {this.getFilteredFlights.bind(this)
-              }>Search </Button>
-              </Col>
+               
               </Row>
             </div>
             </div>
         <table className="table table-striped" style={{ marginTop: 20}}>
           <thead>
             <tr>
-            <th>Flight Number</th>
-              <th>Departure Time</th>
-              <th>Arrival Time</th>
-              <th>Takeoff Date</th>
-              <th>Arrival Date</th>
-              <th>Economy Seats</th>
-              <th>Business Seats</th>
-              <th>First Seats</th>
-              <th>Departure</th>
-              <th>Destination</th>
-              <th>Price</th>
-              <th>Baggage Allowed</th>
+            <th>Arr Flight Number</th>
+            <th>Dep Flight Number</th>
+            <th>Booking ID </th>
 
             </tr>
           </thead>

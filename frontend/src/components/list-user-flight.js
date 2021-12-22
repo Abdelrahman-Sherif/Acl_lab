@@ -199,6 +199,10 @@ export default class ListUserFlights extends Component {
       <Button variant="contained" color='primary' style={{marginLeft:10}}> My Profile</Button>
       
       </Link>
+      <Link to='/flights/users/bookings'>
+      <Button variant="contained" color='primary' style={{marginLeft:10}}>My Bookings</Button>
+    
+      </Link>
       
       
         
