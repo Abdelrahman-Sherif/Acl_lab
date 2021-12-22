@@ -7,6 +7,8 @@ router.route('/get').get((req, res) => {
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
+
+
 router.route('/getFiltered').get((req, res) => {
   let newParams = {};
   for (const [key, value] of Object.entries(req.query)) {
@@ -47,6 +49,23 @@ router.route('/getFilteredFlight').get((req, res) => {
     
 });
 
+router.route('/getFilteredFlightReturn').get((req, res) => {
+  let newParams = {};
+  for (const [key, value] of Object.entries(req.query)) {
+    
+      newParams[key] = value;
+    
+  }
+
+  Flight.find(newParams)
+    .then((flight) => {
+      console.log(flight);
+      res.json(flight);
+    })
+    .catch(err => res.status(400).json('Error: ' + err));
+   
+    
+});
 
 router.route('/add').post((req, res) => {
   const FlightNumber = req.body.FlightNumber;
@@ -60,26 +79,11 @@ router.route('/add').post((req, res) => {
   const BaggageAllowed= req.body.BaggageAllowed;
   const AirportArrival = req.body.AirportArrival;
   const AirportTakeOff = req.body.AirportTakeOff;
-
-  const EconomySeatsMap = createSeats(EconomySeats, 0);
-  const BusinessSeatsMap = createSeats(BusinessSeats, EconomySeats);
-  const FirstSeatsMap = createSeats(FirstSeats, BusinessSeats);
-
-  const createSeats = (count, startIndex) => {
-    let i = 0;
-    const section = {};
-    while(i < count) {
-      section.i = {
-        booked: false,
-      };
-    }
-    
-    return section;
-}
   const Price= Number(req.body.Price);
 
   const newFlight = new Flight({
-    FlightNumber , DepartureTime , ArrivalTime , DateTakeoff , DateArrival , EconomySeats , BusinessSeats , FirstSeats, AirportArrival , AirportTakeOff, BaggageAllowed, EconomySeatsMap, BusinessSeatsMap, FirstSeatsMap,Price
+    FlightNumber , DepartureTime , ArrivalTime , DateTakeoff , DateArrival , EconomySeats , BusinessSeats , FirstSeats, AirportArrival , AirportTakeOff, BaggageAllowed, Price
+
   });
 
   if(Flight.where("FlightNumber").equals(FlightNumber).exec(function (err, data){

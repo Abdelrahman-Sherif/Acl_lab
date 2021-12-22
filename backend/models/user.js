@@ -2,20 +2,17 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
-  Admin:{
+  isAdmin:{
   type:Boolean,
   required: false,
   default: false,
   },
+
   email: {
     type: String,
     required: true,
   },
-  password: {
-    type: String,
-    required: true
-  }
-  ,
+  
   firstName: {
     type: String,
     required: true
@@ -27,6 +24,10 @@ const userSchema = new Schema({
   passportNumber: {
     type: String,
     required: true
+  },
+  password: {
+    type: String,
+    required: false
   },
   address: {
     type: String,

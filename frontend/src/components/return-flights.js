@@ -4,6 +4,8 @@ import axios from 'axios';
 import { Col, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import {TextField, Button, InputLabel, MenuItem, Select, FormControl} from '@mui/material';
+
+
 var airportTakeoff= sessionStorage.getItem("airportTakeoff");
 var airportArrival= sessionStorage.getItem("airportArrival");
 
@@ -24,11 +26,11 @@ const Record = (props) => (
     <td>{props.record.AirportArrival}</td>
     <td>{props.record.Price}</td> 
     <td>{props.record.BaggageAllowed}</td>
-
-
     <td>
     <Button size="small" variant="contained" color = "error" onClick={() => {
-           if (window.confirm('Are you sure you want to choose this flight?')) window.location.replace("http://localhost:3000/flights/users/pick-return-seat") ;
+           if (window.confirm('Are you sure you want to choose this flight?'))
+           sessionStorage.setItem("ReturnFlightNumber", props.record.FlightNumber);
+           window.location.replace("http://localhost:3000/flights/users/pick-return-seat") ;
         }}>Confirm Return</Button>
     </td>
   </tr>

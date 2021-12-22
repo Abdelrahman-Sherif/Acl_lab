@@ -1,103 +1,63 @@
-let Booking = require("../models/booking");
-let User = require("../models/user");
-let Flight = require("../models/flight");
-require("dotenv").config();
+const router = require('express').Router();
+let Booking = require('../models/booking');
 
+router.route('/getBookings').get((req, res) => {
+  Booking.find()
+    .then(booking => res.json(booking))
+    .catch(err => res.status(400).json('Error: ' + err));
+});
 
+router.route('/getUserBookings').get((req, res) => {
+  ///Hardcoding userId till auth is complete
+  Booking.find().where("userId").equals("61c347f18128719139d8a8c7")
+    .then(booking => res.json(booking))
+    .catch(err => res.status(400).json('Error: ' + err));
+});
 
-module.exports = {
-  getAllBookings: async (req, res, next) => {
-    const bookings = await Booking.find().populate("flight").populate("user");
-    res.status(200).json(bookings);
-  },
-
- addNewBooking: async (req, res, next) => {
-    const userId = req.body.user;
-    const flightId = req.body.flight;
-    console.log(userId, flightId);
-    // const newBooking = new Booking({ userId, flightId });
-    // const booking = await newBooking.save();
-    const flight = await Flight.findById(flightId);
-    const user = await User.findById(userId);
-    let bookingId = customId({
-      name: flight.from + flight.to + flight.airlines,
-      email: user.firstName + user.lastName,
+router.route('/delete/:id').delete((req, res) => {
+  Booking.findByIdAndDelete(req.params.id).then(booking => res.json('Booking deleted Successfully'))
+    .catch(err => {
+      console.log(err);
     });
-    console.log(bookingId);
-    user.flights.push(flight);
-    await user.save();
+});
 
-    const newBooking = new Booking({ bookingId, flight, user });
-    const booking = await newBooking.save();
-    console.log(booking);
-    res.status(201).json(booking);
-  },
 
-  cancelBooking: async (req, res, next) => {
-    const { bookingId } = req.params;
-    const booking = await Booking.findById(bookingId);
-    const userId = booking.user;
-    const flightId = booking.flight;
-    console.log(bookingId, userId, flightId);
-    const result = await Booking.findByIdAndDelete(bookingId);
-    const user = await User.findById(userId);
-    const flight = await Flight.findById(flightId);
-    user.flights.pull(flight);
-    await user.save();
-    res.status(200).json({ success: "true" });
-  },
 
-  getUserDetailBookings: async (req, res, next) => {
-    const { userDetailId } = req.params;
-    const bookings = await Booking.find({ user: userDetailId })
-      .populate("flight")
-      .populate("user");
-    res.status(200).json(bookings);
-  },
 
-  payment: async (req, res, next) => {
-    console.log(req.body.fare);
-    const payment_capture = 1;
-    const amount = req.body.fare * 100;
-    console.log(amount);
-    const currency = "INR";
-    const receipt = shortid.generate();
-    try {
-      const response = await instance.orders.create({
-        amount,
-        currency,
-        receipt,
-        payment_capture,
-      });
-      console.log(response);
-      res.status(200).json({
-        id: response.id,
-        currency: response.currency,
-        amount: response.amount,
-      });
-    } catch (error) {
-      console.log(error);
+
+
+
+
+
+
+router.route('/addBooking').post((req, res) => {
+
+  const userID = req.body.userID;
+  const DepflightNumber = req.body.DepflightNumber;
+  const ArrflightNumber = req.body.ArrflightNumber;
+  let bookingID = userID+DepflightNumber+ArrflightNumber;
+  
+
+  const newBooking = new Booking({
+    userID , DepflightNumber ,  ArrflightNumber, bookingID
+
+  });
+  console.log(newBooking);
+  console.log(bookingID);
+
+  if(Booking.where("bookingID").equals(bookingID).exec(function (err, data){
+    console.log(data);
+    if(data.length>0){
+      res.status(400).json('Error: ' + "This Booking Already exists.");
     }
-  },
-
-  verifyPayment: (req, res) => {
-    // do a validation
-    const secret = process.env.SECRET;
-
-    console.log(req.body);
-
-    const shasum = crypto.createHmac("sha256", secret);
-    shasum.update(JSON.stringify(req.body));
-    const digest = shasum.digest("hex");
-
-    console.log(digest, req.headers["x-razorpay-signature"]);
-
-    if (digest === req.headers["x-razorpay-signature"]) {
-      console.log("request is legit");
-      // process it
-    } else {
-      // pass it
+    else{
+      newBooking.save()
+    .then(() => res.json('Booking added!'))
+    .catch(err => res.status(400).json('Error: ' + err))
     }
-    res.json({ status: "ok" });
-  },
-};
+  }));
+  
+});
+
+
+module.exports = router;

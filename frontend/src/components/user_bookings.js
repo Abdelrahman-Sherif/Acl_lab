@@ -25,11 +25,10 @@ const Record = (props) => (
     <td>
     <Button size="small" variant="contained" color = "error" onClick={() => {
            if (window.confirm('Are you sure you want to choose this flight?')) 
-
            sessionStorage.setItem("DepartureFlightNumber", props.record.FlightNumber);
            sessionStorage.setItem("airportTakeoff", props.record.AirportTakeOff);
            sessionStorage.setItem("airportArrival", props.record.AirportArrival);
-            
+
            window.location.replace("http://localhost:3000/flights/users/pick-seat");
            
         }}>Confirm Departure</Button>
@@ -38,18 +37,10 @@ const Record = (props) => (
 );
 
 
-export default class ListUserFlights extends Component {
+export default class UserBookings extends Component {
   // This is the constructor that shall store our data retrieved from the database
   constructor(props) {
     super(props);
-    this.getFilteredFlights = this.getFilteredFlights.bind(this);
-    this.onChangePassangers = this.onChangePassangers.bind(this);
-    this.onChangeDateTakeoff = this.onChangeDateTakeoff.bind(this);
-    this.onChangeDateArrival = this.onChangeDateArrival.bind(this);
-    this.onChangeAirportArrival = this.onChangeAirportArrival.bind(this);
-    this.onChangeAirportTakeOff = this.onChangeAirportTakeOff.bind(this);
-    this.onChangeCabin = this.onChangeCabin.bind(this);
-
     this.toggleFilter = this.toggleFilter.bind(this);
 
     this.state = { 
@@ -65,44 +56,7 @@ export default class ListUserFlights extends Component {
     };
   }
 
-  onChangePassangers(e) {
-    this.setState({
-      Passangers: e.target.value
-    });
-  }
 
-
-  onChangeDateTakeoff(e) {
-    this.setState({
-      DateTakeoff: e.target.value
-    })
-  }
- 
-
-  onChangeDateArrival(e) {
-    this.setState({
-      DateArrival: e.target.value
-    })
-  }
-
-
-  onChangeAirportArrival(e) {
-    this.setState({
-      AirportArrival: e.target.value
-    })
-  }
-
-  onChangeAirportTakeOff(e) {
-    this.setState({
-      AirportTakeOff: e.target.value
-    })
-  }
-
-  onChangeCabin(e) {
-    this.setState({
-      Cabin: e.target.value
-    })
-  }
 
 
 
@@ -115,11 +69,11 @@ export default class ListUserFlights extends Component {
   }
 
   ///Get updated flights
-  async getFlights(){
+  async getUserBookings(){
     await axios
-    .get("http://localhost:5000/flights/get")
+    .get("http://localhost:5000/bookings/getUserBookings")
     .then((response) => {
-      console.log("Records gotten after deletion: "+ response.data);
+      console.log("User Bookings gotten: "+ JSON.stringify(response.data));
       this.setState({ records: response.data });
     })
     .catch(function (error) {
@@ -127,39 +81,16 @@ export default class ListUserFlights extends Component {
     });
   }
 
-  ///Get filtered flights
-  async getFilteredFlights(e){
-    e.preventDefault();
-    const filterParams = {
-      Passangers: this.state.Passangers,
-      DateTakeoff: this.state.DateTakeoff,
-      DateArrival: this.state.DateArrival,
-      AirportArrival: this.state.AirportArrival, 
-      AirportTakeOff: this.state.AirportTakeOff,
-      Cabin: this.state.Cabin
-    };
-
-    let cleanedParams = Object.fromEntries(Object.entries(filterParams).filter(([_, v]) => v !== ""));
-
-    await axios
-    .get("http://localhost:5000/flights/getFiltered", {params: cleanedParams})
-    .then((response) => {
-      console.log("Records gotten after filtering: "+ response.data);
-      this.setState({ records: response.data });
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
-  }
+  
 
   // This method will get the data from the database.
   componentDidMount() {
-    this.getFlights();
+    this.getUserBookings();
   }
 
-  // This method will delete a record based on the method
-  async deleteRecord(id) {
-    await axios.delete("http://localhost:5000/flights/delete/" + id).then((response) => {
+  // Delete booking & send email
+  async deleteBooking(id) {
+    await axios.delete("http://localhost:5000/bookings/delete/" + id).then((response) => {
       console.log(response.data);
     }).catch(function (error) {
       console.log(error);
