@@ -32,17 +32,30 @@ router.route('/delete/:id').delete((req, res) => {
 
 router.route('/addBooking').post((req, res) => {
 
-  const userName = req.body.userName;
-  const flightNumber = req.body.flightNumber;
-  
+  const userID = req.body.userID;
+  const DepflightNumber = req.body.DepflightNumber;
+  const ArrflightNumber = req.body.ArrflightNumber;
+  let bookingID = userID+DepflightNumber+ArrflightNumber;
   
 
-  const newBooking = new Flight({
-    userName , flightNumber , bookingId 
+  const newBooking = new Booking({
+    userID , DepflightNumber ,  ArrflightNumber, bookingID
 
   });
   console.log(newBooking);
+  console.log(bookingID);
 
+  if(Booking.where("bookingID").equals(bookingID).exec(function (err, data){
+    console.log(data);
+    if(data.length>0){
+      res.status(400).json('Error: ' + "This Booking Already exists.");
+    }
+    else{
+      newBooking.save()
+    .then(() => res.json('Booking added!'))
+    .catch(err => res.status(400).json('Error: ' + err))
+    }
+  }));
   
 });
 
