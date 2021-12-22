@@ -34,7 +34,9 @@ router.route('/getUserBookings').get((req, res) => {
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
-router.route('/delete/:id').delete((req, res) => {
+router.route("/delete/:id").delete((req, res) => {
+  console.log("Backend deleting booking with ID: "+ req.params.id);
+
   Booking.findByIdAndDelete(req.params.id).then(booking => res.json('Booking deleted Successfully'))
     .catch(err => {
       console.log(err);

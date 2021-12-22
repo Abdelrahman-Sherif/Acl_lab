@@ -8,24 +8,17 @@ import {TextField, Button, InputLabel, MenuItem, Select, FormControl} from '@mui
 const Record = (props) => (
   <tr>
 
-<td>{props.record.FlightNumber}</td>
-    <td>{props.record.DepartureTime}</td>
-    <td>{props.record.ArrivalTime}</td>
-    <td>{props.record.DateTakeoff}</td>
-    <td>{props.record.DateArrival}</td>
-    <td>{props.record.EconomySeats}</td>
-    <td>{props.record.BusinessSeats}</td>
-    <td>{props.record.FirstSeats}</td>
-    <td>{props.record.AirportTakeOff}</td> 
-    <td>{props.record.AirportArrival}</td>
-    <td>{props.record.Price}</td> 
-    <td>{props.record.BaggageAllowed}</td> 
+<td>{props.record.depFlightNumber}</td>
+    <td>{props.record.arrFlightNumber}</td>
+    <td>{props.record._id}</td>
+
 
 
     <td>
     <Button size="small" variant="contained" color = "error" onClick={() => {
            if (window.confirm('Are you sure you want to delete this booking?')) {
-               this.deleteBooking();
+         
+               props.deleteBooking(props.record._id);
            }
 
            
@@ -43,15 +36,11 @@ export default class UserBookings extends Component {
     this.toggleFilter = this.toggleFilter.bind(this);
 
     this.state = { 
-      records: [],
-      showFilterMenu: false,
-      Passangers: "",
-      DateTakeoff: "",
-      DateArrival: "",
-      AirportArrival: "",
-      AirportTakeOff: "", 
-      Cabin: "",
-      BaggageAllowed: true,
+      depFlightNumber: "",
+      arrFlightNumber: "",
+      bookingId: "",
+      bookings: [],
+     
     };
   }
 
@@ -74,7 +63,7 @@ export default class UserBookings extends Component {
     .get("http://localhost:5000/bookings/getUserBookings")
     .then((response) => {
       console.log("User Bookings gotten: "+ JSON.stringify(response.data));
-      this.setState({ records: response.data });
+      this.setState({ bookings: response.data });
     })
     .catch(function (error) {
       console.log(error);
@@ -91,13 +80,15 @@ export default class UserBookings extends Component {
 
   // Delete booking & send email
   async deleteBooking(id) {
+      console.log("Gonna delete with id: "+ id);
     await axios.delete("http://localhost:5000/bookings/delete/" + id).then((response) => {
-      console.log(response.data);
+
+      console.log("Deletion result: "+response.data);
     }).catch(function (error) {
       console.log(error);
     });
     
-    this.getFlights();
+    window.location.reload(false);
     
   }
 
@@ -105,11 +96,11 @@ export default class UserBookings extends Component {
 
   // This method will map out the users on the table
   recordList() {
-    return this.state.records.map((currentrecord) => {
+    return this.state.bookings.map((currentrecord) => {
       return (
         <Record
           record={currentrecord}
-          deleteRecord={this.deleteRecord}
+          deleteBooking={this.deleteBooking}
           key={currentrecord._id}
         />
       );
@@ -135,7 +126,7 @@ export default class UserBookings extends Component {
 
           <Col>
           <div className="form-group">
-              <TextField label="Arrival Flight number" style={{display: "flex", marginRight: 10}} value={this.state.Passangers} variant="outlined" size="small" type="number" required onChange={this.onChangePassangers} margin="normal"  InputLabelProps={{
+              <TextField label="Arrival Flight number" style={{display: "flex", marginRight: 10}} value={this.state.arrFlightNumber} variant="outlined" size="small" type="number" required onChange={this.onChangePassangers} margin="normal"  InputLabelProps={{
             shrink: true,
           }}/>
             </div>
@@ -145,17 +136,17 @@ export default class UserBookings extends Component {
             <Col style = {{marginBottom: 30,}}>
               <Col>
               <div className="form-group">
-              <TextField label="Departure Flight number" style={{display: "flex", marginRight: 10}} value={this.state.DateTakeoff} variant="outlined" size="small" type="date" required onChange={this.onChangeDateTakeoff} margin="normal"  InputLabelProps={{
+              <TextField label="Departure Flight number" style={{display: "flex", marginRight: 10}} value={this.state.depFlightNumber} variant="outlined" size="small" type="date" required onChange={this.onChangeDateTakeoff} margin="normal"  InputLabelProps={{
             shrink: true,
           }} />
             </div>
             </Col>
 
             <Col>
-            <div className="form-group">
-            <TextField label="Arrival Date" style={{display: "flex", marginRight: 10}} value={this.state.DateArrival} variant="outlined" size="small" type="date" required onChange={this.onChangeDateArrival} margin="normal"  InputLabelProps={{
+              <div className="form-group">
+              <TextField label="Booking ID" style={{display: "flex", marginRight: 10}} value={this.state.bookingId} variant="outlined" size="small" type="date" required onChange={this.onChangeDateTakeoff} margin="normal"  InputLabelProps={{
             shrink: true,
-          }}/>
+          }} />
             </div>
             </Col>
             
@@ -164,13 +155,7 @@ export default class UserBookings extends Component {
   
             <Col style = {{marginBottom: 30,}}>
             
-              <Col>
-              <div className="form-group">
-              <TextField label="Destination" style={{display: "flex"}} value={this.state.AirportArrival} variant="outlined" size="small" type="text" required onChange={this.onChangeAirportArrival} margin="normal"  InputLabelProps={{
-            shrink: true,
-          }}/>
-            </div>
-              </Col>
+              
           <Col></Col>
 
           <FormControl fullWidth>
