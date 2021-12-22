@@ -2,14 +2,22 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 var bookingSchema = new Schema({
-  userName: {
+  userID: {
     type: String,
     required: true,
   },
-  flightNumber: {
+  DepflightNumber: {
     type: String,
     required: true,
   },
+  ArrflightNumber: {
+    type: String,
+    required: true,
+  },
+  bookingID:{
+    type: String,
+    required: true,
+  }
 });
 
 module.exports = mongoose.model("Booking", bookingSchema);
