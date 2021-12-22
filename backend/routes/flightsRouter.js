@@ -49,6 +49,23 @@ router.route('/getFilteredFlight').get((req, res) => {
     
 });
 
+router.route('/getFilteredFlightReturn').get((req, res) => {
+  let newParams = {};
+  for (const [key, value] of Object.entries(req.query)) {
+    
+      newParams[key] = value;
+    
+  }
+
+  Flight.find(newParams)
+    .then((flight) => {
+      console.log(flight);
+      res.json(flight);
+    })
+    .catch(err => res.status(400).json('Error: ' + err));
+   
+    
+});
 
 router.route('/add').post((req, res) => {
   const FlightNumber = req.body.FlightNumber;

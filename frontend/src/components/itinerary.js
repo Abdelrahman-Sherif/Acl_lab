@@ -100,12 +100,12 @@ export default class MyItinerary extends Component {
         bookingID: "Aly"+DepartureFlightNumber+ReturnFlightNumber,
   
       };
-      //console.log(newBooking);
   
-      await axios.post('http://localhost:5000/bookings/addBooking', newBooking)
+      await axios.post('http://localhost:5000/bookings/addBooking ', newBooking)
         .then(res =>{
           console.log(res.data);
-          window.location = '/';
+          window.alert("Booking Added!");
+          window.location = '/flights/users/list';
         
         })
         
