@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import axios from 'axios';
-import {Divider, Chip} from '@mui/material';
+import {Divider, Chip, Button} from '@mui/material';
 var ReturnFlightNumber= sessionStorage.getItem("ReturnFlightNumber");
 var DepartureFlightNumber= sessionStorage.getItem("DepartureFlightNumber");
 
@@ -110,6 +110,23 @@ export default class MyItinerary extends Component {
         console.log(error);
       });
     }
+    async getFilteredFlightsReturn(e){
+      const filterParams = {
+       
+        FlightNumber: ReturnFlightNumber
+      };
+  
+  
+      await axios
+      .get("http://localhost:5000/flights/getFilteredFlightReturn", {params: filterParams})
+      .then((response) => {
+        console.log("Getting Return flight: "+ response.data);
+        this.setState({ records: response.data });
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+    }
     ///Get updated flights
     
    
@@ -139,8 +156,8 @@ export default class MyItinerary extends Component {
     return (
         <div>
    
-        <Divider><Chip label="Departure Flight" />
-        <table className="table table-striped" style={{ marginTop: 20}}>
+        <Divider><Chip label=" Flight Details" />
+        <table className="table table-striped" style={{ marginTop: 50}}>
           <thead>
             <tr>
             <th>Flight Number</th>
@@ -162,27 +179,11 @@ export default class MyItinerary extends Component {
         </table>
         </Divider>
     
-        <Divider ><Chip label="Return Flight" />
-        <table className="table table-striped" style={{ marginTop: 20}}>
-          <thead>
-            <tr>
-            <th>Flight Number</th>
-              <th>Departure Time</th>
-              <th>Arrival Time</th>
-              <th>Takeoff Date</th>
-              <th>Arrival Date</th>
-              <th>Economy Seats</th>
-              <th>Business Seats</th>
-              <th>First Seats</th>
-              <th>Departure</th>
-              <th>Destination</th>
-              <th>Price</th>
-              <th>Baggage Allowed</th>
-
-            </tr>
-          </thead>
-          <tbody>{this.recordList()}</tbody>
-        </table>        </Divider>
+        <Divider >
+              <Button variant="contained" color = "primary" onClick = {this.getFilteredFlightsReturn.bind(this)
+              }>Show Return Flight </Button>
+              
+                </Divider>
   
  
       </div>
