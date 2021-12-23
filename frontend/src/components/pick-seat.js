@@ -18,6 +18,7 @@ const getFlightByID = async ()=>{
         console.log(error);
     });
 }
+
   const [economySeats, setEconomySeats] = useState([]);
   const [firstSeats, setFirstSeats] = useState([]);
   const [businessSeats, setBusinessSeats] = useState([]);
@@ -56,6 +57,10 @@ const getFlightByID = async ()=>{
                return prevState + seat + ' ';
            })
       });
+    sessionStorage.setItem("EcoSeats", economySeats);
+    sessionStorage.setItem("BusSeats", businessSeats);
+    sessionStorage.setItem("FirSeats", firstSeats);
+
       let newAvailableSeats = economySeats.filter(seat => !bookedSeats.includes(seat));
       setEconomySeats(newAvailableSeats);
       newAvailableSeats = businessSeats.filter(seat => !bookedSeats.includes(seat));
@@ -96,7 +101,6 @@ const getFlightByID = async ()=>{
                    offset={firstSeats.length + businessSeats.length}
                    addSeat={addSeat}/>
 
-           
                    <button onClick={confirmBooking}>Book seats</button>
             <p>{bookedStatus}</p>
         </React.Fragment>
