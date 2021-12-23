@@ -10,6 +10,7 @@ const getFlightByID = async ()=>{
     await axios
     .get("http://localhost:5000/flights/" + FlightID)
     .then((response) => {
+        console.log("response: " + response.data);
         setEconomySeats(response.data.EconomySeatsAvail);
         setBusinessSeats(response.data.EconomySeatsAvail);
         setEconomySeats(response.data.EconomySeatsAvail);
@@ -45,6 +46,7 @@ const getFlightByID = async ()=>{
     };
 
   React.useEffect(() => {
+      console.log("dakhal");
     // Runs after the first render() lifecycle
     getFlightByID();
   }, []);
@@ -57,9 +59,9 @@ const getFlightByID = async ()=>{
                return prevState + seat + ' ';
            })
       });
-    sessionStorage.setItem("EcoSeats", economySeats);
-    sessionStorage.setItem("BusSeats", businessSeats);
-    sessionStorage.setItem("FirSeats", firstSeats);
+    sessionStorage.setItem("DepEcoSeats", economySeats);
+    sessionStorage.setItem("DepBusSeats", businessSeats);
+    sessionStorage.setItem("DepFirSeats", firstSeats);
 
       let newAvailableSeats = economySeats.filter(seat => !bookedSeats.includes(seat));
       setEconomySeats(newAvailableSeats);

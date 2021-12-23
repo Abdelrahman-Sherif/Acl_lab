@@ -30,6 +30,7 @@ const Record = (props) => (
     <Button size="small" variant="contained" color = "error" onClick={() => {
            if (window.confirm('Are you sure you want to choose this flight?'))
            sessionStorage.setItem("ReturnFlightNumber", props.record.FlightNumber);
+           sessionStorage.setItem("ReturnFlightID", props.record._id);
            window.location.replace("http://localhost:3000/flights/users/pick-return-seat") ;
         }}>Confirm Return</Button>
     </td>
