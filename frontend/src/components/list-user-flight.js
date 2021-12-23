@@ -27,6 +27,7 @@ const Record = (props) => (
            if (window.confirm('Are you sure you want to choose this flight?')) {
 
            sessionStorage.setItem("DepartureFlightNumber", props.record.FlightNumber);
+           sessionStorage.setItem("FlightID", props.record._id);
            sessionStorage.setItem("airportTakeoff", props.record.AirportTakeOff);
            sessionStorage.setItem("airportArrival", props.record.AirportArrival);
             
