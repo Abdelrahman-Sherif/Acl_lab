@@ -88,8 +88,6 @@ router.route('/add').post((req, res) => {
     FlightNumber , DepartureTime , ArrivalTime , DateTakeoff , DateArrival , EconomySeats , BusinessSeats , FirstSeats, AirportArrival , AirportTakeOff, BaggageAllowed, Price, EconomySeatsAvail, BusinessSeatsAvail, FirstSeatsAvail,
   });
 
-  console.log("newflight: " + newFlight);
-
   if(Flight.where("FlightNumber").equals(FlightNumber).exec(function (err, data){
     console.log(data);
     if(data.length>0){
