@@ -60,7 +60,22 @@ const flightSchema = new Schema({
     type: String,
     required: true,
     default:"Yes"
-  }
+  },
+  EconomySeatsAvail:{
+    type: [Boolean],
+    required: true,
+    default:[],
+  },
+  BusinessSeatsAvail:{
+    type: [Boolean],
+    required: true,
+    default:[],
+  },
+  FirstSeatsAvail:{
+    type: [Boolean],
+    required: true,
+    default:[],
+  },
 }, { timestamps: true });
 
 const Flight = mongoose.model('Flight', flightSchema);

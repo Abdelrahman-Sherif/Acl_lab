@@ -80,11 +80,15 @@ router.route('/add').post((req, res) => {
   const AirportArrival = req.body.AirportArrival;
   const AirportTakeOff = req.body.AirportTakeOff;
   const Price= Number(req.body.Price);
+  const EconomySeatsAvail = Array(EconomySeats).fill(true);
+  const BusinessSeatsAvail = Array(BusinessSeats).fill(true);
+  const FirstSeatsAvail = Array(FirstSeats).fill(true);
 
   const newFlight = new Flight({
-    FlightNumber , DepartureTime , ArrivalTime , DateTakeoff , DateArrival , EconomySeats , BusinessSeats , FirstSeats, AirportArrival , AirportTakeOff, BaggageAllowed, Price
-
+    FlightNumber , DepartureTime , ArrivalTime , DateTakeoff , DateArrival , EconomySeats , BusinessSeats , FirstSeats, AirportArrival , AirportTakeOff, BaggageAllowed, Price, EconomySeatsAvail, BusinessSeatsAvail, FirstSeatsAvail,
   });
+
+  console.log("newflight: " + newFlight);
 
   if(Flight.where("FlightNumber").equals(FlightNumber).exec(function (err, data){
     console.log(data);
