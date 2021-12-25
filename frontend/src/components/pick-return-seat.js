@@ -71,14 +71,7 @@ const getFlightByID = async ()=>{
             console.log('errorr: ' + error);
         });
 
-        await axios
-        .post("http://localhost:5000/bookings/updateSeats/" + FlightID, seatsMap)
-        .then((response) => {
-            console.log("Successfully updated seats");
-        })
-        .catch(function (error) {
-            console.log('errorr: ' + error);
-        });
+    
     }
 
   React.useEffect(() => {

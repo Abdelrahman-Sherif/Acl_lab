@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import axios from 'axios';
 import {Divider, Chip, Button} from '@mui/material';
-var ReturnFlightNumber= sessionStorage.getItem("ReturnFlightNumber");
-var DepartureFlightNumber= sessionStorage.getItem("DepartureFlightNumber");
+var arrFlightNumber= sessionStorage.getItem("ReturnFlightNumber");
+var depFlightNumber= sessionStorage.getItem("DepartureFlightNumber");
+var arrivalSeats = sessionStorage.getItem("arrivalSeats");
+var departureSeats = sessionStorage.getItem("departureSeats");
 
    
 
-console.log(ReturnFlightNumber);
-console.log(DepartureFlightNumber);
 
 
 
@@ -55,11 +55,13 @@ export default class MyItinerary extends Component {
     async addBooking(e) {
       console.log("Adding booking")
       const newBooking = {
+        //Hardcoding user ID till auth is done
         userId: "61c347f18128719139d8a8c7",
-        depFlightNumber: DepartureFlightNumber,
-        arrFlightNumber: ReturnFlightNumber,
-        bookingId: "61c347f18128719139d8a8c7"+DepartureFlightNumber+ReturnFlightNumber,
-  
+        depFlightNumber: depFlightNumber,
+        arrFlightNumber: arrFlightNumber,
+        departureSeats: departureSeats,
+        arrivalSeats: arrivalSeats,
+       
       };
   
       await axios.post('http://localhost:5000/bookings/addBooking ', newBooking)
@@ -71,15 +73,13 @@ export default class MyItinerary extends Component {
         }).catch(err=> {
           console.log("Booking confirmation error: "+ err);
         })
-        
-      
     }
 
   
     async getFilteredFlights(e){
       const filterParams = {
        
-        FlightNumber: DepartureFlightNumber
+        FlightNumber: depFlightNumber
       };
   
   
@@ -94,10 +94,10 @@ export default class MyItinerary extends Component {
       });
     }
     async getFilteredFlightsReturn(e){
-      console.log("Getting return flight, number: "+ ReturnFlightNumber);
+      console.log("Getting return flight, number: "+ arrFlightNumber);
       const filterParams = {
        
-        FlightNumber: ReturnFlightNumber
+        FlightNumber: arrFlightNumber
       };
   
   

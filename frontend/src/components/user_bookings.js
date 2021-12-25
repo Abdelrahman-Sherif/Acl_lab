@@ -118,8 +118,6 @@ export default class UserBookings extends Component {
       
       </Link>
       
-      
-        
            <div style={this.state.showFilterMenu? {}: {display: 'none'}}>
           <form>
         <div class="d-flex justify-content-between" style={{marginLeft:30, marginRight:30}}>
@@ -145,6 +143,37 @@ export default class UserBookings extends Component {
             <Col>
               <div className="form-group">
               <TextField label="Booking ID" style={{display: "flex", marginRight: 10}} value={this.state.bookingId} variant="outlined" size="small" type="date" required onChange={this.onChangeDateTakeoff} margin="normal"  InputLabelProps={{
+            shrink: true,
+          }} />
+            </div>
+            </Col>
+
+            <Col>
+              <div className="form-group">
+              <TextField label="Arrival Seats" style={{display: "flex", marginRight: 10}} value={this.state.arrivalSeats} variant="outlined" size="small" type="date" required onChange={this.onChangeDateTakeoff} margin="normal"  InputLabelProps={{
+            shrink: true,
+          }} />
+            </div>
+            </Col>
+
+            <Col>
+              <div className="form-group">
+              <TextField label="Departure Seats" style={{display: "flex", marginRight: 10}} value={this.state.departureSeats} variant="outlined" size="small" type="date" required onChange={this.onChangeDateTakeoff} margin="normal"  InputLabelProps={{
+            shrink: true,
+          }} />
+            </div>
+            </Col>
+
+            <Col>
+              <div className="form-group">
+              <TextField label="First Name" style={{display: "flex", marginRight: 10}} value={this.state.firstName} variant="outlined" size="small" type="date" required onChange={this.onChangeDateTakeoff} margin="normal"  InputLabelProps={{
+            shrink: true,
+          }} />
+            </div>
+            </Col>
+            <Col>
+              <div className="form-group">
+              <TextField label="Last Name" style={{display: "flex", marginRight: 10}} value={this.state.lastName} variant="outlined" size="small" type="date" required onChange={this.onChangeDateTakeoff} margin="normal"  InputLabelProps={{
             shrink: true,
           }} />
             </div>

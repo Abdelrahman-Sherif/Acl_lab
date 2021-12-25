@@ -257,19 +257,19 @@ export default class ProfilePage extends Component {
 
           console.log(res.data);
 
-          window.location = '/flights/users/list';
+          //window.location = '/flights/users/list';
+        })
+        .catch((error) => {
+          console.log(error);
+          this.setState({ errorMessage: error.message });
+        });
 
-          // this.setState = {
-          //   email: "",
-          //   firstName: "",
-          //   lastName: "",
-          //   passportNumber: "",
-          //   emailError: "",
-          //   firstNameError: "",
-          //   lastNameError: "",
-          //   passportNumberError: "",
-    
-          // }
+        //Update users bookings
+        await axios.post('http://localhost:5000/bookings/updateUserNames/' + this.state.userId, updatedUser)
+        .then(res => {
+          console.log(res.data);
+
+          window.location = '/flights/users/list';
         })
         .catch((error) => {
           console.log(error);

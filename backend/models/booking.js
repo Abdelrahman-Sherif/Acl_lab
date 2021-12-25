@@ -14,14 +14,23 @@ var bookingSchema = new Schema({
     type: String,
     required: true,
   },
-  bookingId:{
-    type: String,
-    required: true,
-  },
-  BookedSeats:{
+  departureSeats:{
     type: [Number],
     required: true,
     default:[],
+  },
+  arrivalSeats:{
+    type: [Number],
+    required: true,
+    default:[],
+  },
+  firstName:{
+    type:String,
+    required: true,
+  },
+  lastName:{
+    type:String,
+    required: true,
   },
 });
 

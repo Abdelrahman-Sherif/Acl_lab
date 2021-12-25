@@ -49,40 +49,95 @@ router.route('/addBooking').post((req, res) => {
   const userId = req.body.userId;
   const depFlightNumber = req.body.depFlightNumber;
   const arrFlightNumber = req.body.arrFlightNumber;
-  const bookingId = req.body.bookingId;
+  const departureSeats = req.body.departureSeats;
+  const arrivalSeats = req.body.arrivalSeats;
+  const firstName = req.body.firstName;
+  const lastName = req.body.lastName;
+
+  
   
 
   const newBooking = new Booking({
-    userId:userId , depFlightNumber:depFlightNumber ,  arrFlightNumber:arrFlightNumber, bookingId:bookingId
+    userId:userId , depFlightNumber:depFlightNumber ,  arrFlightNumber:arrFlightNumber, departureSeats:departureSeats,
+    arrivalSeats:arrivalSeats,firstName:firstName,lastName:lastName
   });
   console.log("New booking is: "+ JSON.stringify(newBooking));
+
+  newBooking.save()
+  .then(() => res.json('Booking added!'))
+  .catch(err => res.status(402).json('Error: ' + err))
   
-  if(Booking.where("bookingId").equals(bookingId).exec(function (err, data){
-    console.log("Booking length: "+ data.length);
-    if(data.length>0){
-      res.status(401).json('Error: ' + "This Booking Already exists.");
-    }
-    else{
-      newBooking.save()
-    .then(() => res.json('Booking added!'))
-    .catch(err => res.status(402).json('Error: ' + err))
-    }
-  }));
+  //User can book many times same flights, but will choose different seats so no need to check
+
+  // if(Booking.where("bookingId").equals(bookingId).exec(function (err, data){
+  //   console.log("Booking length: "+ data.length);
+  //   if(data.length>0){
+  //     res.status(401).json('Error: ' + "This Booking Already exists.");
+  //   }
+  //   else{
+  //     newBooking.save()
+  //   .then(() => res.json('Booking added!'))
+  //   .catch(err => res.status(402).json('Error: ' + err))
+  //   }
+  // }));
   
 });
 
-router.route("/updateSeats/:id").post((req, res) => {
+router.route("/updateDepartureSeats/:id").post((req, res) => {
   Booking.findByIdAndUpdate(
     { _id: req.params.id },
     {
-      BookedSeats: req.body.BookedSeats,
+      departureSeats: req.body.departureSeats,
     }
   )
-    .then(()=> {console.log("Updated booking succesffully");
-  return res.status(200).json('Updated booking successfully');})
+    .then(()=> {console.log("Updated Seats succesffully");
+  return res.status(200).json('Updated Seats successfully');})
     .catch(err => {
-      console.log("Error finding booking: " + err);
-      return res.status(400).json('Couldnt find booking,Error: ' + err);});
+      console.log("Error finding Seats: " + err);
+      return res.status(400).json('Couldnt find Seats,Error: ' + err);});
+});
+
+router.route("/updateArrivalSeats/:id").post((req, res) => {
+  Booking.findByIdAndUpdate(
+    { _id: req.params.id },
+    {
+      arrivalSeats: req.body.arrivalSeats,
+    }
+  )
+    .then(()=> {console.log("Updated Seats succesffully");
+  return res.status(200).json('Updated Seats successfully');})
+    .catch(err => {
+      console.log("Error finding Seats: " + err);
+      return res.status(400).json('Couldnt find Seats,Error: ' + err);});
+});
+
+router.route('/updateUserNames/:id').post((req, res) => {
+
+  const userId = req.params.id;
+  const firstName = req.body.firstName;
+  const lastName = req.body.lastName;
+
+   if(Booking.where("userId").equals(userId).exec(function (err, data){
+    var bookings = data;
+    console.log("Booking found length: "+ bookings.length);
+    if(bookings.length == 0){
+      res.status(401).json('Error: ' + "The user has no bookings to update");
+    }
+    else{
+      ///Update user bookings to chnage name
+      for (let i = 0; i < bookings.length; i++) { 
+        Booking.findByIdAndUpdate(
+          { _id: bookings[i].id },
+          {
+            firstName: firstName,
+            lastName: lastName,
+          }
+        )
+      }
+    }
+   
+  }));
+  
 });
 
 

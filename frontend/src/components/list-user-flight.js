@@ -192,10 +192,7 @@ export default class ListUserFlights extends Component {
     return (
       <div>
         <h3 style = {{marginBottom: 20, marginTop:10, marginLeft: 30}}>All Flights </h3>
-        <Link to='/flights/user/itinerary'>
-      <Button variant="contained" color='primary'>View My Flights</Button>
-      
-      </Link>
+        
       <Button variant="contained" color='primary' onClick={this.toggleFilter} style={{marginLeft:10}}>Filter Flights</Button>
       <Link to='/flights/users/profile'>
       <Button variant="contained" color='primary' style={{marginLeft:10}}> My Profile</Button>
