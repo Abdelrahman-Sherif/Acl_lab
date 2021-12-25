@@ -97,6 +97,7 @@ const getFlightByID = async ()=>{
     sessionStorage.setItem("DepEcoSeats", economySeats);
     sessionStorage.setItem("DepBusSeats", businessSeats);
     sessionStorage.setItem("DepFirSeats", firstSeats);
+    sessionStorage.setItem("DepBookedSeats", bookedSeats);
 
       let newAvailableSeats = economySeats.filter(seat => !bookedSeats.includes(seat));
       setEconomySeats(newAvailableSeats);
