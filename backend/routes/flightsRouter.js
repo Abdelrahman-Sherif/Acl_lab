@@ -7,8 +7,6 @@ router.route('/get').get((req, res) => {
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
-
-
 router.route('/getFiltered').get((req, res) => {
   let newParams = {};
   for (const [key, value] of Object.entries(req.query)) {
@@ -132,10 +130,24 @@ router.route('/update/:id').post((req, res) => {
      AirportTakeOff  : req.body.AirportTakeOff ,
      BaggageAllowed  : req.body.BaggageAllowed ,
      Price  : Number(req.body.Price) ,
-
-
     }
-     
+  )
+    .then(()=> {console.log("Updated flight succesffully");
+  return res.status(200).json('Updated flight successfully');})
+    .catch(err => {
+      console.log("Error finding flight: " + err);
+      return res.status(400).json('Couldnt find flight,Error: ' + err);});
+});
+
+router.route("/updateSeats/:id").post((req, res) => {
+  console.log("body: " + req.body.toString());
+  Flight.findByIdAndUpdate(
+    { _id: req.params.id },
+    {
+      EconomySeatsAvail: req.body.EconomySeatsAvail,
+      BusinessSeatsAvail: req.body.BusinessSeatsAvail,
+      FirstSeatsAvail: req.body.FirstSeatsAvail,
+    }
   )
     .then(()=> {console.log("Updated flight succesffully");
   return res.status(200).json('Updated flight successfully');})

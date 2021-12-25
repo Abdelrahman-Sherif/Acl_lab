@@ -44,14 +44,6 @@ router.route("/delete/:id").delete((req, res) => {
 });
 
 
-
-
-
-
-
-
-
-
 router.route('/addBooking').post((req, res) => {
 
   const userId = req.body.userId;
@@ -77,6 +69,20 @@ router.route('/addBooking').post((req, res) => {
     }
   }));
   
+});
+
+router.route("/updateSeats/:id").post((req, res) => {
+  Booking.findByIdAndUpdate(
+    { _id: req.params.id },
+    {
+      BookedSeats: req.body.BookedSeats,
+    }
+  )
+    .then(()=> {console.log("Updated booking succesffully");
+  return res.status(200).json('Updated booking successfully');})
+    .catch(err => {
+      console.log("Error finding booking: " + err);
+      return res.status(400).json('Couldnt find booking,Error: ' + err);});
 });
 
 

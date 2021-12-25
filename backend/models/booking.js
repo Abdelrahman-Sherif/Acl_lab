@@ -17,7 +17,12 @@ var bookingSchema = new Schema({
   bookingId:{
     type: String,
     required: true,
-  }
+  },
+  BookedSeats:{
+    type: [Number],
+    required: true,
+    default:[],
+  },
 });
 
 module.exports = mongoose.model("Booking", bookingSchema);
