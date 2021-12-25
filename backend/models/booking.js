@@ -19,7 +19,7 @@ var bookingSchema = new Schema({
     required: true,
     default:[],
   },
-  arrivalSeats:{
+  returnSeats:{
     type: [Number],
     required: true,
     default:[],

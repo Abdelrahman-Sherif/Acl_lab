@@ -6,10 +6,15 @@ import { Link } from "react-router-dom";
 import {TextField, Button, InputLabel, MenuItem, Select, FormControl} from '@mui/material';
 
 const Record = (props) => (
+  
   <tr>
 
 <td>{props.record.depFlightNumber}</td>
     <td>{props.record.arrFlightNumber}</td>
+    <td>{props.record.returnSeats}</td>
+    <td>{props.record.departureSeats}</td>
+    <td>{props.record.firstName}</td>
+    <td>{props.record.lastName}</td>
     <td>{props.record._id}</td>
 
 
@@ -36,9 +41,7 @@ export default class UserBookings extends Component {
     this.toggleFilter = this.toggleFilter.bind(this);
 
     this.state = { 
-      depFlightNumber: "",
-      arrFlightNumber: "",
-      bookingId: "",
+  
       bookings: [],
      
     };
@@ -97,6 +100,7 @@ export default class UserBookings extends Component {
   // This method will map out the users on the table
   recordList() {
     return this.state.bookings.map((currentrecord) => {
+        console.log("Booking data is: "+ currentrecord);
       return (
         <Record
           record={currentrecord}
@@ -140,17 +144,11 @@ export default class UserBookings extends Component {
             </div>
             </Col>
 
-            <Col>
-              <div className="form-group">
-              <TextField label="Booking ID" style={{display: "flex", marginRight: 10}} value={this.state.bookingId} variant="outlined" size="small" type="date" required onChange={this.onChangeDateTakeoff} margin="normal"  InputLabelProps={{
-            shrink: true,
-          }} />
-            </div>
-            </Col>
+          
 
             <Col>
               <div className="form-group">
-              <TextField label="Arrival Seats" style={{display: "flex", marginRight: 10}} value={this.state.arrivalSeats} variant="outlined" size="small" type="date" required onChange={this.onChangeDateTakeoff} margin="normal"  InputLabelProps={{
+              <TextField label="Return Seats" style={{display: "flex", marginRight: 10}} value={this.state.returnSeats} variant="outlined" size="small" type="date" required onChange={this.onChangeDateTakeoff} margin="normal"  InputLabelProps={{
             shrink: true,
           }} />
             </div>
@@ -174,6 +172,13 @@ export default class UserBookings extends Component {
             <Col>
               <div className="form-group">
               <TextField label="Last Name" style={{display: "flex", marginRight: 10}} value={this.state.lastName} variant="outlined" size="small" type="date" required onChange={this.onChangeDateTakeoff} margin="normal"  InputLabelProps={{
+            shrink: true,
+          }} />
+            </div>
+            </Col>
+            <Col>
+              <div className="form-group">
+              <TextField label="Booking ID" style={{display: "flex", marginRight: 10}} value={this.state.bookingId} variant="outlined" size="small" type="date" required onChange={this.onChangeDateTakeoff} margin="normal"  InputLabelProps={{
             shrink: true,
           }} />
             </div>
@@ -219,6 +224,10 @@ export default class UserBookings extends Component {
             <tr>
             <th>Arr Flight Number</th>
             <th>Dep Flight Number</th>
+            <th>Return Seats</th>
+            <th>Departure Seats</th>
+            <th>First Name</th>
+            <th>Last Name </th>
             <th>Booking ID </th>
 
             </tr>

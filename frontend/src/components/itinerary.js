@@ -3,8 +3,8 @@ import axios from 'axios';
 import {Divider, Chip, Button} from '@mui/material';
 var arrFlightNumber= sessionStorage.getItem("ReturnFlightNumber");
 var depFlightNumber= sessionStorage.getItem("DepartureFlightNumber");
-var arrivalSeats = sessionStorage.getItem("arrivalSeats");
-var departureSeats = sessionStorage.getItem("departureSeats");
+var returnSeats = sessionStorage.getItem("RetBookedSeats");
+var departureSeats = sessionStorage.getItem("DepBookedSeats");
 
    
 
@@ -54,16 +54,31 @@ export default class MyItinerary extends Component {
 
     async addBooking(e) {
       console.log("Adding booking")
+
+      //Get new user name first 
+      var firstName = "";
+      var lastName = "";
+       //Hardcoding user ID till auth is done
+      await axios.get('http://localhost:5000/users/61c347f18128719139d8a8c7')
+        .then(res =>{
+          console.log(res.data);
+         firstName = res.data.firstName;
+         lastName = res.data.lastName;
+        
+        }).catch(err=> {
+          console.log("Fetching user error: "+ err);
+        })
       const newBooking = {
         //Hardcoding user ID till auth is done
         userId: "61c347f18128719139d8a8c7",
         depFlightNumber: depFlightNumber,
         arrFlightNumber: arrFlightNumber,
         departureSeats: departureSeats,
-        arrivalSeats: arrivalSeats,
+        returnSeats: returnSeats,
+        firstName: firstName,
+        lastName: lastName,
        
       };
-  
       await axios.post('http://localhost:5000/bookings/addBooking ', newBooking)
         .then(res =>{
           console.log(res.data);

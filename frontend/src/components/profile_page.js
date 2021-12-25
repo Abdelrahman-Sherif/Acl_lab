@@ -251,13 +251,9 @@ export default class ProfilePage extends Component {
         passportNumber: this.state.passportNumber,
       };
 
-
       await axios.post('http://localhost:5000/users/update/' + this.state.userId, updatedUser)
         .then(res => {
-
           console.log(res.data);
-
-          //window.location = '/flights/users/list';
         })
         .catch((error) => {
           console.log(error);
@@ -268,13 +264,12 @@ export default class ProfilePage extends Component {
         await axios.post('http://localhost:5000/bookings/updateUserNames/' + this.state.userId, updatedUser)
         .then(res => {
           console.log(res.data);
-
-          window.location = '/flights/users/list';
         })
         .catch((error) => {
           console.log(error);
           this.setState({ errorMessage: error.message });
         });
+        window.location = '/flights/users/list';
 
 
 
