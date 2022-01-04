@@ -5,11 +5,10 @@ var arrFlightNumber= sessionStorage.getItem("ReturnFlightNumber");
 var depFlightNumber= sessionStorage.getItem("DepartureFlightNumber");
 var returnSeats = sessionStorage.getItem("RetBookedSeats");
 var departureSeats = sessionStorage.getItem("DepBookedSeats");
-
-   
-
-
-
+var departureSeatsMap = sessionStorage.getItem("DepSeatsMap");
+var returnSeatsMap = sessionStorage.getItem("RetSeatsMap");
+var flightID= sessionStorage.getItem("FlightID");
+var returnFlightID= sessionStorage.getItem("ReturnFlightID");
 
 
 const Record = (props) => (
@@ -79,15 +78,36 @@ export default class MyItinerary extends Component {
         lastName: lastName,
        
       };
-      await axios.post('http://localhost:5000/bookings/addBooking ', newBooking)
+      console.log("Dep 1 map fetched : "+departureSeatsMap);
+      var depMap = JSON.parse(departureSeatsMap.toString());
+      var returnMap = JSON.parse(returnSeatsMap.toString());
+      
+        await axios.post('http://localhost:5000/bookings/addBooking ', newBooking)
         .then(res =>{
           console.log(res.data);
-          window.alert("Booking Added!");
-          window.location = '/flights/users/list';
-        
+          
         }).catch(err=> {
           console.log("Booking confirmation error: "+ err);
+        });
+        await axios
+        .post("http://localhost:5000/flights/updateSeats/" + flightID, depMap)
+        .then((response) => {
+            console.log("Successfully updated seats");
         })
+        .catch(function (error) {
+            console.log('errorr: ' + error);
+        });
+        await axios
+        .post("http://localhost:5000/flights/updateSeats/" + returnFlightID, returnMap)
+        .then((response) => {
+            console.log("Successfully updated seats");
+            window.alert("Booking Added!");
+            window.location = '/flights/users/list';
+        
+        })
+        .catch(function (error) {
+            console.log('errorr: ' + error);
+        });
     }
 
   

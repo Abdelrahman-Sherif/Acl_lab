@@ -10,9 +10,10 @@ const getFlightByID = async ()=>{
     await axios
     .get("http://localhost:5000/flights/" + FlightID)
     .then((response) => {
+        console.log(response.data);
         setEconomySeats(response.data.EconomySeatsAvail);
         setBusinessSeats(response.data.BusinessSeatsAvail);
-        setEconomySeats(response.data.FirstSeatsAvail);
+        setFirstSeats(response.data.FirstSeatsAvail);
     })
     .catch(function (error) {
         console.log(error);
@@ -47,38 +48,24 @@ const getFlightByID = async ()=>{
     };
 
     const updateFlightSeats = async ()=>{ 
-        const newEconomySeats = economySeats.map((e, index)=> e && bookedSeats.includes((index+1).toString())? false: true);
+        const newFirstSeats = firstSeats.map((e, index)=> e && bookedSeats.includes((index+1).toString())? false: true);
         const newBusinessSeats = businessSeats.map((e, index)=>{ 
-            return e && !(bookedSeats.includes((index+1).toString()));
+            return e && !(bookedSeats.includes((index+1+firstSeats.length).toString()));
         });
-        const newFirstSeats = firstSeats.map((e, index)=> e &&bookedSeats.includes((index+1).toString())? false: true);
+        const newEconomySeats = economySeats.map((e, index)=> e && !(bookedSeats.includes((index+1+firstSeats.length + businessSeats.length).toString())));
         
-        setEconomySeats(newEconomySeats);
-        setBusinessSeats(newBusinessSeats);
-        setFirstSeats(newFirstSeats);
+        // setEconomySeats(newEconomySeats);
+        // setBusinessSeats(newBusinessSeats);
+        // setFirstSeats(newFirstSeats);
 
         const seatsMap = {
             EconomySeatsAvail: newEconomySeats,
             BusinessSeatsAvail: newBusinessSeats,
             FirstSeatsAvail: newFirstSeats,
         };
-        await axios
-        .post("http://localhost:5000/flights/updateSeats/" + FlightID, seatsMap)
-        .then((response) => {
-            console.log("Successfully updated seats");
-        })
-        .catch(function (error) {
-            console.log('errorr: ' + error);
-        });
 
-        await axios
-        .post("http://localhost:5000/bookings/updateSeats/" + FlightID, seatsMap)
-        .then((response) => {
-            console.log("Successfully updated seats");
-        })
-        .catch(function (error) {
-            console.log('errorr: ' + error);
-        });
+        sessionStorage.setItem("DepBookedSeats", bookedSeats);
+        sessionStorage.setItem("DepSeatsMap", JSON.stringify(seatsMap));
     }
 
   React.useEffect(() => {
@@ -94,19 +81,15 @@ const getFlightByID = async ()=>{
                return prevState + seat + ' ';
            })
       });
-    sessionStorage.setItem("DepEcoSeats", economySeats);
-    sessionStorage.setItem("DepBusSeats", businessSeats);
-    sessionStorage.setItem("DepFirSeats", firstSeats);
-    sessionStorage.setItem("DepBookedSeats", bookedSeats);
 
-      let newAvailableSeats = economySeats.filter(seat => !bookedSeats.includes(seat));
-      setEconomySeats(newAvailableSeats);
-      newAvailableSeats = businessSeats.filter(seat => !bookedSeats.includes(seat));
-      setBusinessSeats(newAvailableSeats);
-      newAvailableSeats = firstSeats.filter(seat => !bookedSeats.includes(seat));
-      setFirstSeats(newAvailableSeats);
-      setBookedSeats([]);
-      setNumberOfSeats(0);
+    //   let newAvailableSeats = economySeats.filter(seat => !bookedSeats.includes(seat));
+    //   setEconomySeats(newAvailableSeats);
+    //   newAvailableSeats = businessSeats.filter(seat => !bookedSeats.includes(seat));
+    //   setBusinessSeats(newAvailableSeats);
+    //   newAvailableSeats = firstSeats.filter(seat => !bookedSeats.includes(seat));
+    //   setFirstSeats(newAvailableSeats);
+    //   setBookedSeats([]);
+    //   setNumberOfSeats(0);
   };
   const [numberOfSeats, setNumberOfSeats] = useState(0);
 

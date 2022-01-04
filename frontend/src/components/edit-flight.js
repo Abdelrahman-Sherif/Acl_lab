@@ -31,6 +31,7 @@ export default class EditFlight extends Component {
     this.onChangeFirstSeats = this.onChangeFirstSeats.bind(this);
     this.onChangeAirportArrival = this.onChangeAirportArrival.bind(this);
     this.onChangeAirportTakeOff = this.onChangeAirportTakeOff.bind(this);
+    this.onChangePrice = this.onChangePrice.bind(this);
 
 
     this.onSubmit = this.onSubmit.bind(this);
@@ -47,6 +48,7 @@ export default class EditFlight extends Component {
       AirportArrival: "",
       AirportTakeOff: "",
       flightId: "",
+      Price:0,
 
       FlightNumberError: "",
       DepartureTimeError: "",
@@ -58,7 +60,8 @@ export default class EditFlight extends Component {
       FirstSeatsError: "",
       AirportArrivalError: "",
       AirportTakeOffError: "",
-      errorMessage: ""
+      errorMessage: "",
+      priceError: "",
     }
   }
 
@@ -81,6 +84,7 @@ export default class EditFlight extends Component {
           FirstSeats: response.data.FirstSeats,
           AirportArrival: response.data.AirportArrival,
           AirportTakeOff: response.data.AirportTakeOff,
+          Price: response.data.Price,
         });
         // console.log("Arrival date: " + this.state.DateArrival.);
       })
@@ -102,6 +106,11 @@ export default class EditFlight extends Component {
     this.setState({
       FlightNumberError: this.state.FlightNumber ? "" : "error"
     })
+
+    this.setState({
+      priceError: this.state.Price ? "" : "error"
+    })
+
 
     this.setState({
       DepartureTimeError: this.state.DepartureTime ? "" : "error"
@@ -141,7 +150,7 @@ export default class EditFlight extends Component {
 
     if (!this.state.FlightNumber || !this.state.DepartureTime || !this.state.ArrivalTime || !this.state.DateTakeoff
       || !this.state.DateArrival || !this.state.EconomySeats || !this.state.BusinessSeats || !this.state.FirstSeats
-      || !this.state.AirportArrival || !this.state.AirportTakeOff) {
+      || !this.state.AirportArrival || !this.state.AirportTakeOff || !this.state.Price) {
       console.log(!this.state.FlightNumber, !this.state.DepartureTime, !this.state.ArrivalTime, !this.state.DateTakeoff
         , !this.state.DateArrival, !this.state.EconomySeats, !this.state.BusinessSeats, !this.state.FirstSeats
         , !this.state.AirportArrival, !this.state.AirportTakeOff)
@@ -280,7 +289,16 @@ export default class EditFlight extends Component {
       AirportTakeOff: e.target.value
     })
     this.setState({
-      AirportTakeOffError: e.target.value.length === 3 ? "" : "error"
+      AirportTakeOffError: e.target.value.length <= 0 ? "" : "error"
+    })
+  }
+
+  onChangePrice(e) {
+    this.setState({
+      Price: e.target.value
+    })
+    this.setState({
+      priceError: e.target.value.length === 3 ? "" : "error"
     })
   }
 
@@ -296,6 +314,7 @@ export default class EditFlight extends Component {
         DateArrival: this.state.DateArrival,
         EconomySeats: this.state.EconomySeats,
         BusinessSeats: this.state.BusinessSeats,
+        Price: this.state.Price,
         FirstSeats: this.state.FirstSeats,
         AirportArrival: this.state.AirportArrival,
         AirportTakeOff: this.state.AirportTakeOff,
@@ -320,6 +339,7 @@ export default class EditFlight extends Component {
             FirstSeats: 0,
             AirportArrival: "",
             AirportTakeOff: "",
+            Price:0,
 
             FlightNumberError: "",
             DepartureTimeError: "",
@@ -331,6 +351,7 @@ export default class EditFlight extends Component {
             FirstSeatsError: "",
             AirportArrivalError: "",
             AirportTakeOffError: "",
+            priceError: "",
           }
         })
         .catch((error) => {
@@ -401,6 +422,13 @@ export default class EditFlight extends Component {
                 shrink: true,
               }} error={this.state.FirstSeatsError ? true : false} />
             </div>
+
+            <div>
+              <TextField label="Price" value={this.state.Price} variant="outlined" size="small" type="number" required style={{ width: 300 }} onChange={this.onChangePrice} margin="normal" InputLabelProps={{
+                shrink: true,
+              }} error={this.state.priceError ? true : false} />
+            </div>
+
 
             <div>
               <TextField label="Destination" value={this.state.AirportArrival} variant="outlined" size="small" type="text" required style={{ width: 300 }} onChange={this.onChangeAirportArrival} margin="normal" InputLabelProps={{

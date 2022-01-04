@@ -12,8 +12,8 @@ router.route('/addBooking').post((req, res) => {
   console.log(req.body);
   const arrFlightNumber = req.body.arrFlightNumber;
   const depFlightNumber = req.body.depFlightNumber;
-  const returnSeats = req.body.returnSeats;
-  const departureSeats = req.body.departureSeats;
+  const returnSeats = req.body.returnSeats.split(',');
+  const departureSeats = req.body.departureSeats.split(',');
   const userId = req.body.userId;
   const firstName = req.body.firstName;
   const lastName = req.body.lastName;

@@ -114,7 +114,7 @@ router.route("/delete/:id").delete((req, res) => {
 });
 
 router.route('/update/:id').post((req, res) => {
- 
+ console.log("Body: "+ req.body);
   Flight.findByIdAndUpdate(
     { _id: req.params.id },
     {
@@ -135,18 +135,19 @@ router.route('/update/:id').post((req, res) => {
     .then(()=> {console.log("Updated flight succesffully");
   return res.status(200).json('Updated flight successfully');})
     .catch(err => {
-      console.log("Error finding flight: " + err);
-      return res.status(400).json('Couldnt find flight,Error: ' + err);});
+      console.log("Error updating flight: " + err);
+      return res.status(400).json('Couldnt update flight,Error: ' + err);});
 });
 
 router.route("/updateSeats/:id").post((req, res) => {
-  console.log("body: " + req.body.toString());
+  console.log("update seats body: " + req.body);
+ 
   Flight.findByIdAndUpdate(
     { _id: req.params.id },
     {
-      EconomySeatsAvail: req.body.EconomySeatsAvail,
-      BusinessSeatsAvail: req.body.BusinessSeatsAvail,
-      FirstSeatsAvail: req.body.FirstSeatsAvail,
+      EconomySeatsAvail:  req.body.EconomySeatsAvail,
+      BusinessSeatsAvail:  req.body.BusinessSeatsAvail,
+      FirstSeatsAvail:  req.body.FirstSeatsAvail,
     }
   )
     .then(()=> {console.log("Updated flight succesffully");
