@@ -4,6 +4,10 @@ import axios from 'axios';
 import { Col, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import {TextField, Button, InputLabel, MenuItem, Select, FormControl} from '@mui/material';
+sessionStorage.setItem("NewBooking", true);
+var NewBooking=sessionStorage.getItem("NewBooking");
+console.log("user new booking", NewBooking);
+
 
 const Record = (props) => (
   <tr>
@@ -30,7 +34,8 @@ const Record = (props) => (
            sessionStorage.setItem("FlightID", props.record._id);
            sessionStorage.setItem("airportTakeoff", props.record.AirportTakeOff);
            sessionStorage.setItem("airportArrival", props.record.AirportArrival);
-            
+           sessionStorage.setItem("NewBooking", true);
+
            window.location.replace("http://localhost:3000/flights/users/pick-seat");
            }
            

@@ -1,14 +1,19 @@
 import React, { Component } from "react";
 import axios from 'axios';
 import {Divider, Chip, Button} from '@mui/material';
-var arrFlightNumber= sessionStorage.getItem("ReturnFlightNumber");
-var depFlightNumber= sessionStorage.getItem("DepartureFlightNumber");
 var returnSeats = sessionStorage.getItem("RetBookedSeats");
+var arrFlightNumber= sessionStorage.getItem("ReturnFlightNumber");
+var returnSeatsMap = sessionStorage.getItem("RetSeatsMap");
+var returnFlightID= sessionStorage.getItem("ReturnFlightID");
+
+var depFlightNumber= sessionStorage.getItem("DepartureFlightNumber");
 var departureSeats = sessionStorage.getItem("DepBookedSeats");
 var departureSeatsMap = sessionStorage.getItem("DepSeatsMap");
-var returnSeatsMap = sessionStorage.getItem("RetSeatsMap");
 var flightID= sessionStorage.getItem("FlightID");
-var returnFlightID= sessionStorage.getItem("ReturnFlightID");
+var BookingId=sessionStorage.getItem("BookingId");
+
+var NewBooking=sessionStorage.getItem("NewBooking");
+            console.log("New booking", NewBooking);
 
 
 const Record = (props) => (
@@ -30,7 +35,16 @@ const Record = (props) => (
   );
   
   
-  
+  // function checkifNew(){
+  //   if(NewBooking==true){
+  //     this.addBooking.bind(this);
+  //   }
+  //   else{
+  //     this.addBooking.bind(this);
+
+  //     //change booking
+  //   }
+  // }
 export default class MyItinerary extends Component {
     // This is the constructor that shall store our data retrieved from the database
     constructor(props) {
@@ -82,32 +96,63 @@ export default class MyItinerary extends Component {
       var depMap = JSON.parse(departureSeatsMap.toString());
       var returnMap = JSON.parse(returnSeatsMap.toString());
       
-        await axios.post('http://localhost:5000/bookings/addBooking ', newBooking)
-        .then(res =>{
-          console.log(res.data);
+        if(NewBooking==true){
+          await axios.post('http://localhost:5000/bookings/addBooking ', newBooking)
+          .then(res =>{
+            console.log(res.data);
+            
+          }).catch(err=> {
+            console.log("Booking confirmation error: "+ err);
+          });
+          await axios
+          .post("http://localhost:5000/flights/updateSeats/" + flightID, depMap)
+          .then((response) => {
+              console.log("Successfully updated seats");
+          })
+          .catch(function (error) {
+              console.log('errorr: ' + error);
+          });
+          await axios
+          .post("http://localhost:5000/flights/updateSeats/" + returnFlightID, returnMap)
+          .then((response) => {
+              console.log("Successfully updated seats");
+              window.alert("Booking Added!");
+              window.location = '/flights/users/list';
           
-        }).catch(err=> {
-          console.log("Booking confirmation error: "+ err);
-        });
-        await axios
-        .post("http://localhost:5000/flights/updateSeats/" + flightID, depMap)
-        .then((response) => {
-            console.log("Successfully updated seats");
-        })
-        .catch(function (error) {
-            console.log('errorr: ' + error);
-        });
-        await axios
-        .post("http://localhost:5000/flights/updateSeats/" + returnFlightID, returnMap)
-        .then((response) => {
-            console.log("Successfully updated seats");
-            window.alert("Booking Added!");
-            window.location = '/flights/users/list';
-        
-        })
-        .catch(function (error) {
-            console.log('errorr: ' + error);
-        });
+          })
+          .catch(function (error) {
+              console.log('errorr: ' + error);
+          });
+        }else{
+          //update booking
+          
+          await axios.post('http://localhost:5000/bookings/update/',  + BookingId, newBooking)
+          .then(res =>{
+            console.log(res.data);
+            console.log("Successfully updated booking");
+
+          }).catch(err=> {
+            console.log("Booking confirmation error: "+ err);
+          });
+          await axios
+          .post("http://localhost:5000/flights/updateSeats/" + flightID, depMap)
+          .then((response) => {
+              console.log("Successfully updated seats");
+          })
+          .catch(function (error) {
+              console.log('errorr: ' + error);
+          });
+          await axios
+          .post("http://localhost:5000/flights/updateSeats/" + returnFlightID, returnMap)
+          .then((response) => {
+              console.log("Successfully updated seats");
+              window.alert("Booking Updated!");
+              window.location = '/flights/users/bookings/';
+          
+          })
+          .catch(function (error) {
+              console.log('errorr: ' + error);
+          });        }
     }
 
   
@@ -119,7 +164,7 @@ export default class MyItinerary extends Component {
   
   
       await axios
-      .get("http://localhost:5000/flights/getFilteredFlight", {params: filterParams})
+       .get("http://localhost:5000/flights/getFilteredFlight", {params: filterParams})
       .then((response) => {
         console.log("Records gotten after filtering: "+ response.data);
         this.setState({ records: response.data });

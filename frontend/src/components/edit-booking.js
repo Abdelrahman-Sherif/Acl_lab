@@ -3,7 +3,10 @@ import React, { Component } from "react";
 import axios from 'axios';
 import { Col, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import {TextField, Button, InputLabel, MenuItem, Select, FormControl} from '@mui/material';
+import {TextField, Button,ButtonGroup, InputLabel, MenuItem, Select, FormControl} from '@mui/material';
+var bookingId= sessionStorage.getItem("BookingId");
+console.log("Booking still: " + bookingId);
+sessionStorage.setItem("NewBooking", false);
 
 
 const Record = (props) => (
@@ -20,38 +23,72 @@ const Record = (props) => (
 
 
 
-    <td>
-    <Button size="small" variant="contained" color = "error" onClick={() => {
-           if (window.confirm('Are you sure you want to delete this booking?')) {
-         
-               props.deleteBooking(props.record._id);
-           }
-
-           
-           
-        }}>Delete Booking</Button>
-    </td>
-    <td>
-    <Link to={{pathname: `/flights/users/bookings/edit/${props.record._id}`}}>
-    <Button size="small" variant="contained" color = "info" onClick={() => {
-              sessionStorage.setItem("BookingId", props.record._id);
-              console.log("Booking : " + props.record._id);
-
-
-
-           
-           
-        }}>Edit</Button>
-        </Link>
     
-    </td>
-  
+    <td>
+    
+  <Button onClick={() => {
+           if (window.confirm('Are you sure you want to change departure flight?')) {
+
+         
+           sessionStorage.setItem("depFlightNumber", props.record.depFlightNumber);
+           sessionStorage.setItem("ReturnFlightNumber", props.record.arrFlightNumber);
+           sessionStorage.setItem("RetBookedSeats", props.record.returnSeats);
+
+
+            
+           window.location.replace("http://localhost:3000/flights/users/departure");
+           }
+           
+        }}>Change Departure</Button>
+</td>
+<td>
+<Button onClick={() => {
+           if (window.confirm('Are you sure you want to change Return flight?')) {
+
+         
+            sessionStorage.setItem("depFlightNumber", props.record.depFlightNumber);
+            sessionStorage.setItem("ReturnFlightNumber", props.record.arrFlightNumber);
+            sessionStorage.setItem("DepBookedSeats", props.record.departureSeats);
+            console.log("depFlightNumber",props.record.depFlightNumber);
+            console.log("departureSeats",props.record.departureSeats);
+            
+            
+           window.location.replace("http://localhost:3000/flights/users/return");
+           }
+           
+        }}>Change Return</Button>
+        </td>
+        <td>
+  <Button onClick={() => {
+           if (window.confirm('Are you sure you want to change seats in Departure flight?')) {
+
+         
+           sessionStorage.setItem("airportArrival", props.record.AirportArrival);
+            
+           window.location.replace("http://localhost:3000/flights/users/pick-seat");
+           }
+           
+        }}>Edit Dep Seats</Button>
+         </td>
+        <td>
+  <Button onClick={() => {
+           if (window.confirm('Are you sure you want to change seats in Return flight?')) {
+
+         
+           sessionStorage.setItem("airportArrival", props.record.AirportArrival);
+            
+           window.location.replace("http://localhost:3000/flights/users/pick-return-seat");
+           }
+           
+        }}>Edit Ret Seats</Button>
+
+</td> 
 
   </tr>
 );
 
 
-export default class UserBookings extends Component {
+export default class EditUserBookings extends Component {
   // This is the constructor that shall store our data retrieved from the database
   constructor(props) {
     super(props);
@@ -78,28 +115,29 @@ export default class UserBookings extends Component {
 
   ///Get updated flights
   async getUserBookings(){
-      console.log("Getting users bookings");
-
-    await axios
-    .get("http://localhost:5000/bookings/getUserBookings")
-    .then((response) => {
-      console.log("User Bookings gotten: "+ JSON.stringify(response.data));
-      
-
-      this.setState({ bookings: response.data });
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
-  }
-
-  
-
-  // This method will get the data from the database.
-  componentDidMount() {
     console.log("Getting users bookings");
-    this.getUserBookings();
-  }
+  await axios
+  .get("http://localhost:5000/bookings/getuserbookings/"+ bookingId)
+  .then((response) => {
+    console.log("User Bookings gotten: "+ JSON.stringify(response.data));
+    
+    this.setState({ bookings: [response.data]});
+    //this.state.bookings.push(response.data);
+    console.log("User Bookings to be displayed: "+ response.data);
+
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
+}
+
+
+
+// This method will get the data from the database.
+componentDidMount() {
+  console.log("Getting users bookings");
+  this.getUserBookings();
+}
 
   // Delete booking & send email
   async deleteBooking(id) {
@@ -119,6 +157,8 @@ export default class UserBookings extends Component {
 
   // This method will map out the users on the table
   recordList() {
+    console.log("Booking state is: "+ this.state.bookings);
+
     return this.state.bookings.map((currentrecord) => {
         console.log("Booking data is: "+ currentrecord);
       return (
@@ -136,9 +176,8 @@ export default class UserBookings extends Component {
 
     return (
       <div>
-        <h3 style = {{marginBottom: 20, marginTop:10, marginLeft: 30}}>My Bookings </h3>
-      <Link to='/flights/users/profile'>
-      <Button variant="contained" color='primary' style={{marginLeft:10}}> My Profile</Button>
+      <Link to='/flights/users/bookings'>
+      <Button variant="contained" color='primary' style={{marginLeft:10}}> My Bookings</Button>
       
       </Link>
       

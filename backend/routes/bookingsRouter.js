@@ -32,6 +32,13 @@ router.route('/addBooking').post((req, res) => {
     
 });
 
+router.route('/getUserBookings/:id').get((req, res) => {
+  console.log("Getting booking details from db");
+  Booking.findById(req.params.id)
+    .then(booking => res.json(booking))
+    .catch(err => res.status(400).json('Error: ' + err));
+});
+
 router.route('/getUserBookings').get((req, res) => {
   ///Hardcoding userId till auth is complete
   Booking.find().where("userId").equals("61c347f18128719139d8a8c7")
@@ -49,7 +56,28 @@ router.route("/delete/:id").delete((req, res) => {
 });
 
 
+router.route('/update/:id').post((req, res) => {
+  console.log("Body: "+ req.body);
+   Booking.findByIdAndUpdate(
+     { _id: req.params.id },
+     {
+    userId : req.body.userId ,
 
+    depFlightNumber : req.body.depFlightNumber ,
+    arrFlightNumber  : req.body.arrFlightNumber ,
+    departureSeats  : req.body.departureSeats ,
+     
+    returnSeats  : req.body.returnSeats ,
+    firstName  : req.body.firstName ,
+    lastName  : req.body.lastName ,
+     }
+   )
+     .then(()=> {console.log("Updated booking succesffully");
+   return res.status(200).json('Updated booking successfully');})
+     .catch(err => {
+       console.log("Error updating booking: " + err);
+       return res.status(400).json('Couldnt update booking,Error: ' + err);});
+ });
 
 router.route("/updateDepartureSeats/:id").post((req, res) => {
   Booking.findByIdAndUpdate(

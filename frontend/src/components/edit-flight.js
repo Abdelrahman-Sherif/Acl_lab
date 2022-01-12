@@ -92,6 +92,7 @@ export default class EditFlight extends Component {
         console.log(error);
       });
   }
+  
   componentDidMount() {
     var url = window.location.href;
     var fetchedFlightId = /[^/]*$/.exec(url)[0];

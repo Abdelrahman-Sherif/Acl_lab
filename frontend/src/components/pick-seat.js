@@ -4,6 +4,10 @@ import Seats from './Seats';
 import axios from 'axios';
 
 var FlightID= sessionStorage.getItem("FlightID");
+var NewBooking=sessionStorage.getItem("NewBooking");
+console.log("FlightID pick seat", FlightID);
+
+console.log("New booking pick seat", NewBooking);
 
 const BookMySeats = () => {
 const getFlightByID = async ()=>{ 
@@ -75,7 +79,16 @@ const getFlightByID = async ()=>{
   const confirmBooking = async ()=> {
     await updateFlightSeats();
     setBookedStatus('You have successfully booked the following seats:' + bookedSeats.toString());
-      window.location.replace("http://localhost:3000/flights/users/return")
+        if(NewBooking==true){
+            console.log("New booking", NewBooking);
+
+      window.location.replace("http://localhost:3000/flights/users/return")}
+      else{
+        console.log("New booking", NewBooking);
+
+        window.location.replace("http://localhost:3000/flights/users/itinerary")}
+
+      
       bookedSeats.forEach(seat => {
            setBookedStatus(prevState => {
                return prevState + seat + ' ';

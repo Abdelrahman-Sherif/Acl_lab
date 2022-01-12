@@ -4,16 +4,13 @@ import axios from 'axios';
 import { Col, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import {TextField, Button, InputLabel, MenuItem, Select, FormControl} from '@mui/material';
+var depFlightNumber= sessionStorage.getItem("depFlightNumber");
+var arrFlightNumber= sessionStorage.getItem("arrFlightNumber");
+
+sessionStorage.setItem("NewBooking", false);
 
 
-var airportTakeoff= sessionStorage.getItem("airportTakeoff");
-var airportArrival= sessionStorage.getItem("airportArrival");
-var NewBooking=sessionStorage.getItem("NewBooking");
-var ReturnFlightNumber= sessionStorage.getItem("ReturnFlightNumber");
-var depFlightNumber= sessionStorage.getItem("DepartureFlightNumber");
-var departureSeats = sessionStorage.getItem("DepBookedSeats");
-console.log("depFlightNumber",depFlightNumber);
-console.log("departureSeats",departureSeats);
+
 
 
 const Record = (props) => (
@@ -34,15 +31,19 @@ const Record = (props) => (
     <td>
     <Button size="small" variant="contained" color = "error" onClick={() => {
            if (window.confirm('Are you sure you want to choose this flight?'))
-           sessionStorage.setItem("ReturnFlightNumber", props.record.FlightNumber);
-           sessionStorage.setItem("ReturnFlightID", props.record._id);
-           window.location.replace("http://localhost:3000/flights/users/pick-return-seat") ;
-        }}>Confirm Return</Button>
+      
+           sessionStorage.setItem("DepartureFlightNumber", props.record.FlightNumber);
+           sessionStorage.setItem("FlightID", props.record._id);
+           sessionStorage.setItem("airportTakeoff", props.record.AirportTakeOff);
+           sessionStorage.setItem("airportArrival", props.record.AirportArrival);
+            
+           window.location.replace("http://localhost:3000/flights/users/pick-seat") ;
+        }}>Confirm Departure</Button>
     </td>
   </tr>
 );
 
-export default class ReturnFlights extends Component {
+export default class DepartureFlights extends Component {
   // This is the constructor that shall store our data retrieved from the database
   constructor(props) {
     super(props);
@@ -105,67 +106,46 @@ export default class ReturnFlights extends Component {
   }
 
   async getFilteredFlights(e){
-    if(NewBooking==true){
-      const filterParams = {
+    const filterParams = {
      
-        AirportArrival: airportTakeoff,
-        AirportTakeOff: airportArrival,
-      };
-  
-      let cleanedParams = Object.fromEntries(Object.entries(filterParams).filter(([_, v]) => v !== ""));
-  
-      await axios
-      .get("http://localhost:5000/flights/getFiltered", {params: cleanedParams})
-      .then((response) => {
-        console.log("Records gotten after filtering: "+ response.data);
-        this.setState({ records: response.data });
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-    }else{
+      FlightNumber: depFlightNumber,
+    };
+    
 
-      const filterParams = {
-     
-        FlightNumber: ReturnFlightNumber,
+    let cleanedParams = Object.fromEntries(Object.entries(filterParams).filter(([_, v]) => v !== ""));
+    let airportdep="";
+    let airportarr="";
+
+    const response2 = await axios.get("http://localhost:5000/flights/getFiltered", {params: cleanedParams})
+    .then((response) => {
+      console.log("Records gotten after filtering: "+ response.data);
+      this.setState({ records: response.data });
+      airportdep=response.data[0].AirportTakeOff;
+      airportarr=response.data[0].AirportArrival;
+
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+
+    
+
+    const filterParams2 = {
+        AirportTakeOff: airportdep,
+
+        AirportArrival: airportarr,
       };
+    await axios
+    .get("http://localhost:5000/flights/getFiltered", {params: filterParams2})
+    .then((response) => {
+      console.log("Records gotten after filtering: "+ response.data);
       
-  
-      let cleanedParams = Object.fromEntries(Object.entries(filterParams).filter(([_, v]) => v !== ""));
-      let airportdep="";
-      let airportarr="";
-  
-      const response2 = await axios.get("http://localhost:5000/flights/getFiltered", {params: cleanedParams})
-      .then((response) => {
-        console.log("Records gotten after filtering: "+ response.data);
-        this.setState({ records: response.data });
-        airportdep=response.data[0].AirportTakeOff;
-        airportarr=response.data[0].AirportArrival;
-  
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  
-      
-  
-      const filterParams2 = {
-          AirportTakeOff: airportdep,
-  
-          AirportArrival: airportarr,
-        };
-      await axios
-      .get("http://localhost:5000/flights/getFiltered", {params: filterParams2})
-      .then((response) => {
-        console.log("Records gotten after filtering: "+ response.data);
-        
-        this.setState({ records: response.data });
-        console.log("records", response.data[0].AirportArrival);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-    }
+      this.setState({ records: response.data });
+      console.log("records", response.data[0].AirportArrival);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
   }
   ///Get updated flights
   
