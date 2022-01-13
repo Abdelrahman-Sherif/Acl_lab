@@ -56,7 +56,7 @@ router.route("/delete/:id").delete((req, res) => {
 });
 
 
-router.route('/update/:id').post((req, res) => {
+router.route("/update/:id").post((req, res) => {
   console.log("Body: "+ req.body);
    Booking.findByIdAndUpdate(
      { _id: req.params.id },
@@ -65,9 +65,9 @@ router.route('/update/:id').post((req, res) => {
 
     depFlightNumber : req.body.depFlightNumber ,
     arrFlightNumber  : req.body.arrFlightNumber ,
-    departureSeats  : req.body.departureSeats ,
+    departureSeats  : req.body.departureSeats.split(',') ,
      
-    returnSeats  : req.body.returnSeats ,
+    returnSeats  : req.body.returnSeats.split(',') ,
     firstName  : req.body.firstName ,
     lastName  : req.body.lastName ,
      }

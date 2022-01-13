@@ -29,6 +29,8 @@ app.use('/flights', flightsRouter);
 app.use('/users', userRouter);
 app.use('/bookings', bookingsRouter);
 
+
+
 // app.get("/users", (req, res) => {
 //       const Admin = new User({
 //         isAdmin : true,

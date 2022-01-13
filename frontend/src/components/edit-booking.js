@@ -33,6 +33,8 @@ const Record = (props) => (
            sessionStorage.setItem("depFlightNumber", props.record.depFlightNumber);
            sessionStorage.setItem("ReturnFlightNumber", props.record.arrFlightNumber);
            sessionStorage.setItem("RetBookedSeats", props.record.departureSeats);
+           sessionStorage.setItem("DepBookedSeats", props.record.departureSeats);
+
            sessionStorage.setItem("BookingID", props.record.BookingID);
 
            sessionStorage.setItem("oldSeats",props.record.returnSeats);

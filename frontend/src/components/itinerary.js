@@ -119,7 +119,8 @@ export default class MyItinerary extends Component {
           .catch(function (error) {
               console.log('errorr: ' + error);
           });
-        }else{
+        }
+        else{
           //update booking
           
           await axios.post("http://localhost:5000/bookings/update/" + BookingId, newBooking)
