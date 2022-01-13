@@ -2,7 +2,10 @@
 import React, {useState} from 'react';
 import Seats from './Seats';
 import axios from 'axios';
+import queryString from 'query-string';
 
+
+var {flag}=queryString.parse(window.location.search);
 var FlightID= sessionStorage.getItem("ReturnFlightID");
 
 const BookMyReturnSeats = () => {
@@ -57,6 +60,31 @@ const getFlightByID = async ()=>{
         // setBusinessSeats(newBusinessSeats);
         // setFirstSeats(newFirstSeats);
 
+
+        if(flag==0){
+          console.log("New booking");
+      }else{
+          //making old booked seats available again
+          var lenFirst= newFirstSeats.length;
+          var lenBiz= newBusinessSeats.length;
+          var oldseats=sessionStorage.getItem("oldSeats");
+         
+          for (var i = 0; i < oldseats.length; i++) { 
+                  if(oldseats[i]<lenFirst){
+                      newFirstSeats.splice(oldseats[i],0,true);
+                  }
+                  else if(oldseats[i]<lenFirst+lenBiz){
+                      newBusinessSeats.splice(oldseats[i],0,true);
+                  }else{
+                      newEconomySeats.splice(oldseats[i],0,true);
+                  }
+           }
+      
+      
+      
+      
+      }
+
         const seatsMap = {
             EconomySeatsAvail: newEconomySeats,
             BusinessSeatsAvail: newBusinessSeats,
@@ -74,7 +102,13 @@ const getFlightByID = async ()=>{
   const confirmBooking = async ()=> {
     await updateFlightSeats();
     setBookedStatus('You have successfully booked the following seats:' + bookedSeats.toString());
+    if(flag==0){
+      window.location.replace(`http://localhost:3000/flights/users/itinerary?flag=${flag}`)
+
+    }else{
       window.location.replace("http://localhost:3000/flights/users/itinerary")
+
+    }
       bookedSeats.forEach(seat => {
            setBookedStatus(prevState => {
                return prevState + seat + ' ';

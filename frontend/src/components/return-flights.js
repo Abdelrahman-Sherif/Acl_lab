@@ -4,11 +4,14 @@ import axios from 'axios';
 import { Col, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import {TextField, Button, InputLabel, MenuItem, Select, FormControl} from '@mui/material';
+import queryString from 'query-string';
 
+
+var {flag}=queryString.parse(window.location.search);
+console.log("flag", flag);
 
 var airportTakeoff= sessionStorage.getItem("airportTakeoff");
 var airportArrival= sessionStorage.getItem("airportArrival");
-var NewBooking=sessionStorage.getItem("NewBooking");
 var ReturnFlightNumber= sessionStorage.getItem("ReturnFlightNumber");
 var depFlightNumber= sessionStorage.getItem("DepartureFlightNumber");
 var departureSeats = sessionStorage.getItem("DepBookedSeats");
@@ -36,7 +39,12 @@ const Record = (props) => (
            if (window.confirm('Are you sure you want to choose this flight?'))
            sessionStorage.setItem("ReturnFlightNumber", props.record.FlightNumber);
            sessionStorage.setItem("ReturnFlightID", props.record._id);
-           window.location.replace("http://localhost:3000/flights/users/pick-return-seat") ;
+           if(flag===0){           
+             window.location.replace("http://localhost:3000/flights/users/pick-return-seat") ;
+          }else{
+            window.location.replace(`http://localhost:3000/flights/users/pick-return-seat?flag=${flag}`) ;
+
+          }
         }}>Confirm Return</Button>
     </td>
   </tr>
@@ -105,26 +113,8 @@ export default class ReturnFlights extends Component {
   }
 
   async getFilteredFlights(e){
-    if(NewBooking==true){
-      const filterParams = {
-     
-        AirportArrival: airportTakeoff,
-        AirportTakeOff: airportArrival,
-      };
-  
-      let cleanedParams = Object.fromEntries(Object.entries(filterParams).filter(([_, v]) => v !== ""));
-  
-      await axios
-      .get("http://localhost:5000/flights/getFiltered", {params: cleanedParams})
-      .then((response) => {
-        console.log("Records gotten after filtering: "+ response.data);
-        this.setState({ records: response.data });
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-    }else{
-
+    if(flag===0){
+      //creating new booking
       const filterParams = {
      
         FlightNumber: ReturnFlightNumber,
@@ -166,7 +156,27 @@ export default class ReturnFlights extends Component {
         console.log(error);
       });
     }
-  }
+    else{
+//Editing a booking
+      const filterParams = {
+     
+        AirportArrival: airportTakeoff,
+        AirportTakeOff: airportArrival,
+      };
+  
+      let cleanedParams = Object.fromEntries(Object.entries(filterParams).filter(([_, v]) => v !== ""));
+  
+      await axios
+      .get("http://localhost:5000/flights/getFiltered", {params: cleanedParams})
+      .then((response) => {
+        console.log("Records gotten after filtering: "+ response.data);
+        this.setState({ records: response.data });
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+
+  }}
   ///Get updated flights
   
  

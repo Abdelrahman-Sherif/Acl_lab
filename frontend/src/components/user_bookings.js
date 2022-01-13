@@ -5,7 +5,6 @@ import { Col, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import {TextField, Button, InputLabel, MenuItem, Select, FormControl} from '@mui/material';
 
-
 const Record = (props) => (
   
   <tr>

@@ -1,6 +1,10 @@
 import React, { Component } from "react";
 import axios from 'axios';
 import {Divider, Chip, Button} from '@mui/material';
+import queryString from 'query-string';
+
+
+var {flag}=queryString.parse(window.location.search);
 var returnSeats = sessionStorage.getItem("RetBookedSeats");
 var arrFlightNumber= sessionStorage.getItem("ReturnFlightNumber");
 var returnSeatsMap = sessionStorage.getItem("RetSeatsMap");
@@ -12,8 +16,7 @@ var departureSeatsMap = sessionStorage.getItem("DepSeatsMap");
 var flightID= sessionStorage.getItem("FlightID");
 var BookingId=sessionStorage.getItem("BookingId");
 
-var NewBooking=sessionStorage.getItem("NewBooking");
-            console.log("New booking", NewBooking);
+
 
 
 const Record = (props) => (
@@ -35,16 +38,7 @@ const Record = (props) => (
   );
   
   
-  // function checkifNew(){
-  //   if(NewBooking==true){
-  //     this.addBooking.bind(this);
-  //   }
-  //   else{
-  //     this.addBooking.bind(this);
-
-  //     //change booking
-  //   }
-  // }
+  
 export default class MyItinerary extends Component {
     // This is the constructor that shall store our data retrieved from the database
     constructor(props) {
@@ -93,10 +87,12 @@ export default class MyItinerary extends Component {
        
       };
       console.log("Dep 1 map fetched : "+departureSeatsMap);
+      console.log("Booking info", newBooking);
       var depMap = JSON.parse(departureSeatsMap.toString());
       var returnMap = JSON.parse(returnSeatsMap.toString());
       
-        if(NewBooking==true){
+        if(flag==0){
+          //new booking
           await axios.post('http://localhost:5000/bookings/addBooking ', newBooking)
           .then(res =>{
             console.log(res.data);
@@ -126,13 +122,13 @@ export default class MyItinerary extends Component {
         }else{
           //update booking
           
-          await axios.post('http://localhost:5000/bookings/update/',  + BookingId, newBooking)
+          await axios.post("http://localhost:5000/bookings/update/" + BookingId, newBooking)
           .then(res =>{
             console.log(res.data);
             console.log("Successfully updated booking");
 
           }).catch(err=> {
-            console.log("Booking confirmation error: "+ err);
+            console.log("Booking update error: "+ err);
           });
           await axios
           .post("http://localhost:5000/flights/updateSeats/" + flightID, depMap)
@@ -161,36 +157,43 @@ export default class MyItinerary extends Component {
        
         FlightNumber: depFlightNumber
       };
-  
+  var arr=[];
+  var arr1=[];
   
       await axios
        .get("http://localhost:5000/flights/getFilteredFlight", {params: filterParams})
       .then((response) => {
         console.log("Records gotten after filtering: "+ response.data);
-        this.setState({ records: response.data });
+        //this.setState({ records: response.data });
+         arr1=response.data;
       })
       .catch(function (error) {
         console.log(error);
       });
-    }
-    async getFilteredFlightsReturn(e){
+    
+    
       console.log("Getting return flight, number: "+ arrFlightNumber);
-      const filterParams = {
+      console.log("Getting Departure flight, number: "+ depFlightNumber);
+
+      const filterParams1 = {
        
         FlightNumber: arrFlightNumber
       };
   
   
-      await axios
-      .get("http://localhost:5000/flights/getFilteredFlightReturn", {params: filterParams})
+      const response2= await axios
+      .get("http://localhost:5000/flights/getFilteredFlightReturn", {params: filterParams1})
       .then((response) => {
         console.log("Getting Return: "+ response.data);
-        this.setState({ records: response.data });
+        //var arr=records.concat(response.data);
+        arr=response.data;
+        this.setState({ records: arr1.concat(arr) });
       })
       .catch(function (error) {
         console.log(error);
       });
     }
+  
 
     // This method will get the data from the database.
     componentDidMount() {
@@ -216,7 +219,7 @@ export default class MyItinerary extends Component {
     return (
         <div>
    
-        <Divider><Chip label=" Flight Details" />
+        <Divider>
         <table className="table table-striped" style={{ marginTop: 50}}>
           <thead>
             <tr>
@@ -239,11 +242,7 @@ export default class MyItinerary extends Component {
         </table>
         </Divider>
     
-        <Divider >
-              <Button variant="contained" color = "primary" onClick = {this.getFilteredFlightsReturn.bind(this)
-              }>Show Return Flight </Button>
-              
-                </Divider>
+       
                 <Divider >
                   
               <Button variant="contained" color = "primary" onClick = {this.addBooking.bind(this)}

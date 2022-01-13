@@ -7,7 +7,8 @@ import {TextField, Button, InputLabel, MenuItem, Select, FormControl} from '@mui
 var depFlightNumber= sessionStorage.getItem("depFlightNumber");
 var arrFlightNumber= sessionStorage.getItem("arrFlightNumber");
 
-sessionStorage.setItem("NewBooking", false);
+sessionStorage.setItem("NewBooking", "false");
+console.log("dep fli new book", sessionStorage.getItem("NewBooking"));
 
 
 

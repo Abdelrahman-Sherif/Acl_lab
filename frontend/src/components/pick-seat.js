@@ -2,12 +2,12 @@
 import React, {useState} from 'react';
 import Seats from './Seats';
 import axios from 'axios';
-
+import queryString from 'query-string';
 var FlightID= sessionStorage.getItem("FlightID");
-var NewBooking=sessionStorage.getItem("NewBooking");
 console.log("FlightID pick seat", FlightID);
-
-console.log("New booking pick seat", NewBooking);
+console.log("value from url",queryString.parse(window.location.search)); 
+var {flag}=queryString.parse(window.location.search);
+console.log("flag", flag);
 
 const BookMySeats = () => {
 const getFlightByID = async ()=>{ 
@@ -53,11 +53,40 @@ const getFlightByID = async ()=>{
 
     const updateFlightSeats = async ()=>{ 
         const newFirstSeats = firstSeats.map((e, index)=> e && bookedSeats.includes((index+1).toString())? false: true);
+        console.log("seats", newFirstSeats);
+
         const newBusinessSeats = businessSeats.map((e, index)=>{ 
             return e && !(bookedSeats.includes((index+1+firstSeats.length).toString()));
         });
+
         const newEconomySeats = economySeats.map((e, index)=> e && !(bookedSeats.includes((index+1+firstSeats.length + businessSeats.length).toString())));
         
+
+if(flag==0){
+    console.log("New booking");
+}else{
+    //making old booked seats available again
+    var lenFirst= newFirstSeats.length;
+    var lenBiz= newBusinessSeats.length;
+    var oldseats=sessionStorage.getItem("oldSeats");
+   
+    for (var i = 0; i < oldseats.length; i++) { 
+            if(oldseats[i]<lenFirst){
+                newFirstSeats.splice(oldseats[i],0,true);
+            }
+            else if(oldseats[i]<lenFirst+lenBiz){
+                newBusinessSeats.splice(oldseats[i],0,true);
+            }else{
+                newEconomySeats.splice(oldseats[i],0,true);
+            }
+     }
+
+
+
+
+}
+
+
         // setEconomySeats(newEconomySeats);
         // setBusinessSeats(newBusinessSeats);
         // setFirstSeats(newFirstSeats);
@@ -79,14 +108,18 @@ const getFlightByID = async ()=>{
   const confirmBooking = async ()=> {
     await updateFlightSeats();
     setBookedStatus('You have successfully booked the following seats:' + bookedSeats.toString());
-        if(NewBooking==true){
-            console.log("New booking", NewBooking);
+        if(flag==0){
+            //new booking
+            console.log("Creating new booking");
 
-      window.location.replace("http://localhost:3000/flights/users/return")}
-      else{
-        console.log("New booking", NewBooking);
+      window.location.replace(`http://localhost:3000/flights/users/return?flag=${flag}`)
+    }
+      else {
+          //edit existing
+        console.log("Updating Existing booking");
 
-        window.location.replace("http://localhost:3000/flights/users/itinerary")}
+        window.location.replace("http://localhost:3000/flights/users/itinerary")
+    }
 
       
       bookedSeats.forEach(seat => {
