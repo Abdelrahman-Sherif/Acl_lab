@@ -34,7 +34,7 @@ app.use('/auth', AuthRouter);
     res.json(User.filter(user => user.email === req.user.email))
   })
 
-  function authenticateToken(req, res, next) {
+    function authenticateToken(req, res, next) {
     const authHeader = req.headers['authorization']
     const token = authHeader && authHeader.split(' ')[1]
     if (token == null) return res.sendStatus(401)
@@ -47,6 +47,18 @@ app.use('/auth', AuthRouter);
     })
   }
   
+// app.get("/users", (req, res) => {
+//       const Admin = new User({
+//         isAdmin : true,
+//     email: "Admin@admin.com",
+//         password: "Password",
+//     firstName: "Ahmed",
+//     lastName: "Mohamed",
+//     passportNumber: "1000",
+//       });
+//     Admin.save();
+//       res.send(Admin);
+//     })
 
 app.listen(port, () => {
     console.log(`Server is running on port: ${port}`);
