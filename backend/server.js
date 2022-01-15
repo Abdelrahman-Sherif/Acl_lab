@@ -29,9 +29,7 @@ app.use('/flights', flightsRouter);
 app.use('/users', userRouter);
 app.use('/bookings', bookingsRouter);
 app.use('/auth', AuthRouter);
-
-
-  
+ 
   app.get('/users', authenticateToken, (req, res) => {
     res.json(User.filter(user => user.email === req.user.email))
   })
