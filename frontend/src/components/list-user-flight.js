@@ -188,6 +188,7 @@ export default class ListUserFlights extends Component {
     });
   }
 
+
   // This following section will display the table with the records of individuals.
   render() {
 

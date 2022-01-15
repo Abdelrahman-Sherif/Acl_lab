@@ -293,7 +293,7 @@ export default class CreateFlight extends Component {
     await axios.post('http://localhost:5000/flights/add', newflight)
       .then(res =>{
         console.log(res.data);
-        window.location = '/';
+        window.location = '/addFlight';
       this.setState({
         FlightNumber: "",
         DepartureTime: "",
