@@ -11,13 +11,17 @@ import MyItinerary from './components/itinerary';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import ProfilePage from './components/profile_page';
 import UserBookings from './components/user_bookings';
+import RegisterUser from './components/register-user';
+import LoginUser from './components/login-user';
 
 
 const App = () => {
     return (
       <Router>
           <Routes>
-          <Route exact path="/" element={<RecordList/>}/>
+          <Route exact path="/" element={<RegisterUser/>}/>
+          <Route exact path="/login" element={<LoginUser/>}/>
+          <Route exact path="/allFlights" element={<RecordList/>}/>
            <Route exact path="/flights/add" element={<CreateFlight/>}/>
            <Route  path="/flights/edit/:id" element={<EditFlight/>}/>
            <Route  path="/flights/users/list" element={<ListUserFlights/>}/>

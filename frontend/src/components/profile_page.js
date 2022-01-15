@@ -25,6 +25,7 @@ export default class ProfilePage extends Component {
     this.onChangeLastName = this.onChangeLastName.bind(this);
     this.onChangeEmail = this.onChangeEmail.bind(this);
     this.onChangePassportNumber = this.onChangePassportNumber.bind(this);
+    this.onChangePassportNumber = this.onChangePassportNumber.bind(this);
 
 
     this.onSubmit = this.onSubmit.bind(this);
