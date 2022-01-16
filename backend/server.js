@@ -10,6 +10,9 @@ const port = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
+app.set('etag', false)
+const nocache = require('nocache');
+app.use(nocache());
 
 
 const uri = process.env.MONGO_URI;

@@ -9,6 +9,7 @@ const jwt = require('jsonwebtoken');
 require('dotenv').config
 
 router.route('/getUser/:username').get((req, res) => {
+  console.log("Getting user details from db username: "+ req.params.username);
   User.findOne({username: req.params.username})
     .then(user => res.json(user))
     .catch(err => res.status(400).json('Error: ' + err));
@@ -26,7 +27,7 @@ router.route('/add').post(async(req, res) => {
    User.findOne({email: req.body.email}, {username: req.body.username}).then((user)=>{ 
 
   if (user){
-    res.status(400).json("Username exists");
+    res.status(400).json("User exists");
   }
   else 
   {
