@@ -22,13 +22,23 @@ router.route('/get').get((req, res) => {
 });
 
 router.route('/add').post(async(req, res) => {
-   const hashedPassword = await bcrypt.hash(req.body.password, 10)
+   const hashedPassword = await bcrypt.hash(req.body.password, 10) 
+   User.findOne({
+    $or: [{
+        email: req.body.email
+    }, {
+        username: req.body.username
+    }]
+}).then((user)=>{ 
 
-   User.findOne({email: req.body.email}, {username: req.body.username}).then((user)=>{ 
-
-  if (user){
-    res.status(400).json("User exists");
-  }
+    if (user) {
+      
+      if (user.username === req.body.username) {
+        return res.status(400).json("Username exists");
+      } else {
+        return res.status(400).json("Email exists");
+      }
+    }
   else 
   {
     const user = new User ({ email: req.body.email, username: req.body.username, password: hashedPassword, firstName: req.body.firstName, lastName:req.body.lastName, passportNumber:req.body.passportNumber })
