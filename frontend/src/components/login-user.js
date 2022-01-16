@@ -2,6 +2,12 @@ import React, { Component, useState} from 'react';
 import axios from 'axios';
 import "../../node_modules/bootstrap/dist/css/bootstrap.css";
 import {TextField, Button, InputAdornment} from '@mui/material';
+import RegexTextField from './RegexTextField';
+const onlyAlphanumericRegex = /[^a-z0-9]/gi;
+const onlyUserRegex = /[^a-z0-9._]/gi;
+//const onlyNumericRegex = /[^0-9]/gi;
+
+
 
 
 
@@ -161,13 +167,13 @@ export default class LoginUser extends Component {
           
             <div className="form-group">
              
-              <TextField label="Username " value={this.state.username} variant="outlined" size="small" type="text" required style={{width:300}} onChange={this.onChangeUsername} margin="normal"  InputLabelProps={{
-            shrink: true,
+              <RegexTextField regex={onlyUserRegex} label="Username " value={this.state.username} variant="outlined" size="small" type="text" required style={{width:300}} onChange={this.onChangeUsername} margin="normal"  InputLabelProps={{
+            shrink: true, pattern: "[a-z]",
           }} error= {this.state.usernameError? true : false}/>
             </div>
 
             <div>
-              <TextField label="Password " value={this.state.password} variant="outlined" size="small" type={this.state.showPass? "password": "text"} required style={{width:300}} onChange={this.onChangePassword} margin="normal"  InputLabelProps={{
+              <RegexTextField regex={onlyAlphanumericRegex} label="Password " value={this.state.password} variant="outlined" size="small" type={this.state.showPass? "password": "text"} required style={{width:300}} onChange={this.onChangePassword} margin="normal"  InputLabelProps={{
             shrink: true,
           }} error= {this.state.passwordError? true : false}/>
           <Button variant="text" color='primary' size = "small" onClick={this.togglePass} style={{marginLeft: 170, fontSize: '10px'}}>Show Password</Button>

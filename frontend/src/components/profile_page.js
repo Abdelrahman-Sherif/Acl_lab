@@ -3,8 +3,12 @@ import axios from 'axios';
 import "../../node_modules/bootstrap/dist/css/bootstrap.css";
 import { TextField, Button, InputAdornment } from '@mui/material';
 import { Link } from "react-router-dom";
-
-
+import RegexTextField from './RegexTextField';
+const onlyAlphanumericRegex = /[^a-z0-9]/gi;
+const onlyAlphaRegex = /[^a-z]/gi;
+const onlynumericRegex = /[^0-9]/gi;
+const onlyEmailRegex = /[^a-z0-9@._]/gi;
+const onlyUserRegex = /[^a-z0-9._]/gi;
 
 
 
@@ -113,11 +117,11 @@ export default class ProfilePage extends Component {
     })
   
     this.setState({
-      phoneNumberError: (this.state.phoneNumber.length!=0 && this.state.phoneNumber.length != 11)? "error": ""
+      phoneNumberError: (this.state.phoneNumber.length!=0 && this.state.phoneNumber.length < 7)? "error": ""
     })
 
     this.setState({
-      countryCodeError: (this.state.countryCode.length!=0 && this.state.countryCode.length != 2)? "error": ""
+      countryCodeError: (this.state.countryCode.length!=0 && this.state.countryCode.length > 1)? "error": ""
     })
 
 
@@ -131,18 +135,18 @@ export default class ProfilePage extends Component {
       });
       return false
     }
-    if ((this.state.phoneNumber.length!=0 && this.state.phoneNumber.length != 11)) {
+    if ((this.state.phoneNumber.length!=0 && this.state.phoneNumber.length < 7)) {
       console.log("phone number error")
       this.setState({
-        errorMessage: "Phone number must be exactly 11 chars",
+        errorMessage: "Phone number must be at least 7 digits",
       });
   
       return false
     }
-    if (this.state.countryCode.length!=0 && this.state.countryCode.length != 2) {
+    if (this.state.countryCode.length!=0 && this.state.countryCode.length > 1) {
       console.log("Country code error")
       this.setState({
-        errorMessage: "Country code must be 2 digits ",
+        errorMessage: "Country code must be 1 digits ",
       });
   
       return false
@@ -205,7 +209,7 @@ export default class ProfilePage extends Component {
       phoneNumber: e.target.value
     })
     this.setState({
-      phoneNumberError: (e.target.value.length != 0 && e.target.value.length != 11) ? "error": ""
+      phoneNumberError: (e.target.value.length != 0 && e.target.value.length < 7) ? "error": ""
 
     })
   }
@@ -215,7 +219,7 @@ export default class ProfilePage extends Component {
       countryCode: e.target.value
     })
     this.setState({
-      countryCodeError: (e.target.value.length != 0 && e.target.value.length != 2)? "error": ""
+      countryCodeError: (e.target.value.length != 0 && e.target.value.length > 1)? "error": ""
     })
   }
 
@@ -280,40 +284,40 @@ export default class ProfilePage extends Component {
           
             <div className="form-group">
              
-              <TextField label="Username " value={this.state.username} variant="outlined" size="small" type="text" required style={{width:300}} onChange={this.onChangeUsername} margin="normal"  InputLabelProps={{
+              <RegexTextField regex={onlyUserRegex} label="Username " value={this.state.username} variant="outlined" size="small" type="text" required style={{width:300}} onChange={this.onChangeUsername} margin="normal"  InputLabelProps={{
             shrink: true,
           }} error= {this.state.usernameError? true : false}/>
             </div>
 
             
               <div>
-              <TextField label="Email " value={this.state.email} variant="outlined" size="small" type="text" required style={{width:300}} onChange={this.onChangeEmail} margin="normal"  InputLabelProps={{
+              <RegexTextField regex={onlyEmailRegex} label="Email " value={this.state.email} variant="outlined" size="small" type="text" required style={{width:300}} onChange={this.onChangeEmail} margin="normal"  InputLabelProps={{
             shrink: true,
           }} error= {this.state.emailError? true : false} />
             </div>
            
             
             <div>
-              <TextField label="First Name " value={this.state.firstName} variant="outlined" size="small" type="text" required style={{width:300}} onChange={this.onChangeFirstName} margin="normal"  InputLabelProps={{
+              <RegexTextField regex={onlyAlphaRegex} label="First Name " value={this.state.firstName} variant="outlined" size="small" type="text" required style={{width:300}} onChange={this.onChangeFirstName} margin="normal"  InputLabelProps={{
             shrink: true,
           }} error= {this.state.firstNameError? true : false}/>
             </div>
   
 
             <div>
-              <TextField label="Last Name " value={this.state.lastName} variant="outlined" size="small" type="text" required style={{width:300}} onChange={this.onChangeLastName} margin="normal"  InputLabelProps={{
+            <RegexTextField regex={onlyAlphaRegex} label="Last Name " value={this.state.lastName} variant="outlined" size="small" type="text" required style={{width:300}} onChange={this.onChangeLastName} margin="normal"  InputLabelProps={{
             shrink: true,
           }} error= {this.state.lastNameError? true : false}/>
             </div>
 
             <div>
-              <TextField label="Passport Number " value={this.state.passportNumber} variant="outlined" size="small" type="text" required style={{width:300}} onChange={this.onChangePassportNumber} margin="normal"  InputLabelProps={{
+              <RegexTextField regex={onlyAlphanumericRegex} label="Passport Number " value={this.state.passportNumber} variant="outlined" size="small" type="text" required style={{width:300}} onChange={this.onChangePassportNumber} margin="normal"  InputLabelProps={{
             shrink: true,
           }} error= {this.state.passportNumberError? true : false}/>
             </div>
                          
             <div>
-              <TextField label="Country Code" value={this.state.countryCode} variant="outlined" size="small" type="text"  style={{width:300}} onChange={this.onChangeCountryCode} margin="normal"  InputLabelProps={{
+              <RegexTextField regex={onlynumericRegex} label="Country Code" value={this.state.countryCode} variant="outlined" size="small" type="text"  style={{width:300}} onChange={this.onChangeCountryCode} margin="normal"  InputLabelProps={{
             shrink: true,
           }} error= {this.state.countryCodeError? true : false} InputProps={{
             startAdornment: <InputAdornment position="start">+</InputAdornment>,
@@ -321,13 +325,13 @@ export default class ProfilePage extends Component {
             </div>
                        
             <div>
-              <TextField label="Phone Number" value={this.state.phoneNumber} variant="outlined" size="small" type="number"  style={{width:300}} onChange={this.onChangePhoneNumber} margin="normal"  InputLabelProps={{
+              <RegexTextField regex={onlynumericRegex} label="Phone Number" value={this.state.phoneNumber} variant="outlined" size="small" type="number"  style={{width:300}} onChange={this.onChangePhoneNumber} margin="normal"  InputLabelProps={{
             shrink: true,
           }} error= {this.state.phoneNumberError? true : false}/>
             </div>
 
             <div>
-              <TextField label="Address" value={this.state.address} variant="outlined" size="small" type="text"  style={{width:300}} onChange={this.onChangeAddress} margin="normal"  InputLabelProps={{
+              <RegexTextField label="Address" value={this.state.address} variant="outlined" size="small" type="text"  style={{width:300}} onChange={this.onChangeAddress} margin="normal"  InputLabelProps={{
             shrink: true,
           }} error= {this.state.addressError? true : false}/>
             </div>
