@@ -11,7 +11,7 @@ const styles = {
   fontSize: "16px"
 };
 
-
+var flag=0;
 export default class LoginUser extends Component {
   constructor(props) {
     super(props);
@@ -92,12 +92,17 @@ export default class LoginUser extends Component {
         this.setState({
           userId: response.data._id
         });
-        console.log("id:" + this.state.userId) 
-        sessionStorage.setItem("currUser", this.state.userId)
+        flag = this.state.userId
+        console.log("state: "+ this.state.userId)
+        console.log("flag: "+ flag)
+        var currUser = sessionStorage.setItem("currUser", flag)
+         window.location.replace(`http://localhost:3000/flights/users/list/`);
       })
       .catch(function (error) {
         console.log(error);
       });
+
+      
   }
 
   async onSubmit(e) {
@@ -114,11 +119,9 @@ export default class LoginUser extends Component {
    await axios.post('http://localhost:5000/auth/login', chkUser)
       .then(res =>{
         console.log(res.data);
-        this.getUser(res.data.username)
-        console.log(this.state.userId)
 
+        this.getUser(this.state.username)
 
-      window.location = '/flights/users/list';
       this.setState({
         username: "",
         password: "",
@@ -142,6 +145,11 @@ export default class LoginUser extends Component {
     });
     }
   }
+
+  componentDidMount() {
+ 
+  }
+
 
   render() {
     return (

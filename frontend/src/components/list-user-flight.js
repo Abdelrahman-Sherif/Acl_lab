@@ -7,6 +7,8 @@ import {TextField, Button, InputLabel, MenuItem, Select, FormControl} from '@mui
 
 
 var flag=0;
+var currUser = sessionStorage.getItem("currUser")
+
 const Record = (props) => (
   <tr>
 
@@ -59,6 +61,7 @@ export default class ListUserFlights extends Component {
     this.state = { 
       records: [],
       showFilterMenu: false,
+      firstName:"",
       Passangers: "",
       DateTakeoff: "",
       DateArrival: "",
@@ -156,9 +159,28 @@ export default class ListUserFlights extends Component {
     });
   }
 
+  async getUser() {
+    const myUser = {
+      firstName: this.state.firstName
+    }
+    await axios
+      .get("http://localhost:5000/users/" + currUser)
+      .then((response) => {
+        console.log("User " + JSON.stringify(response.data));
+        this.setState({
+          firstName: response.data.firstName
+        });
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+
+      
+  }
   // This method will get the data from the database.
   componentDidMount() {
     this.getFlights();
+    this.getUser();
   }
 
   // This method will delete a record based on the method
@@ -170,6 +192,15 @@ export default class ListUserFlights extends Component {
     });
     
     this.getFlights();
+    
+  }
+
+  async logout(id) {
+    await axios.delete("http://localhost:5000/auth/logout/").then((response) => {
+      console.log(response.data);
+    }).catch(function (error) {
+      console.log(error);
+    });
     
   }
 
@@ -194,16 +225,24 @@ export default class ListUserFlights extends Component {
 
     return (
       <div>
-        <h3 style = {{marginBottom: 20, marginTop:10, marginLeft: 30}}>All Flights </h3>
+        <h4 style = {{marginBottom: 20, marginTop:10, marginLeft: 30}}>Welcome {this.state.firstName} </h4>
+        <h5 style = {{marginBottom: 20, marginTop:10, marginLeft: 30}}>All Flights </h5>
+
         
       <Button variant="contained" color='primary' onClick={this.toggleFilter} style={{marginLeft:10}}>Filter Flights</Button>
       <Link to='/flights/users/profile'>
       <Button variant="contained" color='primary' style={{marginLeft:10}}> My Profile</Button>
       
       </Link>
+     
+
       <Link to='/flights/users/bookings'>
       <Button variant="contained" color='primary' style={{marginLeft:10}}>My Bookings</Button>
-    
+      </Link>
+
+      <Link to='/'>
+      <Button variant="contained" color='primary' onClick ={this.logout.bind(this)} style={{marginLeft:10}}>logout</Button>
+      
       </Link>
       
       
@@ -286,7 +325,7 @@ export default class ListUserFlights extends Component {
               </Col>
               <Col>
               <Button variant="contained" color = "primary" onClick = {this.getFilteredFlights.bind(this)
-              }>Search </Button>
+                }>Search </Button>
               </Col>
               </Row>
             </div>
