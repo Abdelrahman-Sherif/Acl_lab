@@ -8,6 +8,12 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 require('dotenv').config
 
+router.route('/getUser/:username').get((req, res) => {
+  User.findOne({username: req.params.username})
+    .then(user => res.json(user))
+    .catch(err => res.status(400).json('Error: ' + err));
+});
+
 router.route('/get').get((req, res) => {
   User.find()
     .then(user => res.json(user))
@@ -48,10 +54,14 @@ router.route('/update/:id').post((req, res) => {
   User.findByIdAndUpdate(
     { _id: req.params.id },
     {
-    email : req.body.email ,
-    firstName  : req.body.firstName ,
-    lastName  : req.body.lastName ,
-    passportNumber  : req.body.passportNumber,
+      username: req.body.username,
+      email: req.body.email,
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      passportNumber: req.body.passportNumber,
+      phoneNumber:req.body.phoneNumber,
+      address:req.body.address,
+      countryCode: req.body.countryCode,
     }
      
   )

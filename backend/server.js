@@ -47,7 +47,7 @@ app.use('/auth', AuthRouter);
     })
   }
   
-// app.get("/users", (req, res) => {
+// app.get("/addAdmit", (req, res) => {
 //       const Admin = new User({
 //         isAdmin : true,
 //     email: "Admin@admin.com",

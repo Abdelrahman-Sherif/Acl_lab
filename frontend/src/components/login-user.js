@@ -22,6 +22,7 @@ export default class LoginUser extends Component {
     this.onSubmit = this.onSubmit.bind(this);
 
     this.state = {
+      userId:"",
       errorMessage: "",
       username: "",
       password: "",
@@ -55,10 +56,6 @@ export default class LoginUser extends Component {
     return true
   }
 
-  async getLoggedinUser(){
-    return this.state.username
-  }
-
   onChangeUsername(e) {
     this.setState({
       username: e.target.value
@@ -84,7 +81,24 @@ export default class LoginUser extends Component {
     console.log(this.state.showPass);
   }
   
-  
+  async getUser() {
+    const myUser = {
+      username: this.state.username
+    }
+    await axios
+      .get("http://localhost:5000/users/getUser/" + this.state.username)
+      .then((response) => {
+        console.log("User " + JSON.stringify(response.data));
+        this.setState({
+          userId: response.data._id
+        });
+        console.log("id:" + this.state.userId) 
+        sessionStorage.setItem("currUser", this.state.userId)
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
 
   async onSubmit(e) {
     console.log(this.validate())
@@ -100,9 +114,11 @@ export default class LoginUser extends Component {
    await axios.post('http://localhost:5000/auth/login', chkUser)
       .then(res =>{
         console.log(res.data);
-        sessionStorage.setItem("LoggedinUser", this.state.username);
+        this.getUser(res.data.username)
+        console.log(this.state.userId)
 
-       window.location = '/flights/users/list';
+
+      window.location = '/flights/users/list';
       this.setState({
         username: "",
         password: "",

@@ -38,15 +38,18 @@ const userSchema = new Schema({
   },
   address: {
     type: String,
-    required: false
+    required: false,
+    default: " "
   },
   countryCode: {
     type: String,
-    required: false
+    required: false,
+    default:""
   },
   phoneNumber: {
     type: String,
-    required: false
+    required: false,
+    default:""
   },
   
 }, { timestamps: true });

@@ -63,6 +63,31 @@ app.post('/login', async (req, res) => {
     })
 
 
+    app.post('/changePassword/:id', async (req, res) => {
+      const newhashedPassword = await bcrypt.hash(req.body.newpass, 10)
+
+      await User.findById(req.params.id).then((user)=>{ 
+     //check password match
+      bcrypt.compare(req.body.password, user.password).then( (passwordMatch)=>{
+         // update with new password 
+        if(passwordMatch){
+          if(req.body.newpass===req.body.password){
+            res.status(405).json("You're using the old password again");
+          } 
+          else{
+            User.findByIdAndUpdate({ _id: req.params.id },  {password: newhashedPassword})
+              .then(()=> {res.status(200).json("Updated Password successfully");})
+               }}
+                 else {
+                res.status(405).json("The old password is wrong");
+              }
+          }
+          )}
+      
+      )
+      })
+
+
 module.exports = app;
     
 

@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import "../../node_modules/bootstrap/dist/css/bootstrap.css";
-import { TextField, Button } from '@mui/material';
+import { TextField, Button, InputAdornment } from '@mui/material';
+import { Link } from "react-router-dom";
+
 
 
 
@@ -11,7 +13,9 @@ const styles = {
   background: "#FFFFFF",
   fontSize: "16px"
 };
+var currUser = sessionStorage.getItem("currUser")
 
+console.log("session:" + currUser)
 
 
 
@@ -21,27 +25,36 @@ export default class ProfilePage extends Component {
 
   constructor(props) {
     super(props);
+    this.onChangeUsername = this.onChangeUsername.bind(this);
+    this.onChangeEmail = this.onChangeEmail.bind(this);
     this.onChangeFirstName = this.onChangeFirstName.bind(this);
     this.onChangeLastName = this.onChangeLastName.bind(this);
-    this.onChangeEmail = this.onChangeEmail.bind(this);
     this.onChangePassportNumber = this.onChangePassportNumber.bind(this);
-    this.onChangePassportNumber = this.onChangePassportNumber.bind(this);
-
+    this.onChangePhoneNumber = this.onChangePhoneNumber.bind(this);
+    this.onChangeAddress = this.onChangeAddress.bind(this);  
+    this.onChangeCountryCode = this.onChangeCountryCode.bind(this);
 
     this.onSubmit = this.onSubmit.bind(this);
 
     this.state = {
       userId: "",
-      email:"",
-      firstName:"",
-      lastName:"",
-      passportNumber:"",
+      username: "",
+      email: "",
+      firstName: "",
+      lastName: "",
+      passportNumber: "",
+      phoneNumber: "",
+      address: "",
+      countryCode: "",
 
+      usernameError: "",
+      emailError: "",
       firstNameError: "",
       lastNameError: "",
-      emailError: "",
       passportNumberError: "",
-      errorMessage: ""
+      phoneNumberError: "",
+      addressError: "",
+      countryCodeError: "",
     }
   }
 
@@ -52,149 +65,99 @@ export default class ProfilePage extends Component {
     await axios
       .get("http://localhost:5000/users/"+ this.state.userId )
       .then((response) => {
-        console.log("User gotten: " + JSON.stringify(response.data));
+        console.log("Fetched user: " + JSON.stringify(response.data));
         this.setState({
-          email: response.data.email,
-          firstName: response.data.firstName,
-          lastName: response.data.lastName,
-          passportNumber: response.data.passportNumber,
-        });
-        // console.log("Arrival date: " + this.state.DateArrival.);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  }
-
-  async addUser() {
-    const newUser = {
-      isAdmin : true,
-      email: "Admin@admin.com",
-          password: "Password",
-      firstName: "Ahmed",
-      lastName: "Mohamed",
-      passportNumber: "1000",
-    }
-    console.log("Adding user");
-    await axios
-      .post("http://localhost:5000/users/add",newUser)
-      .then((response) => {
-        console.log("User gotten: " + response.data.firstName);
-        this.setState({
-          email: response.data.email,
-          firstName: response.data.firstName,
-          lastName: response.data.lastName,
-          passportNumber: response.data.passportNumber,
-        });
-        // console.log("Arrival date: " + this.state.DateArrival.);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  }
-
- 
-
-  async getAllUsers(){
-
-    await axios
-    .get("http://localhost:5000/users/get")
-    .then((response) => {
-      console.log("Users gotten: " + JSON.stringify(response.data));
-      this.setState({
+        username: response.data.username,
         email: response.data.email,
         firstName: response.data.firstName,
         lastName: response.data.lastName,
         passportNumber: response.data.passportNumber,
+        phoneNumber:response.data.phoneNumber,
+        address:response.data.address,
+        countryCode: response.data.countryCode,
+        });
+
+      })
+      .catch(function (error) {
+        console.log(error);
       });
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
-
   }
+
   componentDidMount() {
-    ///Hardcoding user id for now to 1 till auth is setup
-    
-    // var url = window.location.href;
-    // var fetchedUserId = /[^/]*$/.exec(url)[0];
-    // this.state.userId = fetchedUserId;
-
-    // this.getAllUsers();
-    //this.addUser();
-
-  
-    //Current hardcoded user id
-    this.state.userId = "61c347f18128719139d8a8c7";
+    this.state.userId = currUser;
   
     this.getUser(this.state.userId);
 
   }
 
 
-  validate() {
-
+  validate(){
     this.setState({
-      emailError: this.state.email ? "" : "error"
+      usernameError: this.state.username?"":"error"
+    })
+  
+    this.setState({
+      emailError: this.state.email?"":"error"
+    })
+  
+    this.setState({
+      firstNameError: this.state.firstName?"":"error"
+    })
+  
+    this.setState({
+      lastNameError: this.state.lastName?"":"error"
+    })
+  
+    this.setState({
+      passportNumberError: this.state.passportNumber? "": "error"
+    })
+  
+    this.setState({
+      phoneNumberError: (this.state.phoneNumber.length!=0 && this.state.phoneNumber.length != 11)? "error": ""
     })
 
     this.setState({
-      firstNameError: this.state.firstName ? "" : "error"
-    })
-
-    this.setState({
-      lastNameError: this.state.lastName ? "" : "error"
-    })
-
-    this.setState({
-      passportNumberError: this.state.passportNumber ? "" : "error"
+      countryCodeError: (this.state.countryCode.length!=0 && this.state.countryCode.length != 2)? "error": ""
     })
 
 
-    if (!this.state.email || !this.state.firstName || !this.state.lastName || !this.state.passportNumber) {
-      
+   
+    if (!this.state.username || !this.state.email || !this.state.passportNumber
+      || !this.state.firstName || !this.state.lastName ) {
+    
       console.log("emptyFields")
       this.setState({
-        errorMessage: "Please fill all fields",
+        errorMessage: "Please fill stated fields",
       });
       return false
     }
-    if (this.state.email == "" ) {
-      console.log("Empty email")
+    if ((this.state.phoneNumber.length!=0 && this.state.phoneNumber.length != 11)) {
+      console.log("phone number error")
       this.setState({
-        errorMessage: "Email must be given",
+        errorMessage: "Phone number must be exactly 11 chars",
       });
-
+  
       return false
     }
-
-    if (this.state.firstName == "" ) {
-      console.log("Empty firstName")
+    if (this.state.countryCode.length!=0 && this.state.countryCode.length != 2) {
+      console.log("Country code error")
       this.setState({
-        errorMessage: "First Name must be given",
+        errorMessage: "Country code must be 2 digits ",
       });
-
+  
       return false
-    }
-    if (this.state.lastName == "" ) {
-      console.log("Empty lastName")
-      this.setState({
-        errorMessage: "Last Name must be given",
-      });
-
-      return false
-    }
-    if (this.state.passportNumber == "" ) {
-      console.log("Empty passport number")
-      this.setState({
-        errorMessage: "Passport Number must be given",
-      });
-
-      return false
-    }
-
-
+    } 
     return true
+  }
+
+  onChangeUsername(e) {
+    this.setState({
+      username: e.target.value
+    })
+
+    this.setState({
+      usernameError: ""
+    })   
   }
 
   onChangeEmail(e) {
@@ -205,51 +168,80 @@ export default class ProfilePage extends Component {
     this.setState({
       emailError: ""
     })
-
   }
 
+  
   onChangeFirstName(e) {
     this.setState({
       firstName: e.target.value
     })
-
     this.setState({
       firstNameError: ""
     })
-
+    
   }
+
   onChangeLastName(e) {
     this.setState({
       lastName: e.target.value
     })
-
     this.setState({
       lastNameError: ""
     })
+  }
+
+  onChangeAddress(e) {
+    this.setState({
+      address: e.target.value
+    })
+    this.setState({
+      addressError: ""
+    })
 
   }
+
+  onChangePhoneNumber(e) {
+    this.setState({
+      phoneNumber: e.target.value
+    })
+    this.setState({
+      phoneNumberError: (e.target.value.length != 0 && e.target.value.length != 11) ? "error": ""
+
+    })
+  }
+
+  onChangeCountryCode(e) {
+    this.setState({
+      countryCode: e.target.value
+    })
+    this.setState({
+      countryCodeError: (e.target.value.length != 0 && e.target.value.length != 2)? "error": ""
+    })
+  }
+
   onChangePassportNumber(e) {
     this.setState({
       passportNumber: e.target.value
     })
-
     this.setState({
       passportNumberError: ""
     })
-
   }
 
- 
 
   async onSubmit(e) {
     console.log(this.validate())
     if (this.validate()) {
       e.preventDefault();
       const updatedUser = {
+        username: this.state.username,
         email: this.state.email,
         firstName: this.state.firstName,
         lastName: this.state.lastName,
         passportNumber: this.state.passportNumber,
+        phoneNumber:this.state.phoneNumber,
+        address:this.state.address,
+        countryCode: this.state.countryCode,
       };
 
       await axios.post('http://localhost:5000/users/update/' + this.state.userId, updatedUser)
@@ -279,45 +271,80 @@ export default class ProfilePage extends Component {
   }
 
   render() {
-
     return (
       <div className="container bg-light">
-        <div className="row">
-          <div className="col-sm-4 mx-auto  p-5">
-            <h2 className="text-center mb-4">Edit Profile</h2>
+        <div className="row">  
+         <div className="col-sm-4 mx-auto  p-5">
+          <h2 className="text-center mb-4">Edit Info</h2>
+          
+          
             <div className="form-group">
+             
+              <TextField label="Username " value={this.state.username} variant="outlined" size="small" type="text" required style={{width:300}} onChange={this.onChangeUsername} margin="normal"  InputLabelProps={{
+            shrink: true,
+          }} error= {this.state.usernameError? true : false}/>
+            </div>
 
-              <TextField label="Email" value={this.state.email} variant="outlined" size="small" type="text" required style={{ width: 300 }} onChange={this.onChangeEmail} margin="normal" InputLabelProps={{
-                shrink: true,
-              }} error={this.state.emailError ? true : false} />
+            
+              <div>
+              <TextField label="Email " value={this.state.email} variant="outlined" size="small" type="text" required style={{width:300}} onChange={this.onChangeEmail} margin="normal"  InputLabelProps={{
+            shrink: true,
+          }} error= {this.state.emailError? true : false} />
+            </div>
+           
+            
+            <div>
+              <TextField label="First Name " value={this.state.firstName} variant="outlined" size="small" type="text" required style={{width:300}} onChange={this.onChangeFirstName} margin="normal"  InputLabelProps={{
+            shrink: true,
+          }} error= {this.state.firstNameError? true : false}/>
+            </div>
+  
+
+            <div>
+              <TextField label="Last Name " value={this.state.lastName} variant="outlined" size="small" type="text" required style={{width:300}} onChange={this.onChangeLastName} margin="normal"  InputLabelProps={{
+            shrink: true,
+          }} error= {this.state.lastNameError? true : false}/>
             </div>
 
             <div>
-              <TextField label="First Name" value={this.state.firstName} variant="outlined" size="small" type="text" required style={{ width: 300 }} onChange={this.onChangeFirstName} margin="normal" InputLabelProps={{
-                shrink: true,
-              }} error={this.state.firstNameError ? true : false} />
+              <TextField label="Passport Number " value={this.state.passportNumber} variant="outlined" size="small" type="text" required style={{width:300}} onChange={this.onChangePassportNumber} margin="normal"  InputLabelProps={{
+            shrink: true,
+          }} error= {this.state.passportNumberError? true : false}/>
+            </div>
+                         
+            <div>
+              <TextField label="Country Code" value={this.state.countryCode} variant="outlined" size="small" type="text"  style={{width:300}} onChange={this.onChangeCountryCode} margin="normal"  InputLabelProps={{
+            shrink: true,
+          }} error= {this.state.countryCodeError? true : false} InputProps={{
+            startAdornment: <InputAdornment position="start">+</InputAdornment>,
+          }}/>
+            </div>
+                       
+            <div>
+              <TextField label="Phone Number" value={this.state.phoneNumber} variant="outlined" size="small" type="number"  style={{width:300}} onChange={this.onChangePhoneNumber} margin="normal"  InputLabelProps={{
+            shrink: true,
+          }} error= {this.state.phoneNumberError? true : false}/>
             </div>
 
             <div>
-              <TextField label="Last Name" value={this.state.lastName} variant="outlined" size="small" type="text" required style={{ width: 300 }} onChange={this.onChangeLastName} margin="normal" InputLabelProps={{
-                shrink: true,
-              }} error={this.state.lastNameError ? true : false} />
+              <TextField label="Address" value={this.state.address} variant="outlined" size="small" type="text"  style={{width:300}} onChange={this.onChangeAddress} margin="normal"  InputLabelProps={{
+            shrink: true,
+          }} error= {this.state.addressError? true : false}/>
             </div>
-
-
-            <div>
-              <TextField label="Passport Number" value={this.state.passportNumber} variant="outlined" size="small" type="text" required style={{ width: 300 }} onChange={this.onChangePassportNumber} margin="normal" InputLabelProps={{
-                shrink: true,
-              }} error={this.state.passportNumberError ? true : false} />
-            </div>
-
+  
             {this.state.errorMessage &&
               <h5 style={styles} className="error"> {this.state.errorMessage} </h5>}
 
-            <Button variant="contained" color="primary" onClick={this.onSubmit.bind(this)}>Edit Profile </Button>
-          </div>
+    <Link to='/flights/users/profile/changePassword/'>
+      <Button  color='primary' > Change Password</Button>
+      </Link>
+
+            <Button variant="contained" color = "primary" onClick = {this.onSubmit.bind(this)}>Done </Button>
         </div>
-      </div>
+         
+        </div>
+        </div>
+      
     );
 
   }
