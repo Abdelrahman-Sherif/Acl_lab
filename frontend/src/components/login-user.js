@@ -64,7 +64,7 @@ export default class LoginUser extends Component {
 
   onChangeUsername(e) {
     this.setState({
-      username: e.target.value
+      username: e.target.value.toLowerCase()
     })
 
     this.setState({
@@ -167,7 +167,7 @@ export default class LoginUser extends Component {
           
             <div className="form-group">
              
-              <RegexTextField regex={onlyUserRegex} label="Username " value={this.state.username} variant="outlined" size="small" type="text" required style={{width:300}} onChange={this.onChangeUsername} margin="normal"  InputLabelProps={{
+              <RegexTextField regex={onlyUserRegex} label="Username " value={(this.state.username).toLowerCase()} variant="outlined" size="small" type="text" required style={{width:300}} onChange={this.onChangeUsername} margin="normal"  InputLabelProps={{
             shrink: true, pattern: "[a-z]",
           }} error= {this.state.usernameError? true : false}/>
             </div>

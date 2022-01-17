@@ -156,7 +156,7 @@ export default class ProfilePage extends Component {
 
   onChangeUsername(e) {
     this.setState({
-      username: e.target.value
+      username: e.target.value.toLowerCase()
     })
 
     this.setState({
@@ -166,7 +166,7 @@ export default class ProfilePage extends Component {
 
   onChangeEmail(e) {
     this.setState({
-      email: e.target.value
+      email: e.target.value.toLowerCase()
     })
 
     this.setState({
@@ -284,14 +284,14 @@ export default class ProfilePage extends Component {
           
             <div className="form-group">
              
-              <RegexTextField regex={onlyUserRegex} disabled={true}label="Username " value={this.state.username} variant="outlined" size="small" type="text" required style={{width:300}} onChange={this.onChangeUsername} margin="normal"  InputLabelProps={{
+              <RegexTextField regex={onlyUserRegex} disabled={true}label="Username " value={(this.state.username).toLowerCase()} variant="outlined" size="small" type="text" required style={{width:300}} onChange={this.onChangeUsername} margin="normal"  InputLabelProps={{
             shrink: true,
           }} error= {this.state.usernameError? true : false}/>
             </div>
 
             
               <div>
-              <RegexTextField regex={onlyEmailRegex} label="Email " disabled={false} value={this.state.email} variant="outlined" size="small" type="text" required style={{width:300}} onChange={this.onChangeEmail} margin="normal"  InputLabelProps={{
+              <RegexTextField regex={onlyEmailRegex} label="Email " disabled={false} value={(this.state.email).toLowerCase()} variant="outlined" size="small" type="text" required style={{width:300}} onChange={this.onChangeEmail} margin="normal"  InputLabelProps={{
             shrink: true,
           }} error= {this.state.emailError? true : false} />
             </div>

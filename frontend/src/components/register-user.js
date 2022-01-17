@@ -7,7 +7,7 @@ const onlyAlphanumericRegex = /[^a-z0-9]/gi;
 const onlyAlphaRegex = /[^a-z]/gi;
 const onlynumericRegex = /[^0-9]/gi;
 const onlyEmailRegex = /[^a-z0-9@._]/gi;
-const onlyUserRegex = /[^a-z]/gi;
+const onlyUserRegex = /[^a-z0-9._]/gi;
 
 const styles = {
   color: "red",
@@ -124,7 +124,7 @@ export default class RegisterUser extends Component {
 
   onChangeUsername(e) {
     this.setState({
-      username: e.target.value
+      username: e.target.value.toLowerCase()
     })
 
     this.setState({
@@ -143,7 +143,7 @@ export default class RegisterUser extends Component {
 
   onChangeEmail(e) {
     this.setState({
-      email: e.target.value
+      email: e.target.value.toLowerCase()
     })
 
     this.setState({
@@ -301,7 +301,7 @@ export default class RegisterUser extends Component {
           
             <div className="form-group">
              
-              <RegexTextField regex={onlyUserRegex} label="Username " value={this.state.username} variant="outlined" size="small" type="text" required style={{width:300}} onChange={this.onChangeUsername} margin="normal"  InputLabelProps={{
+              <RegexTextField regex={onlyUserRegex} label="Username " value={(this.state.username).toLowerCase()} variant="outlined" size="small" type="text" required style={{width:300}} onChange={this.onChangeUsername} margin="normal"  InputLabelProps={{
             shrink: true,
           }} error= {this.state.usernameError? true : false}/>
             </div>
@@ -314,7 +314,7 @@ export default class RegisterUser extends Component {
             </div>
             
               <div>
-              <RegexTextField regex={onlyEmailRegex} label="Email " value={this.state.email} variant="outlined" size="small" type="text" required style={{width:300}} onChange={this.onChangeEmail} margin="narrow"  InputLabelProps={{
+              <RegexTextField regex={onlyEmailRegex} label="Email " value={(this.state.email).toLowerCase()} variant="outlined" size="small" type="text" required style={{width:300}} onChange={this.onChangeEmail} margin="narrow"  InputLabelProps={{
             shrink: true,
           }} error= {this.state.emailError? true : false} />
             </div>
