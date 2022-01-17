@@ -251,10 +251,11 @@ export default class ProfilePage extends Component {
       await axios.post('http://localhost:5000/users/update/' + this.state.userId, updatedUser)
         .then(res => {
           console.log(res.data);
+           window.location = '/flights/users/list';
         })
         .catch((error) => {
           console.log(error);
-          this.setState({ errorMessage: error.message });
+          this.setState({ errorMessage: error.response.data });
         });
 
         //Update users bookings
@@ -264,9 +265,8 @@ export default class ProfilePage extends Component {
         })
         .catch((error) => {
           console.log(error);
-          this.setState({ errorMessage: error.message });
+          this.setState({ errorMessage: error.response.datae });
         });
-        window.location = '/flights/users/list';
 
 
 
@@ -284,14 +284,14 @@ export default class ProfilePage extends Component {
           
             <div className="form-group">
              
-              <RegexTextField regex={onlyUserRegex} label="Username " value={this.state.username} variant="outlined" size="small" type="text" required style={{width:300}} onChange={this.onChangeUsername} margin="normal"  InputLabelProps={{
+              <RegexTextField regex={onlyUserRegex} disabled={true}label="Username " value={this.state.username} variant="outlined" size="small" type="text" required style={{width:300}} onChange={this.onChangeUsername} margin="normal"  InputLabelProps={{
             shrink: true,
           }} error= {this.state.usernameError? true : false}/>
             </div>
 
             
               <div>
-              <RegexTextField regex={onlyEmailRegex} label="Email " value={this.state.email} variant="outlined" size="small" type="text" required style={{width:300}} onChange={this.onChangeEmail} margin="normal"  InputLabelProps={{
+              <RegexTextField regex={onlyEmailRegex} label="Email " disabled={false} value={this.state.email} variant="outlined" size="small" type="text" required style={{width:300}} onChange={this.onChangeEmail} margin="normal"  InputLabelProps={{
             shrink: true,
           }} error= {this.state.emailError? true : false} />
             </div>

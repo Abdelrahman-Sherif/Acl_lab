@@ -7,7 +7,7 @@ const onlyAlphanumericRegex = /[^a-z0-9]/gi;
 const onlyAlphaRegex = /[^a-z]/gi;
 const onlynumericRegex = /[^0-9]/gi;
 const onlyEmailRegex = /[^a-z0-9@._]/gi;
-const onlyUserRegex = /[^a-z0-9._]/gi;
+const onlyUserRegex = /[^a-z]/gi;
 
 const styles = {
   color: "red",

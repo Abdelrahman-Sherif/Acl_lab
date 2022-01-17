@@ -24,7 +24,7 @@ router.route('/get').get((req, res) => {
 router.route('/add').post(async(req, res) => {
    const hashedPassword = await bcrypt.hash(req.body.password, 10) 
    User.findOne({
-    $or: [{
+   $or: [{
         email: req.body.email
     }, {
         username: req.body.username
@@ -59,9 +59,64 @@ router.route('/:id').get((req, res) => {
 });
 
 
+//Old update router 
+// router.route('/update/:id').post((req, res) => {
+//   console.log("Called update user method");
+ 
+//   User.findByIdAndUpdate(
+//     { _id: req.params.id },
+//     {
+//       username: req.body.username,
+//       email: req.body.email,
+//       firstName: req.body.firstName,
+//       lastName: req.body.lastName,
+//       passportNumber: req.body.passportNumber,
+//       phoneNumber:req.body.phoneNumber,
+//       address:req.body.address,
+//       countryCode: req.body.countryCode,
+//     }
+     
+//   )
+//     .then(()=> {console.log("Updated User succesffully");
+//   return res.status(200).json('Updated User successfully');})
+//     .catch(err => {
+//       console.log("Error finding User: " + err);
+//       return res.status(400).json('Couldnt find User,Error: ' + err);});
+// });
+
+
+
+//New update router (repeated chuncks of code)
 router.route('/update/:id').post((req, res) => {
   console.log("Called update user method");
- 
+User.findOne({email: req.body.email}).then((user)=>{ 
+if (user) {
+    if ((user.email === req.body.email) && (user._id != req.params.id) ) {
+      return res.status(400).json("Email exists");
+    } else{
+      User.findByIdAndUpdate(
+        { _id: req.params.id },
+        {
+          username: req.body.username,
+          email: req.body.email,
+          firstName: req.body.firstName,
+          lastName: req.body.lastName,
+          passportNumber: req.body.passportNumber,
+          phoneNumber:req.body.phoneNumber,
+          address:req.body.address,
+          countryCode: req.body.countryCode,
+        }
+         
+      )
+        .then(()=> {console.log("Updated User succesffully");
+      return res.status(200).json('Updated User successfully');})
+        .catch(err => {
+          console.log("Error finding User: " + err);
+          return res.status(400).json('Couldnt find User,Error: ' + err);});
+    }
+  }
+else 
+{
   User.findByIdAndUpdate(
     { _id: req.params.id },
     {
@@ -81,6 +136,14 @@ router.route('/update/:id').post((req, res) => {
     .catch(err => {
       console.log("Error finding User: " + err);
       return res.status(400).json('Couldnt find User,Error: ' + err);});
+
+}
+}
+)
+  
 });
 
+
 module.exports = router;
+
+
