@@ -29,6 +29,7 @@ export default class LoginUser extends Component {
 
     this.state = {
       userId:"",
+      isAdmin: false,
       errorMessage: "",
       username: "",
       password: "",
@@ -96,13 +97,18 @@ export default class LoginUser extends Component {
       .then((response) => {
         console.log("User " + JSON.stringify(response.data));
         this.setState({
-          userId: response.data._id
+          userId: response.data._id,
+          isAdmin: response.data.isAdmin
         });
         flag = this.state.userId
         console.log("state: "+ this.state.userId)
         console.log("flag: "+ flag)
         var currUser = sessionStorage.setItem("currUser", flag)
-         window.location.replace(`http://localhost:3000/flights/users/list/`);
+        if(this.state.isAdmin == false){ 
+          window.location.replace(`http://localhost:3000/flights/users/list/`);
+        } else{
+         window.location.replace(`http://localhost:3000/allflights`);
+        }
       })
       .catch(function (error) {
         console.log(error);

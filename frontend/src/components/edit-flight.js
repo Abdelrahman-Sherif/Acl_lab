@@ -327,7 +327,7 @@ export default class EditFlight extends Component {
 
           console.log(res.data);
 
-          window.location = '/';
+          window.location = '/allflights';
 
           this.setState = {
             FlightNumber: "",

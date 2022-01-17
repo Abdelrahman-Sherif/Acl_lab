@@ -130,6 +130,15 @@ export default class UserBookings extends Component {
     });
   }
 
+  async logout(id) {
+    await axios.delete("http://localhost:5000/auth/logout/").then((response) => {
+      console.log(response.data);
+    }).catch(function (error) {
+      console.log(error);
+    });
+    
+  }
+  
   // This following section will display the table with the records of individuals.
   render() {
 
@@ -138,6 +147,11 @@ export default class UserBookings extends Component {
         <h3 style = {{marginBottom: 20, marginTop:10, marginLeft: 30}}>My Bookings </h3>
       <Link to='/flights/users/profile'>
       <Button variant="contained" color='primary' style={{marginLeft:10}}> My Profile</Button>
+      
+      </Link>
+
+      <Link to='/'>
+      <Button variant="contained" color='primary' onClick ={this.logout.bind(this)} style={{marginLeft:10}}>logout</Button>
       
       </Link>
       

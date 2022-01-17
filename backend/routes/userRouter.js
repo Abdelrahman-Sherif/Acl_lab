@@ -41,7 +41,7 @@ router.route('/add').post(async(req, res) => {
     }
   else 
   {
-    const user = new User ({ email: req.body.email, username: req.body.username, password: hashedPassword, firstName: req.body.firstName, lastName:req.body.lastName, passportNumber:req.body.passportNumber })
+    const user = new User ({ email: req.body.email, username: req.body.username, password: hashedPassword, firstName: req.body.firstName, lastName:req.body.lastName, passportNumber:req.body.passportNumber, isAdmin:req.body.isAdmin })
       user.save();
       res.status(201).json("Added successfully")
 

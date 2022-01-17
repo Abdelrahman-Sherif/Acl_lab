@@ -52,7 +52,7 @@ app.post('/login', async (req, res) => {
 
             }
             else {
-              res.status(405).json("Wrong username or password");
+              res.status(405).json("Wrong password");
             }
         }
         )
