@@ -121,7 +121,7 @@ export default class ProfilePage extends Component {
     })
 
     this.setState({
-      countryCodeError: (this.state.countryCode.length!=0 && this.state.countryCode.length > 1)? "error": ""
+      countryCodeError: (this.state.countryCode.length!=0 && this.state.countryCode.length > 3)? "error": ""
     })
 
 
@@ -143,10 +143,10 @@ export default class ProfilePage extends Component {
   
       return false
     }
-    if (this.state.countryCode.length!=0 && this.state.countryCode.length > 1) {
+    if (this.state.countryCode.length!=0 && this.state.countryCode.length > 3) {
       console.log("Country code error")
       this.setState({
-        errorMessage: "Country code must be 1 digits ",
+        errorMessage: "Country code must at most 3 digits ",
       });
   
       return false
@@ -219,7 +219,7 @@ export default class ProfilePage extends Component {
       countryCode: e.target.value
     })
     this.setState({
-      countryCodeError: (e.target.value.length != 0 && e.target.value.length > 1)? "error": ""
+      countryCodeError: (e.target.value.length != 0 && e.target.value.length > 3)? "error": ""
     })
   }
 
