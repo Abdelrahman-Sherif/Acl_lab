@@ -1,13 +1,14 @@
 # Acl_lab
 3ezbet Borsigwerke's team
 
-* Sprint 1 *
+* Sprint 1&2&3 *
 
 This is a Airline Reservation Web Application.
 
 ---
 ## Motivation:
 This project so far allows an Administrator to create, update or delete flights. The administrator can search for flights in the database to perform those functions.
+Users can view flights, book, pay, edit their bookings and update their profile and receive email confirmations.
 
 ---
 ### Build Status:
