@@ -3,8 +3,13 @@ import axios from 'axios';
 import {Divider, Chip, Button} from '@mui/material';
 import queryString from 'query-string';
 
+var {flag, paid}=queryString.parse(window.location.search);
 
-var {flag}=queryString.parse(window.location.search);
+if(paid == 'true')paid = true;
+else paid = false;
+
+if(flag == null)flag = 0;
+
 var returnSeats = sessionStorage.getItem("RetBookedSeats");
 var arrFlightNumber= sessionStorage.getItem("ReturnFlightNumber");
 var returnSeatsMap = sessionStorage.getItem("RetSeatsMap");
@@ -15,8 +20,6 @@ var departureSeats = sessionStorage.getItem("DepBookedSeats");
 var departureSeatsMap = sessionStorage.getItem("DepSeatsMap");
 var flightID= sessionStorage.getItem("FlightID");
 var BookingId=sessionStorage.getItem("BookingId");
-
-
 
 
 const Record = (props) => (
@@ -52,17 +55,15 @@ export default class MyItinerary extends Component {
         DateArrival: "",
         AirportArrival: "",
         AirportTakeOff: "", 
-        Cabin: ""
+        Cabin: "",
       };
     }
   
-   
-
-
     async addBooking(e) {
-      console.log("Adding booking")
+      console.log("Adding booking");
 
-      //Get new user name first 
+      if(paid){
+        // Get new user name first 
       var firstName = "";
       var lastName = "";
        //Hardcoding user ID till auth is done
@@ -149,7 +150,16 @@ export default class MyItinerary extends Component {
           })
           .catch(function (error) {
               console.log('errorr: ' + error);
-          });        }
+          });        
+        }
+      }
+      else{
+        axios.post('http://localhost:5000/bookings/checkout').then(res => {
+        window.location.assign(res.data);
+        }).catch(err=> {
+          console.log('error: ' + err);
+        });
+      }
     }
 
   
@@ -245,10 +255,11 @@ export default class MyItinerary extends Component {
     
        
                 <Divider >
-                  
-              <Button variant="contained" color = "primary" onClick = {this.addBooking.bind(this)}
+                  {(paid)? (<Button variant="contained" color = "primary" onClick = {this.addBooking.bind(this)}
               
-              >Confirm </Button>
+              >Done</Button>) : (<Button variant="contained" color = "primary" onClick = {this.addBooking.bind(this)}
+              
+              >Pay</Button>)}
               
                 </Divider>
   

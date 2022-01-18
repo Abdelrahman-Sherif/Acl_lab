@@ -26,7 +26,6 @@ const App = () => {
 
       
       <Router>
-
           <Routes>
           <Route exact path="/" element={<Demo/>}/>
           <Route exact path="/register" element={<RegisterUser/>}/>

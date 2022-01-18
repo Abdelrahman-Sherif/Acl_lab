@@ -1,5 +1,6 @@
 const router = require('express').Router();
 let Booking = require('../models/booking');
+const stripe = require('stripe')('sk_test_51KIxmuKJJUai2ELeBUo9ruiLUHFDZrmpX6hvN91dj3hpZ62Df1raevaVT8NoIVfOcweo0XohWFSmvspOR3Na1YSd00n0owDZeL');
 
 router.route('/getBookings').get((req, res) => {
   Booking.find()
@@ -138,6 +139,28 @@ router.route('/updateUserNames/:id').post(async (req, res) => {
    
   }));
   
+});
+
+router.route('/checkout').post(async (req, res) => {
+  const session = await stripe.checkout.sessions.create({
+    line_items: [
+      {
+        price_data: {
+          currency: 'usd',
+          product_data: {
+            name: 'T-shirt',
+          },
+          unit_amount: 2000,
+        },
+        quantity: 1,
+      },
+    ],
+    mode: 'payment',
+    success_url: 'http://localhost:3000/flights/users/itinerary?paid=true&flag=0',
+    cancel_url: 'http://localhost:3000/flights/users/itinerary?paid=false&flag=0',
+  });
+
+  return res.status(200).json(session.url);
 });
 
 
