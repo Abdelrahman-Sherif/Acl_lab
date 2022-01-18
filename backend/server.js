@@ -26,12 +26,14 @@ const flightsRouter = require('./routes/flightsRouter');
 const userRouter = require('./routes/userRouter');
 const bookingsRouter = require('./routes/bookingsRouter');
 const AuthRouter = require('./routes/AuthRouter');
+const nodemailerClass = require('./services/nodemailer')
 const User = require('./models/user');
 const Booking = require('./models/booking');
 app.use('/flights', flightsRouter);
 app.use('/users', userRouter);
 app.use('/bookings', bookingsRouter);
 app.use('/auth', AuthRouter);
+app.use('/nodemailer', nodemailerClass);
  
   app.get('/users', authenticateToken, (req, res) => {
     res.json(User.filter(user => user.email === req.user.email))

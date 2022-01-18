@@ -40,6 +40,14 @@ router.route('/getUserBookings/:id').get((req, res) => {
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
+router.route('/getAllUserBookings/:userId').get((req, res) => {
+  ///Hardcoding userId till auth is complete
+  Booking.find().where("userId").equals(req.params.userId)
+    .then(booking => res.json(booking))
+    .catch(err => res.status(400).json('Error: ' + err));
+});
+
+
 router.route('/getUserBookings').get((req, res) => {
   ///Hardcoding userId till auth is complete
   Booking.find().where("userId").equals("61c347f18128719139d8a8c7")

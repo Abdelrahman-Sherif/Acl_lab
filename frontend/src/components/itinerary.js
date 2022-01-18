@@ -66,8 +66,9 @@ export default class MyItinerary extends Component {
         // Get new user name first 
       var firstName = "";
       var lastName = "";
+      var currUserId = sessionStorage.getItem("currUser");
        //Hardcoding user ID till auth is done
-      await axios.get('http://localhost:5000/users/61c347f18128719139d8a8c7')
+      await axios.get('http://localhost:5000/users/'+ currUserId)
         .then(res =>{
           console.log(res.data);
          firstName = res.data.firstName;
@@ -78,7 +79,7 @@ export default class MyItinerary extends Component {
         })
       const newBooking = {
         //Hardcoding user ID till auth is done
-        userId: "61c347f18128719139d8a8c7",
+        userId: currUserId,
         depFlightNumber: depFlightNumber,
         arrFlightNumber: arrFlightNumber,
         departureSeats: departureSeats,

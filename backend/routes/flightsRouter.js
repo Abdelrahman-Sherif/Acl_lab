@@ -106,6 +106,23 @@ router.route('/:id').get((req, res) => {
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
+router.route('/flightByNumber/:flightNumber').get((req, res) => {
+  console.log("Getting flight details from db");
+ 
+  if(Flight.where("FlightNumber").equals(req.params.flightNumber).exec(function (err, data){
+    console.log(data);
+    if(data.length == 0){
+      res.status(400).json('Error: ' + "This flight no longer exists");
+    }
+    else{
+      console.log("Returning flight: "+ JSON.stringify(data[0]));
+     return res.json(data[0]);
+    }
+    
+  }));
+
+});
+
 router.route("/delete/:id").delete((req, res) => {
   Flight.findByIdAndDelete(req.params.id).then(flight => res.json('flight deleted Successfully'))
     .catch(err => {
@@ -138,6 +155,9 @@ router.route('/update/:id').post((req, res) => {
       console.log("Error updating flight: " + err);
       return res.status(400).json('Couldnt update flight,Error: ' + err);});
 });
+
+
+
 
 router.route("/updateSeats/:id").post((req, res) => {
   console.log("update seats body: " + req.body);

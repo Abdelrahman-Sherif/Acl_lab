@@ -10,6 +10,7 @@ import BookMySeats from './components/pick-seat.js';
 import BookMyReturnSeats from './components/pick-return-seat.js';
 import MyItinerary from './components/itinerary';
 import EditUserBookings from './components/edit-booking';
+import ViewFlight from './components/view-flight';
 
 
 
@@ -33,6 +34,7 @@ const App = () => {
           <Route exact path="/allFlights" element={<RecordList/>}/>
            <Route exact path="/flights/add" element={<CreateFlight/>}/>
            <Route  path="/flights/edit/:id" element={<EditFlight/>}/>
+           <Route  path="/flights/view/:id" element={<ViewFlight/>}/>
            <Route  path="/flights/users/bookings/edit/:id" element={<EditUserBookings/>}/>
 
            <Route  path="/flights/users/list" element={<ListUserFlights/>}/>
