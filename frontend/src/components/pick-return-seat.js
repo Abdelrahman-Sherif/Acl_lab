@@ -7,8 +7,23 @@ import queryString from 'query-string';
 
 var {flag}=queryString.parse(window.location.search);
 var FlightID= sessionStorage.getItem("ReturnFlightID");
+var ReturnFlightNumber= sessionStorage.getItem("ReturnFlightNumber");
 
 const BookMyReturnSeats = () => {
+
+  const getFlightByNumber = async ()=>{ 
+    await axios
+    .get("http://localhost:5000/flights/flightByNumber/" + ReturnFlightNumber)
+    .then((response) => {
+        console.log(response.data);
+        setEconomySeats(response.data.EconomySeatsAvail);
+        setBusinessSeats(response.data.BusinessSeatsAvail);
+        setFirstSeats(response.data.FirstSeatsAvail);
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
+}
 const getFlightByID = async ()=>{ 
     await axios
     .get("http://localhost:5000/flights/" + FlightID)
@@ -96,7 +111,12 @@ const getFlightByID = async ()=>{
     }
 
   React.useEffect(() => {
-    getFlightByID();
+    if(flag==0){
+      getFlightByID();
+    }
+    else{
+      getFlightByNumber();
+    }
   }, []);
 
   const confirmBooking = async ()=> {
