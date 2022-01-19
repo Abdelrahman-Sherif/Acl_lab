@@ -29,6 +29,7 @@ const getFlightByNumber = async ()=>{
     .get("http://localhost:5000/flights/flightByNumber/" + depFlightNumber)
     .then((response) => {
         console.log(response.data);
+        
         setEconomySeats(response.data.EconomySeatsAvail);
         setBusinessSeats(response.data.BusinessSeatsAvail);
         setFirstSeats(response.data.FirstSeatsAvail);
@@ -85,13 +86,16 @@ if(flag==0){
     var oldseats=sessionStorage.getItem("oldSeats");
    
     for (var i = 0; i < oldseats.length; i++) { 
-            if(oldseats[i]<lenFirst){
-                newFirstSeats.splice(oldseats[i],0,true);
+            if(oldseats[i] -1 <lenFirst ){
+                newFirstSeats[oldseats[i] -1] = true;
+                //newFirstSeats.splice(oldseats[i] - 1,0,true);
             }
-            else if(oldseats[i]<lenFirst+lenBiz){
-                newBusinessSeats.splice(oldseats[i],0,true);
+            else if(oldseats[i] - 1< lenFirst+lenBiz){
+                newBusinessSeats[oldseats[i] -1] = true;
+                //newBusinessSeats.splice(oldseats[i] -1 ,0,true);
             }else{
-                newEconomySeats.splice(oldseats[i],0,true);
+                newEconomySeats[oldseats[i] -1] = true;
+              //  newEconomySeats.splice(oldseats[i] - 1,0,true);
             }
      }
 

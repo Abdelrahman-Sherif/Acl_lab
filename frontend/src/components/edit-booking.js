@@ -9,6 +9,23 @@ console.log("Booking still: " + bookingId);
 sessionStorage.setItem("NewBooking", false);
 
 
+///Get flight data 
+async function getFlightIdByNumber(flightNumber) {
+  let id = await axios
+    .get("http://localhost:5000/flights/flightByNumber/" + flightNumber)
+    .then((response) => {
+      console.log("Flight ID : " + JSON.stringify(response.data._id));
+      return response.data._id;
+      // console.log("Arrival date: " + this.state.DateArrival.);
+    })
+    .catch(function (error) {
+      console.log("Flight fetch error:" + error);
+      return 0;
+
+    });
+  return id;
+}
+
 const Record = (props) => (
   
   <tr>
@@ -67,29 +84,48 @@ const Record = (props) => (
         }}>Change Return</Button>
         </td>
         <td>
-  <Button onClick={() => {
+  <Button onClick={async () => {
            if (window.confirm('Are you sure you want to change seats in Departure flight?')) {
 
             sessionStorage.setItem("depFlightNumber", props.record.depFlightNumber);
+            sessionStorage.setItem("ReturnFlightNumber",props.record.arrFlightNumber);
 
            sessionStorage.setItem("airportArrival", props.record.AirportArrival);
+           sessionStorage.setItem("oldSeats",props.record.departureSeats);
+
+           let depFlightId = await getFlightIdByNumber(props.record.depFlightNumber);
+           let arrFlightId = await getFlightIdByNumber(props.record.arrFlightNumber);
+            sessionStorage.setItem("FlightID",depFlightId);
+            sessionStorage.setItem("ReturnFlightID",arrFlightId);
+
             
            window.location.replace("http://localhost:3000/flights/users/pick-seat");
-           sessionStorage.setItem("oldSeats",props.record.departureSeats);
+         
 
            }
            
         }}>Edit Dep Seats</Button>
          </td>
         <td>
-  <Button onClick={() => {
+  <Button onClick={async () => {
            if (window.confirm('Are you sure you want to change seats in Return flight?')) {
 
          
            sessionStorage.setItem("airportArrival", props.record.AirportArrival);
-            
-           window.location.replace("http://localhost:3000/flights/users/pick-return-seat");
+           sessionStorage.setItem("ReturnFlightNumber",props.record.arrFlightNumber);
+           sessionStorage.setItem("depFlightNumber", props.record.depFlightNumber);
+
            sessionStorage.setItem("oldSeats",props.record.returnSeats);
+           let depFlightId = await getFlightIdByNumber(props.record.depFlightNumber);
+           let arrFlightId = await getFlightIdByNumber(props.record.arrFlightNumber);
+            sessionStorage.setItem("FlightID",depFlightId);
+            sessionStorage.setItem("ReturnFlightID",arrFlightId);
+
+            
+            
+           
+           window.location.replace("http://localhost:3000/flights/users/pick-return-seat");
+           
 
            }
            

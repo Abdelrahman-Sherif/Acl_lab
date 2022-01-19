@@ -14,7 +14,7 @@ var arrFlightNumber= sessionStorage.getItem("ReturnFlightNumber");
 var returnSeatsMap = sessionStorage.getItem("RetSeatsMap");
 var returnFlightID= sessionStorage.getItem("ReturnFlightID");
 
-var depFlightNumber= sessionStorage.getItem("DepartureFlightNumber");
+var depFlightNumber= sessionStorage.getItem("depFlightNumber");
 var departureSeats = sessionStorage.getItem("DepBookedSeats");
 var departureSeatsMap = sessionStorage.getItem("DepSeatsMap");
 var flightID= sessionStorage.getItem("FlightID");
@@ -78,7 +78,9 @@ export default class MyItinerary extends Component {
   
     async addBooking(e) {
       console.log("Adding booking");
-
+      console.log("DEPARTURE FLIGHT ID: "+ flightID);
+      console.log("RETURN FLIGHT ID: "+ returnFlightID);
+      
       if(paid){
         // Get new user name first 
       var firstName = "";
@@ -229,6 +231,11 @@ export default class MyItinerary extends Component {
       };
   var arr=[];
   var arr1=[];
+
+  console.log("Gotten Dep flightnumber: "+ depFlightNumber);
+  console.log("Gotten return flightnumber: "+ arrFlightNumber);
+  
+
   
       await axios
        .get("http://localhost:5000/flights/getFilteredFlight", {params: filterParams})
