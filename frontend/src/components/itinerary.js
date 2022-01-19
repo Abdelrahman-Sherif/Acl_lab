@@ -8,7 +8,6 @@ var {flag, paid}=queryString.parse(window.location.search);
 if(paid == 'true')paid = true;
 else paid = false;
 
-if(flag == null)flag = 0;
 
 var returnSeats = sessionStorage.getItem("RetBookedSeats");
 var arrFlightNumber= sessionStorage.getItem("ReturnFlightNumber");

@@ -33,7 +33,7 @@ const Record = (props) => (
          
            sessionStorage.setItem("depFlightNumber", props.record.depFlightNumber);
            sessionStorage.setItem("ReturnFlightNumber", props.record.arrFlightNumber);
-           sessionStorage.setItem("RetBookedSeats", props.record.departureSeats);
+           sessionStorage.setItem("RetBookedSeats", props.record.returnSeats);
            sessionStorage.setItem("DepBookedSeats", props.record.departureSeats);
 
            sessionStorage.setItem("BookingID", props.record.BookingID);
@@ -74,6 +74,8 @@ const Record = (props) => (
            sessionStorage.setItem("airportArrival", props.record.AirportArrival);
             
            window.location.replace("http://localhost:3000/flights/users/pick-seat");
+           sessionStorage.setItem("oldSeats",props.record.departureSeats);
+
            }
            
         }}>Edit Dep Seats</Button>
@@ -86,6 +88,8 @@ const Record = (props) => (
            sessionStorage.setItem("airportArrival", props.record.AirportArrival);
             
            window.location.replace("http://localhost:3000/flights/users/pick-return-seat");
+           sessionStorage.setItem("oldSeats",props.record.returnSeats);
+
            }
            
         }}>Edit Ret Seats</Button>
