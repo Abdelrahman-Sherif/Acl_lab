@@ -4,6 +4,7 @@ import Seats from './Seats';
 import axios from 'axios';
 import queryString from 'query-string';
 var FlightID= sessionStorage.getItem("FlightID");
+var depFlightNumber=sessionStorage.getItem("depFlightNumber");
 console.log("FlightID pick seat", FlightID);
 console.log("value from url",queryString.parse(window.location.search)); 
 var {flag}=queryString.parse(window.location.search);
@@ -13,6 +14,19 @@ const BookMySeats = () => {
 const getFlightByID = async ()=>{ 
     await axios
     .get("http://localhost:5000/flights/" + FlightID)
+    .then((response) => {
+        console.log(response.data);
+        setEconomySeats(response.data.EconomySeatsAvail);
+        setBusinessSeats(response.data.BusinessSeatsAvail);
+        setFirstSeats(response.data.FirstSeatsAvail);
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
+}
+const getFlightByNumber = async ()=>{ 
+    await axios
+    .get("http://localhost:5000/flights/flightByNumber/" + depFlightNumber)
     .then((response) => {
         console.log(response.data);
         setEconomySeats(response.data.EconomySeatsAvail);
@@ -81,6 +95,9 @@ if(flag==0){
             }
      }
 
+console.log("New economy seats", newEconomySeats);
+console.log("new buss seats ", newBusinessSeats);
+console.log("New first seats ", newFirstSeats);
 
 
 
@@ -102,7 +119,12 @@ if(flag==0){
     }
 
   React.useEffect(() => {
-    getFlightByID();
+      if(flag==0){
+        getFlightByID();
+      }else{
+        getFlightByNumber();
+      }
+    
   }, []);
 
   const confirmBooking = async ()=> {

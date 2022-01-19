@@ -70,7 +70,8 @@ const Record = (props) => (
   <Button onClick={() => {
            if (window.confirm('Are you sure you want to change seats in Departure flight?')) {
 
-         
+            sessionStorage.setItem("depFlightNumber", props.record.depFlightNumber);
+
            sessionStorage.setItem("airportArrival", props.record.AirportArrival);
             
            window.location.replace("http://localhost:3000/flights/users/pick-seat");
