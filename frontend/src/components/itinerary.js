@@ -39,6 +39,24 @@ const Record = (props) => (
       <td>{props.record.BaggageAllowed}</td> 
     </tr>
   );
+
+
+async function getUserEmail() {
+  var currUserId = sessionStorage.getItem("currUser");
+  let email = await axios
+    .get("http://localhost:5000/users/" + currUserId)
+    .then((response) => {
+      console.log("User email : " + JSON.stringify(response.data));
+      return response.data.email;
+      // console.log("Arrival date: " + this.state.DateArrival.);
+    })
+    .catch(function (error) {
+      console.log("User email fetch error:" + error);
+      return "yassin.daadour@gmail.com";
+
+    });
+  return email;
+}
   
   
   
@@ -121,6 +139,22 @@ export default class MyItinerary extends Component {
           .catch(function (error) {
               console.log('errorr: ' + error);
           });
+
+          ///Send user email
+        let userEmail = await getUserEmail();
+        const emailData = {
+          recipientEmail: userEmail,
+          text: "Your itenerary email details: \n"  + "\n Departure flight number: " + depFlightNumber + "\nReturn flight number:" + arrFlightNumber + "\n Departure seats: " + departureSeats + "\n Return Seats: " + returnSeats,
+        };
+        await axios
+          .post("http://localhost:5000/nodemailer/sendMail", emailData)
+          .then((response) => {
+            console.log("Sending email response: " + JSON.stringify(response.data));
+
+          })
+          .catch(function (error) {
+            console.log("Sending email error: " + error);
+          });
         }
         else{
           //update booking
@@ -151,7 +185,25 @@ export default class MyItinerary extends Component {
           })
           .catch(function (error) {
               console.log('errorr: ' + error);
-          });        
+          }); 
+          
+          ///Send user email
+        let userEmail = await getUserEmail();
+        const emailData = {
+          recipientEmail: userEmail,
+          text: "Your itenerary Update details: \n"  + "\n Departure flight number: " + depFlightNumber + "\nReturn flight number:" + arrFlightNumber + "\n Departure seats: " + departureSeats + "\n Return Seats: " + returnSeats,
+        };
+        await axios
+          .post("http://localhost:5000/nodemailer/sendMail", emailData)
+          .then((response) => {
+            console.log("Sending email response: " + JSON.stringify(response.data));
+
+          })
+          .catch(function (error) {
+            console.log("Sending email error: " + error);
+          }); 
+          
+          
         }
       }
       else{

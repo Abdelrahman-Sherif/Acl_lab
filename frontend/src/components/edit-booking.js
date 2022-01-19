@@ -27,6 +27,7 @@ const Record = (props) => (
     <td>
     
   <Button onClick={() => {
+    
            if (window.confirm('Are you sure you want to change departure flight?')) {
 
          
@@ -39,9 +40,6 @@ const Record = (props) => (
 
            sessionStorage.setItem("oldSeats",props.record.returnSeats);
 
-
-
-            
            window.location.replace("http://localhost:3000/flights/users/departure");
            }
            
