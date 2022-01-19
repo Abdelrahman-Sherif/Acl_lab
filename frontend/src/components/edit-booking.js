@@ -127,7 +127,7 @@ export default class EditUserBookings extends Component {
   async getUserBookings(){
     console.log("Getting users bookings");
   await axios
-  .get("http://localhost:5000/bookings/getuserbookings/"+ bookingId)
+  .get("http://localhost:5000/bookings/getUserBooking/"+ bookingId)
   .then((response) => {
     console.log("User Bookings gotten: "+ JSON.stringify(response.data));
     

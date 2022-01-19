@@ -33,7 +33,7 @@ router.route('/addBooking').post((req, res) => {
     
 });
 
-router.route('/getUserBookings/:id').get((req, res) => {
+router.route('/getUserBooking/:id').get((req, res) => {
   console.log("Getting booking details from db");
   Booking.findById(req.params.id)
     .then(booking => res.json(booking))
@@ -47,13 +47,6 @@ router.route('/getAllUserBookings/:userId').get((req, res) => {
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
-
-router.route('/getUserBookings').get((req, res) => {
-  ///Hardcoding userId till auth is complete
-  Booking.find().where("userId").equals("61c347f18128719139d8a8c7")
-    .then(booking => res.json(booking))
-    .catch(err => res.status(400).json('Error: ' + err));
-});
 
 router.route("/delete/:id").delete((req, res) => {
   console.log("Backend deleting booking with ID: "+ req.params.id);
