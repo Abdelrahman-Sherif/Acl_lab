@@ -207,7 +207,14 @@ export default class MyItinerary extends Component {
         }
       }
       else{
-        axios.post('http://localhost:5000/bookings/checkout').then(res => {
+        var price = 0;
+        this.state.records.forEach((record)=>{
+          price+= (record.Price)*100;
+        });
+        axios.post('http://localhost:5000/bookings/checkout', {
+          flag: flag,
+          price: price,
+        }).then(res => {
         window.location.assign(res.data);
         }).catch(err=> {
           console.log('error: ' + err);

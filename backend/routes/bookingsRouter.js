@@ -143,22 +143,23 @@ router.route('/updateUserNames/:id').post(async (req, res) => {
 });
 
 router.route('/checkout').post(async (req, res) => {
+  let flag = req.body.flag;
   const session = await stripe.checkout.sessions.create({
     line_items: [
       {
         price_data: {
           currency: 'usd',
           product_data: {
-            name: 'T-shirt',
+            name: 'Seats',
           },
-          unit_amount: 2000,
+          unit_amount: req.body.price,
         },
         quantity: 1,
       },
     ],
     mode: 'payment',
-    success_url: 'http://localhost:3000/flights/users/itinerary?paid=true&flag=0',
-    cancel_url: 'http://localhost:3000/flights/users/itinerary?paid=false&flag=0',
+    success_url: 'http://localhost:3000/flights/users/itinerary?paid=true&flag='+flag,
+    cancel_url: 'http://localhost:3000/flights/users/itinerary?paid=false&flag='+flag,
   });
 
   return res.status(200).json(session.url);
