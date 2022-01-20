@@ -1,5 +1,12 @@
+Milestone 1:
 Jana Elraggal: Create Flight and UI and Validations
 Kariman Eldeswky: Flight and Admin Schema and Delete Flight and Readme
 Yassin Sameh: Update Flight
 Abdelrahman Sherif: Search, Filtering and Server setup 
 Kariman & Jana: UI for Addflight 
+
+Milestone 2:
+Kariman & Jana: Flight search for users, Select a departure flight, select a return flight, confirm and show details of chosen flights
+
+Milestone 3:
+Jana ELRaggal: Register and login pages, allow current user to edit their profile 
