@@ -10,3 +10,4 @@ Kariman & Jana: Flight search for users, Select a departure flight, select a ret
 
 Milestone 3:
 Jana ELRaggal: Register and login pages, allow current user to edit their profile 
+Kariman:Edit bookings process including changing departure and arrival flights as well as editing the seats for current chosen flights.
