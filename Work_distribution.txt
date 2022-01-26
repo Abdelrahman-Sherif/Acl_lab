@@ -7,7 +7,10 @@ Kariman & Jana: UI for Addflight
 
 Milestone 2:
 Kariman & Jana: Flight search for users, Select a departure flight, select a return flight, confirm and show details of chosen flights
+Abdelrahman: Pick seats
+
 
 Milestone 3:
 Jana ELRaggal: Register and login pages, allow current user to edit their profile 
 Kariman:Edit bookings process including changing departure and arrival flights as well as editing the seats for current chosen flights.
+Abdelrahman: Payments
